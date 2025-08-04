@@ -1,0 +1,57 @@
+/* src/assets/styles/variables.css */
+:root {
+    /* 颜色变量 */
+    --color-primary: #4facfe;
+    --color-primary-dark: #3a8cce;
+    --color-primary-light: #42b983;
+    --color-secondary: #2193b0;
+    --color-accent: #1a7a99;
+    --color-background: #ffffff;
+    --color-text: #2c3e50;
+    --color-text-light: #666666;
+    --color-text-muted: #999999;
+    --color-border: #e4e7ed;
+    --color-shadow: rgba(0, 0, 0, 0.1);
+    --color-shadow-dark: rgba(0, 0, 0, 0.2);
+    --color-hover: rgba(33, 147, 176, 0.2);
+    --color-active: rgba(33, 147, 176, 0.3);
+    --color-gradient: linear-gradient(135deg, #ffffff 0%, #4facfe 100%); /* 添加渐变背景变量 */
+
+    /* 尺寸变量 */
+    --navbar-height: 60px;
+    --border-radius: 6px;
+    --border-radius-large: 50px;
+    --border-radius-small: 4px;
+    --transition-base: all 0.3s ease;
+    --transition-fast: all 0.1s ease-out;
+    --shadow-base: 0 2px 4px var(--color-shadow);
+    --shadow-hover: 0 4px 15px var(--color-shadow-dark);
+    --shadow-large: 0 6px 20px rgba(0, 0, 0, 0.3);
+
+    /* 字体大小 */
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-xxl: 24px;
+    --font-size-xxxl: 32px;
+
+    /* 间距 */
+    --spacing-xxs: 4px;
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-base: 16px;
+    --spacing-md: 20px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 40px;
+    --spacing-xxxl: 48px;
+
+    /* 断点 */
+    --breakpoint-xs: 480px;
+    --breakpoint-sm: 768px;
+    --breakpoint-md: 992px;
+    --breakpoint-lg: 1200px;
+    --breakpoint-xl: 1920px;
+}

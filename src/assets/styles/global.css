@@ -1,0 +1,137 @@
+/* src/assets/styles/global.css */
+/* 全局样式入口文件 */
+@import './variables.css';
+@import './reset.css';
+@import './mixins.css';
+@import './components.css';
+@import './responsive.css';
+
+/* 全局通用样式 */
+html, body {
+    height: 100%;
+}
+
+#app {
+    height: 100%;
+    min-height: 100vh;
+    background: var(--color-gradient); /* 使用渐变背景变量 */
+    display: flex;
+    flex-direction: column;
+}
+
+.content-area{
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* 3D 效果支持 */
+.preserve-3d {
+    transform-style: preserve-3d;
+}
+
+/* 过渡效果 */
+.transition-base {
+    transition: var(--transition-base);
+}
+
+.transition-fast {
+    transition: var(--transition-fast);
+}
+
+/* 阴影 */
+.shadow-base {
+    box-shadow: var(--shadow-base);
+}
+
+.shadow-hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.shadow-large {
+    box-shadow: var(--shadow-large);
+}
+
+/* 文本样式 */
+.text-primary {
+    color: var(--color-primary) !important;
+}
+
+.text-secondary {
+    color: var(--color-secondary) !important;
+}
+
+.text-accent {
+    color: var(--color-accent) !important;
+}
+
+.text-muted {
+    color: var(--color-text-muted) !important;
+}
+
+.text-light {
+    color: var(--color-text-light) !important;
+}
+
+.font-weight-bold {
+    font-weight: 600 !important;
+}
+
+/* 背景样式 */
+.bg-primary {
+    background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%) !important;
+}
+
+.bg-gradient {
+    background: var(--color-gradient) !important; /* 添加渐变背景类 */
+}
+
+.bg-white {
+    background-color: var(--color-background) !important;
+}
+
+.bg-light {
+    background-color: #fafafa !important;
+}
+
+/* 边距工具类 */
+.m-0 { margin: 0 !important; }
+.m-1 { margin: var(--spacing-xxs) !important; }
+.m-2 { margin: var(--spacing-xs) !important; }
+.m-3 { margin: var(--spacing-sm) !important; }
+.m-4 { margin: var(--spacing-base) !important; }
+.m-5 { margin: var(--spacing-md) !important; }
+
+.mx-0 { margin-left: 0 !important; margin-right: 0 !important; }
+.mx-1 { margin-left: var(--spacing-xxs) !important; margin-right: var(--spacing-xxs) !important; }
+.mx-2 { margin-left: var(--spacing-xs) !important; margin-right: var(--spacing-xs) !important; }
+.mx-3 { margin-left: var(--spacing-sm) !important; margin-right: var(--spacing-sm) !important; }
+.mx-4 { margin-left: var(--spacing-base) !important; margin-right: var(--spacing-base) !important; }
+.mx-5 { margin-left: var(--spacing-md) !important; margin-right: var(--spacing-md) !important; }
+
+.my-0 { margin-top: 0 !important; margin-bottom: 0 !important; }
+.my-1 { margin-top: var(--spacing-xxs) !important; margin-bottom: var(--spacing-xxs) !important; }
+.my-2 { margin-top: var(--spacing-xs) !important; margin-bottom: var(--spacing-xs) !important; }
+.my-3 { margin-top: var(--spacing-sm) !important; margin-bottom: var(--spacing-sm) !important; }
+.my-4 { margin-top: var(--spacing-base) !important; margin-bottom: var(--spacing-base) !important; }
+.my-5 { margin-top: var(--spacing-md) !important; margin-bottom: var(--spacing-md) !important; }
+
+.p-0 { padding: 0 !important; }
+.p-1 { padding: var(--spacing-xxs) !important; }
+.p-2 { padding: var(--spacing-xs) !important; }
+.p-3 { padding: var(--spacing-sm) !important; }
+.p-4 { padding: var(--spacing-base) !important; }
+.p-5 { padding: var(--spacing-md) !important; }
+
+.px-0 { padding-left: 0 !important; padding-right: 0 !important; }
+.px-1 { padding-left: var(--spacing-xxs) !important; padding-right: var(--spacing-xxs) !important; }
+.px-2 { padding-left: var(--spacing-xs) !important; padding-right: var(--spacing-xs) !important; }
+.px-3 { padding-left: var(--spacing-sm) !important; padding-right: var(--spacing-sm) !important; }
+.px-4 { padding-left: var(--spacing-base) !important; padding-right: var(--spacing-base) !important; }
+.px-5 { padding-left: var(--spacing-md) !important; padding-right: var(--spacing-md) !important; }
+
+.py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
+.py-1 { padding-top: var(--spacing-xxs) !important; padding-bottom: var(--spacing-xxs) !important; }
+.py-2 { padding-top: var(--spacing-xs) !important; padding-bottom: var(--spacing-xs) !important; }
+.py-3 { padding-top: var(--spacing-sm) !important; padding-bottom: var(--spacing-sm) !important; }
+.py-4 { padding-top: var(--spacing-base) !important; padding-bottom: var(--spacing-base) !important; }
+.py-5 { padding-top: var(--spacing-md) !important; padding-bottom: var(--spacing-md) !important; }

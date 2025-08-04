@@ -1,0 +1,140 @@
+// src/services/searchService.js
+class SearchService {
+    constructor() {
+        this.contentIndex = []
+        this.callbacks = []
+        this.searchCache = new Map()
+    }
+
+    // 初始化内容索引
+    initializeIndex(contents) {
+        this.contentIndex = contents.map(item => ({
+            ...item,
+            searchableText: `${item.title} ${this.stripHtml(item.content)}`.toLowerCase()
+        }))
+        this.clearCache()
+        this.notifySubscribers()
+    }
+
+    // 搜索方法（带缓存）
+    search(query) {
+        if (!query.trim()) return []
+
+        const cacheKey = query.toLowerCase()
+        if (this.searchCache.has(cacheKey)) {
+            return this.searchCache.get(cacheKey)
+        }
+
+        const term = query.toLowerCase()
+        const results = this.contentIndex
+            .filter(item => item.searchableText.includes(term))
+            .map(item => {
+                const preview = this.generatePreview(item.content, term)
+                return {
+                    ...item,
+                    preview
+                }
+            })
+
+        // 缓存结果
+        this.searchCache.set(cacheKey, results)
+        return results
+    }
+
+    // 生成搜索结果预览
+    generatePreview(content, term) {
+        const cleanContent = this.stripHtml(content)
+        const index = cleanContent.toLowerCase().indexOf(term.toLowerCase())
+
+        if (index === -1) return cleanContent.substring(0, 80) + '...'
+
+        const start = Math.max(0, index - 30)
+        const end = Math.min(cleanContent.length, index + term.length + 30)
+        let preview = cleanContent.substring(start, end)
+
+        if (start > 0) preview = '...' + preview
+        if (end < cleanContent.length) preview = preview + '...'
+
+        // 高亮搜索词
+        const regex = new RegExp(`(${this.escapeRegExp(term)})`, 'gi')
+        return preview.replace(regex, '<strong>$1</strong>')
+    }
+
+    // 移除HTML标签的辅助函数
+    stripHtml(html) {
+        const tmp = document.createElement('div')
+        tmp.innerHTML = html
+        return tmp.textContent || tmp.innerText || ''
+    }
+
+    // 转义正则表达式特殊字符
+    escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    }
+
+    // 添加内容到索引
+    addContent(content) {
+        this.contentIndex.push({
+            ...content,
+            searchableText: `${content.title} ${this.stripHtml(content.content)}`.toLowerCase()
+        })
+        this.clearCache()
+        this.notifySubscribers()
+    }
+
+    // 批量添加内容到索引
+    addContents(contents) {
+        contents.forEach(content => {
+            this.contentIndex.push({
+                ...content,
+                searchableText: `${content.title} ${this.stripHtml(content.content)}`.toLowerCase()
+            })
+        })
+        this.clearCache()
+        this.notifySubscribers()
+    }
+
+    // 更新内容索引
+    updateContent(id, updatedContent) {
+        const index = this.contentIndex.findIndex(item => item.id === id)
+        if (index !== -1) {
+            this.contentIndex[index] = {
+                ...updatedContent,
+                searchableText: `${updatedContent.title} ${this.stripHtml(updatedContent.content)}`.toLowerCase()
+            }
+            this.clearCache()
+            this.notifySubscribers()
+            return true
+        }
+        return false
+    }
+
+    // 删除内容索引
+    removeContent(id) {
+        this.contentIndex = this.contentIndex.filter(item => item.id !== id)
+        this.clearCache()
+        this.notifySubscribers()
+    }
+
+    // 清空缓存
+    clearCache() {
+        this.searchCache.clear()
+    }
+
+    // 订阅索引变化
+    subscribe(callback) {
+        this.callbacks.push(callback)
+    }
+
+    // 取消订阅
+    unsubscribe(callback) {
+        this.callbacks = this.callbacks.filter(cb => cb !== callback)
+    }
+
+    // 通知所有订阅者
+    notifySubscribers() {
+        this.callbacks.forEach(callback => callback(this.contentIndex))
+    }
+}
+
+export default new SearchService()

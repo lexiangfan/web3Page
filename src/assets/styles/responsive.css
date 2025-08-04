@@ -1,0 +1,148 @@
+/* src/assets/styles/responsive.css */
+/* 移动端优先的响应式设计 */
+
+/* 超小屏幕 (手机, 小于 576px) */
+@media (max-width: 575.98px) {
+    :root {
+        --font-size-base: 14px;
+        --font-size-lg: 16px;
+        --font-size-xl: 18px;
+        --font-size-xxl: 20px;
+        --font-size-xxxl: 24px;
+
+        --spacing-sm: 8px;
+        --spacing-base: 12px;
+        --spacing-md: 16px;
+        --spacing-lg: 20px;
+        --spacing-xl: 24px;
+    }
+
+    .title {
+        font-size: 2rem !important;
+    }
+
+    .action-button {
+        padding: 12px 30px !important;
+        font-size: 1rem !important;
+    }
+
+    .search-box-container {
+        position: static !important;
+        width: 100% !important;
+        margin-bottom: var(--spacing-base);
+    }
+
+    .search-box {
+        max-width: 100% !important;
+    }
+
+    .el-col {
+        width: 100% !important;
+    }
+
+    .anchor-col {
+        display: none !important;
+    }
+
+    .content-col {
+        width: 100% !important;
+    }
+
+    .page-container {
+        padding: var(--spacing-sm) !important;
+    }
+
+    .content-part {
+        padding: var(--spacing-base) !important;
+    }
+
+    .button-container {
+        position: static !important;
+        margin-top: var(--spacing-base);
+        display: flex;
+        justify-content: center;
+    }
+}
+
+/* 小屏幕 (平板, 576px 及以上) */
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+}
+
+/* 中等屏幕 (桌面, 768px 及以上) */
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+
+    .title {
+        font-size: 3rem !important;
+    }
+
+    .search-box-container {
+        position: absolute !important;
+        top: 20px !important;
+        right: 20px !important;
+        width: 300px !important;
+    }
+
+    .anchor-col {
+        display: block !important;
+    }
+
+    .button-container {
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+    }
+}
+
+/* 大屏幕 (大桌面, 992px 及以上) */
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+
+    .title {
+        font-size: 4rem !important;
+    }
+}
+
+/* 超大屏幕 (超大桌面, 1200px 及以上) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+/* 特殊响应式处理 */
+@media (max-height: 700px) {
+    .content {
+        margin-top: -50px !important;
+    }
+}
+
+@media (max-height: 500px) {
+    .title {
+        font-size: 2.5rem !important;
+    }
+
+    .action-button {
+        padding: 10px 25px !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* 横屏模式 */
+@media (orientation: landscape) and (max-height: 500px) {
+    .container {
+        height: auto !important;
+        min-height: 100vh !important;
+    }
+
+    .content {
+        margin-top: 0 !important;
+    }
+}
