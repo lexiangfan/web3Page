@@ -6,6 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base:'/web3Page/',
   plugins: [
     vue(),
     vueDevTools(),
@@ -17,5 +18,7 @@ export default defineConfig({
   },
   server: {
     open: true // ✅ 启动项目时自动打开浏览器
-  }
+  },
+
+
 })

@@ -1,8 +1,12 @@
-import {createRouter,createWebHistory} from "vue-router"
+import {createRouter, createWebHashHistory, createWebHistory} from "vue-router"
 import Home from '@/views/Home.vue'
 import Page from "@/views/page.vue";
 
 const routes = [
+  {
+    path: '/',
+    redirect: 'Home' // 👈 默认跳转到首页
+  },
   {
     path: '/',
     name: 'Home',
@@ -16,7 +20,7 @@ const routes = [
 
 ]
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 })
 export default router
