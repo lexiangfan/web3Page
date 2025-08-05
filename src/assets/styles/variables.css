@@ -3,6 +3,7 @@
     /* 颜色变量 */
     --color-primary: #4facfe;
     --color-primary-dark: #3a8cce;
+    --color-primary-light: #42b983;
     --color-secondary: #2193b0;
     --color-accent: #1a7a99;
     --color-background: #ffffff;
@@ -14,10 +15,9 @@
     --color-shadow-dark: rgba(0, 0, 0, 0.2);
     --color-hover: rgba(33, 147, 176, 0.2);
     --color-active: rgba(33, 147, 176, 0.3);
-    /* 修改渐变背景为纯白色 */
-    --color-gradient: #ffffff;
+    --color-gradient: linear-gradient(135deg, #ffffff 0%, #4facfe 100%); /* 添加渐变背景变量 */
 
-    /* 其他变量保持不变 */
+    /* 尺寸变量 */
     --navbar-height: 60px;
     --border-radius: 6px;
     --border-radius-large: 50px;

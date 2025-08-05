@@ -52,7 +52,6 @@ export default {
   perspective: 1000px;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #ffffff 0%, #4facfe 100%);
 }
 
 /* 添加边缘模糊效果 */
@@ -63,7 +62,7 @@ export default {
   left: -50px;
   right: -50px;
   bottom: -50px;
-  background: linear-gradient(135deg, #ffffff 0%, #4facfe 100%);
+  background: var(--color-gradient);
   background-size: cover;
   background-position: center;
   z-index: -1;
