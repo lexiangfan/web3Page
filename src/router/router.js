@@ -1,21 +1,23 @@
-import {createRouter, createWebHashHistory, createWebHistory} from "vue-router"
+import {createRouter, createWebHashHistory} from "vue-router"
 import Home from '@/views/Home.vue'
 import Page from "@/views/page.vue";
+import About from "@/views/About.vue";
 
 const routes = [
   {
     path: '/',
-    redirect: 'Home' // 👈 默认跳转到首页
-  },
-  {
-    path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
   },
   {
     path:'/Page',
     name:'Page',
     component: Page
+  },
+  {
+    path:'/about',
+    name:'About',
+    component: About
   }
 
 ]
