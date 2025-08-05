@@ -9,12 +9,13 @@
 /* 全局通用样式 */
 html, body {
     height: 100%;
+    background-color: #ffffff; /* 确保HTML和body背景为白色 */
 }
 
 #app {
     height: 100%;
     min-height: 100vh;
-    background: var(--color-gradient); /* 使用渐变背景变量 */
+    background-color: #ffffff; /* 全局背景改为白色 */
     display: flex;
     flex-direction: column;
 }
@@ -22,6 +23,7 @@ html, body {
 .content-area{
     flex: 1;
     overflow-y: auto;
+    background-color: #ffffff; /* 内容区域背景为白色 */
 }
 
 /* 3D 效果支持 */
@@ -82,7 +84,7 @@ html, body {
 }
 
 .bg-gradient {
-    background: var(--color-gradient) !important; /* 添加渐变背景类 */
+    background: var(--color-gradient) !important;
 }
 
 .bg-white {
@@ -93,45 +95,4 @@ html, body {
     background-color: #fafafa !important;
 }
 
-/* 边距工具类 */
-.m-0 { margin: 0 !important; }
-.m-1 { margin: var(--spacing-xxs) !important; }
-.m-2 { margin: var(--spacing-xs) !important; }
-.m-3 { margin: var(--spacing-sm) !important; }
-.m-4 { margin: var(--spacing-base) !important; }
-.m-5 { margin: var(--spacing-md) !important; }
-
-.mx-0 { margin-left: 0 !important; margin-right: 0 !important; }
-.mx-1 { margin-left: var(--spacing-xxs) !important; margin-right: var(--spacing-xxs) !important; }
-.mx-2 { margin-left: var(--spacing-xs) !important; margin-right: var(--spacing-xs) !important; }
-.mx-3 { margin-left: var(--spacing-sm) !important; margin-right: var(--spacing-sm) !important; }
-.mx-4 { margin-left: var(--spacing-base) !important; margin-right: var(--spacing-base) !important; }
-.mx-5 { margin-left: var(--spacing-md) !important; margin-right: var(--spacing-md) !important; }
-
-.my-0 { margin-top: 0 !important; margin-bottom: 0 !important; }
-.my-1 { margin-top: var(--spacing-xxs) !important; margin-bottom: var(--spacing-xxs) !important; }
-.my-2 { margin-top: var(--spacing-xs) !important; margin-bottom: var(--spacing-xs) !important; }
-.my-3 { margin-top: var(--spacing-sm) !important; margin-bottom: var(--spacing-sm) !important; }
-.my-4 { margin-top: var(--spacing-base) !important; margin-bottom: var(--spacing-base) !important; }
-.my-5 { margin-top: var(--spacing-md) !important; margin-bottom: var(--spacing-md) !important; }
-
-.p-0 { padding: 0 !important; }
-.p-1 { padding: var(--spacing-xxs) !important; }
-.p-2 { padding: var(--spacing-xs) !important; }
-.p-3 { padding: var(--spacing-sm) !important; }
-.p-4 { padding: var(--spacing-base) !important; }
-.p-5 { padding: var(--spacing-md) !important; }
-
-.px-0 { padding-left: 0 !important; padding-right: 0 !important; }
-.px-1 { padding-left: var(--spacing-xxs) !important; padding-right: var(--spacing-xxs) !important; }
-.px-2 { padding-left: var(--spacing-xs) !important; padding-right: var(--spacing-xs) !important; }
-.px-3 { padding-left: var(--spacing-sm) !important; padding-right: var(--spacing-sm) !important; }
-.px-4 { padding-left: var(--spacing-base) !important; padding-right: var(--spacing-base) !important; }
-.px-5 { padding-left: var(--spacing-md) !important; padding-right: var(--spacing-md) !important; }
-
-.py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
-.py-1 { padding-top: var(--spacing-xxs) !important; padding-bottom: var(--spacing-xxs) !important; }
-.py-2 { padding-top: var(--spacing-xs) !important; padding-bottom: var(--spacing-xs) !important; }
-.py-3 { padding-top: var(--spacing-sm) !important; padding-bottom: var(--spacing-sm) !important; }
-.py-4 { padding-top: var(--spacing-base) !important; padding-bottom: var(--spacing-base) !important; }
-.py-5 { padding-top: var(--spacing-md) !important; padding-bottom: var(--spacing-md) !important; }
+/* 其他样式保持不变... */

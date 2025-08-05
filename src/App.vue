@@ -82,12 +82,13 @@ export default {
 
 <style scoped>
 #app {
-  background: linear-gradient(135deg, #ffffff 0%, #4facfe 100%);
+  background-color: #ffffff; /* 全局背景为白色 */
   min-height: 100vh;
 }
 
 .content-area {
   padding-top: var(--navbar-height);
+  background-color: #ffffff;
 }
 
 .navbar {
