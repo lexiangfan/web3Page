@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import searchService from '@/services/searchService.js'
 import router from '@/router/router.js'
@@ -56,20 +56,42 @@ export default {
     const searchResults = ref([])
     const showSearchResults = ref(false)
     const searchContainerRef = ref(null)
+    const windowWidth = ref(window.innerWidth)
+
+    // 监听窗口大小变化
+    const handleResize = () => {
+      windowWidth.value = window.innerWidth
+      // 窗口大小改变时隐藏搜索结果
+      showSearchResults.value = false
+    }
 
     // 计算搜索结果面板的位置和样式
     const searchResultsStyle = computed(() => {
       if (!searchContainerRef.value) {
         return {
           position: 'fixed',
-          top: '0px',
-          left: '0px',
-          width: '0px',
+          top: '60px',
+          left: '10px',
+          right: '10px',
           zIndex: '9999'
         }
       }
 
-      const rect = searchContainerRef.value.getBoundingClientRect()
+      const rect = searchContainerRef.value.getBoundingClientRect();
+
+      // 移动端适配 - 横向铺满屏幕
+      if (windowWidth.value <= 768) {
+        return {
+          position: 'fixed',
+          top: rect.bottom + 8 + 'px',
+          left: '10px',
+          right: '10px',
+          zIndex: '9999',
+          maxWidth: 'none'
+        }
+      }
+
+      // 中等及以上屏幕 - 宽度与搜索框保持一致
       return {
         position: 'fixed',
         top: rect.bottom + 8 + 'px',
@@ -109,7 +131,26 @@ export default {
     const jumpToSearchResult = (result) => {
       showSearchResults.value = false
       searchText.value = ''
-      router.push(result.path || '/Page#' + result.id)
+
+      // 跳转到Page页面并滚动到对应元素
+      router.push('/Page').then(() => {
+        // 等待页面加载完成后滚动到目标元素
+        setTimeout(() => {
+          const targetElement = document.getElementById(result.id)
+          if (targetElement) {
+            // 使用平滑滚动
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }
+        }, 300)
+      }).catch(err => {
+        // 如果已经在Page页面，则直接滚动
+        if (err.name === 'NavigationDuplicated') {
+          const targetElement = document.getElementById(result.id)
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }
+        }
+      })
     }
 
     // 点击其他地方隐藏搜索结果
@@ -121,10 +162,12 @@ export default {
 
     onMounted(() => {
       document.addEventListener('click', handleClickOutside)
+      window.addEventListener('resize', handleResize)
     })
 
     onUnmounted(() => {
       document.removeEventListener('click', handleClickOutside)
+      window.removeEventListener('resize', handleResize)
     })
 
     return {
@@ -179,6 +222,7 @@ export default {
   padding-left: 32px !important;
   background: transparent !important;
   color: var(--color-text) !important;
+  min-width: 60px;
 }
 
 :deep(.global-search-input .el-input__inner::placeholder) {
@@ -198,6 +242,7 @@ export default {
   max-height: 320px;
   overflow-y: auto;
   margin-top: 8px;
+  box-sizing: border-box;
 }
 
 .global-search-result-item {
@@ -248,23 +293,51 @@ export default {
   color: var(--color-text-muted);
   text-align: center;
   font-size: var(--font-size-base);
+  box-sizing: border-box;
 }
 
-/* 响应式设计 */
+/* 移动端适配 */
 @media (max-width: 768px) {
   .global-search {
-    max-width: 200px;
+    max-width: 100px;
+    margin-right: 2px;
+    min-width: 80px;
   }
 
   :deep(.global-search-input .el-input__inner) {
-    font-size: 14px;
-    padding: 8px 12px 8px 32px !important;
+    font-size: 13px;
+    padding: 6px 8px 6px 28px !important;
+    min-width: 60px;
+  }
+
+  :deep(.global-search-input .el-input__prefix) {
+    left: 8px !important;
   }
 }
 
 @media (max-width: 576px) {
   .global-search {
-    max-width: 150px;
+    max-width: 70px;
+    margin-right: 1px;
+    min-width: 70px;
+  }
+
+  :deep(.global-search-input .el-input__inner) {
+    font-size: 12px;
+    padding: 4px 6px 4px 24px !important;
+    min-width: 50px;
+  }
+
+  :deep(.global-search-input .el-input__prefix) {
+    left: 6px !important;
+  }
+
+  .result-title {
+    font-size: var(--font-size-sm);
+  }
+
+  .result-content {
+    font-size: var(--font-size-xs);
   }
 }
 </style>

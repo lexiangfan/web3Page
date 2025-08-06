@@ -1,3 +1,4 @@
+<!-- src/App.vue -->
 <template>
   <div id="app">
     <el-menu
@@ -37,7 +38,7 @@
                 class="github-button"
                 @click="goToGithub"
             >
-              <i class="el-icon-link"></i>
+<!--              <i class="el-icon-link"></i>-->
               GitHub
             </el-button>
           </el-menu-item>
@@ -48,6 +49,7 @@
         </div>
       </div>
     </el-menu>
+
     <RouterView class="content-area" />
   </div>
 </template>
@@ -87,9 +89,22 @@ const goToGithub = () => {
   window.open('https://github.com', '_blank')
 }
 
-// 初始化内容
+// 初始化内容 - 修复版本
 const initializeContent = () => {
-  contentManager.initializeContents(pageContents)
+  // 递归展平所有内容以便搜索
+  const flattenContents = (contents) => {
+    let result = []
+    contents.forEach(item => {
+      result.push(item)
+      if (item.children && Array.isArray(item.children)) {
+        result = result.concat(flattenContents(item.children))
+      }
+    })
+    return result
+  }
+
+  const allContents = flattenContents(pageContents)
+  contentManager.initializeContents(allContents)
 }
 
 // 切换移动端菜单
@@ -286,7 +301,10 @@ onMounted(() => {
   }
 
   .navbar-container {
-    padding: 0 12px;
+    padding: 0 2px;
+    display: flex;
+    align-items: center;
+    position: relative;
   }
 
   .navbar-center {
@@ -312,36 +330,59 @@ onMounted(() => {
     display: flex;
   }
 
+  /* 在小屏幕上将搜索框移到中间 */
   .navbar-search {
-    width: 140px;
-    margin: 0 6px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    margin: 0;
+    min-width: 80px;
   }
 
   .mobile-menu-toggle {
     display: flex !important;
     align-items: center;
     justify-content: center;
-    padding: 0 8px !important;
+    padding: 0 4px !important;
+    margin-left: 1px;
+    min-width: 40px;
   }
 
   :deep(.el-menu-item) {
-    padding: 0 8px !important;
+    padding: 0 4px !important;
     margin: 2px 0;
     width: 100%;
+    min-width: 40px;
   }
 
   /* 在移动端实现 logo 左对齐，其他元素右对齐的效果 */
   .navbar-left {
     margin-right: auto;
+    flex-shrink: 0;
+    min-width: 60px;
   }
 
   .logo-text {
     font-size: 18px;
   }
 
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
   .github-button {
     font-size: var(--font-size-xs);
-    padding: 6px 10px !important;
+    padding: 4px 6px !important;
+  }
+
+  /* 在移动端隐藏GitHub菜单项 */
+  .github-item {
+    display: none !important;
   }
 }
 
@@ -351,20 +392,31 @@ onMounted(() => {
     padding-top: var(--navbar-height);
   }
 
+  .navbar-container {
+    padding: 0 1px;
+  }
+
   .navbar-search {
-    display: none;
+    width: 100px;
+    min-width: 70px;
   }
 
   .navbar-right {
-    gap: 6px;
+    gap: 0;
   }
 
   .logo-text {
     font-size: 16px;
   }
 
-  .github-button {
-    display: none;
+  .mobile-menu-toggle {
+    padding: 0 2px !important;
+    margin-left: 0;
+  }
+
+  /* 确保GitHub项隐藏 */
+  .github-item {
+    display: none !important;
   }
 }
 </style>

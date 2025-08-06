@@ -6,12 +6,28 @@ class SearchService {
         this.searchCache = new Map()
     }
 
-    // 初始化内容索引
+    // 初始化内容索引 - 修复版本
     initializeIndex(contents) {
-        this.contentIndex = contents.map(item => ({
-            ...item,
-            searchableText: `${item.title} ${this.stripHtml(item.content)}`.toLowerCase()
-        }))
+        this.contentIndex = []
+
+        // 递归函数处理所有层级的内容
+        const processContent = (content) => {
+            // 只有包含实际内容的条目才加入索引
+            if (content.content && content.content.trim() !== '') {
+                this.contentIndex.push({
+                    ...content,
+                    searchableText: `${content.title} ${this.stripHtml(content.content || '')}`.toLowerCase()
+                })
+            }
+
+            // 递归处理子内容
+            if (content.children && Array.isArray(content.children)) {
+                content.children.forEach(child => processContent(child))
+            }
+        }
+
+        contents.forEach(content => processContent(content))
+
         this.clearCache()
         this.notifySubscribers()
     }
@@ -29,7 +45,7 @@ class SearchService {
         const results = this.contentIndex
             .filter(item => item.searchableText.includes(term))
             .map(item => {
-                const preview = this.generatePreview(item.content, term)
+                const preview = this.generatePreview(item.content || '', term)
                 return {
                     ...item,
                     preview
@@ -43,6 +59,9 @@ class SearchService {
 
     // 生成搜索结果预览
     generatePreview(content, term) {
+        // 处理空内容
+        if (!content) return ''
+
         const cleanContent = this.stripHtml(content)
         const index = cleanContent.toLowerCase().indexOf(term.toLowerCase())
 
@@ -62,6 +81,7 @@ class SearchService {
 
     // 移除HTML标签的辅助函数
     stripHtml(html) {
+        if (!html) return ''
         const tmp = document.createElement('div')
         tmp.innerHTML = html
         return tmp.textContent || tmp.innerText || ''
@@ -72,12 +92,20 @@ class SearchService {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     }
 
-    // 添加内容到索引
+    // 添加内容到索引 - 修复版本
     addContent(content) {
-        this.contentIndex.push({
-            ...content,
-            searchableText: `${content.title} ${this.stripHtml(content.content)}`.toLowerCase()
-        })
+        // 如果是包含子内容的容器，递归处理
+        if (content.children && Array.isArray(content.children)) {
+            content.children.forEach(child => this.addContent(child))
+        } else {
+            // 只有包含实际内容的条目才加入索引
+            if (content.content && content.content.trim() !== '') {
+                this.contentIndex.push({
+                    ...content,
+                    searchableText: `${content.title} ${this.stripHtml(content.content || '')}`.toLowerCase()
+                })
+            }
+        }
         this.clearCache()
         this.notifySubscribers()
     }
@@ -85,10 +113,7 @@ class SearchService {
     // 批量添加内容到索引
     addContents(contents) {
         contents.forEach(content => {
-            this.contentIndex.push({
-                ...content,
-                searchableText: `${content.title} ${this.stripHtml(content.content)}`.toLowerCase()
-            })
+            this.addContent(content)
         })
         this.clearCache()
         this.notifySubscribers()
@@ -100,7 +125,7 @@ class SearchService {
         if (index !== -1) {
             this.contentIndex[index] = {
                 ...updatedContent,
-                searchableText: `${updatedContent.title} ${this.stripHtml(updatedContent.content)}`.toLowerCase()
+                searchableText: `${updatedContent.title} ${this.stripHtml(updatedContent.content || '')}`.toLowerCase()
             }
             this.clearCache()
             this.notifySubscribers()
