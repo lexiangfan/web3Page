@@ -1,6 +1,7 @@
 import {createRouter, createWebHashHistory} from "vue-router"
 import Home from '@/views/Home.vue'
 import Page from "@/views/page.vue";
+import NewPage from "@/views/NewPage.vue"; // 添加新页面导入
 import About from "@/views/About.vue";
 
 const routes = [
@@ -9,7 +10,7 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      title: 'Web3 入门必看' // 添加标题
+      title: 'Web3 入门必看'
     }
   },
   {
@@ -17,7 +18,7 @@ const routes = [
     name:'Page',
     component: Page,
     meta: {
-      title: 'Web3 内容页面' // 添加标题
+      title: 'Web3 内容页面'
     }
   },
   {
@@ -25,9 +26,17 @@ const routes = [
     name:'About',
     component: About,
     meta: {
-      title: '关于我们' // 添加标题
+      title: '关于我们'
     }
-  }
+  },
+  {
+    path:'/newPage',
+    name:'NewPage',
+    component: NewPage,
+    meta: {
+      title: '添加新页面'
+    }
+  },
 
 ]
 const router = createRouter({
