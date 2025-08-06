@@ -17,6 +17,20 @@
         --spacing-xl: 24px;
     }
 
+    /* 容器和内容区域 */
+    .container {
+        padding: 0 16px;
+    }
+
+    .content-area {
+        padding: 0;
+        padding-top: var(--navbar-height);
+        /* 修复高度设置 */
+        min-height: calc(100vh - var(--navbar-height));
+        height: auto;
+    }
+
+    /* 标题和按钮 */
     .title {
         font-size: 2rem !important;
     }
@@ -24,8 +38,10 @@
     .action-button {
         padding: 12px 30px !important;
         font-size: 1rem !important;
+        width: 100%;
     }
 
+    /* 搜索框 */
     .search-box-container {
         position: static !important;
         width: 100% !important;
@@ -36,24 +52,52 @@
         max-width: 100% !important;
     }
 
+    /* 栅格系统 */
     .el-col {
         width: 100% !important;
     }
 
+    /* 页面容器 */
+    .page-container {
+        padding: 0;
+        min-height: calc(100vh - var(--navbar-height));
+        height: auto;
+    }
+
+    /* 导航相关 */
     .anchor-col {
         display: none !important;
     }
 
     .content-col {
         width: 100% !important;
+        padding: 0 !important;
     }
 
-    .page-container {
-        padding: var(--spacing-sm) !important;
+    .scroll-container {
+        padding: 16px !important;
     }
 
     .content-part {
-        padding: var(--spacing-base) !important;
+        padding: var(--spacing-base) 0 !important;
+        margin-bottom: var(--spacing-md) !important;
+    }
+
+    .content-part h2 {
+        font-size: var(--font-size-xl) !important;
+        margin-bottom: 16px !important;
+    }
+
+    .content-part h3 {
+        font-size: var(--font-size-lg) !important;
+        margin-top: 24px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .content-part p {
+        font-size: var(--font-size-base) !important;
+        margin-bottom: 12px !important;
+        line-height: 1.6 !important;
     }
 
     .button-container {
@@ -61,6 +105,36 @@
         margin-top: var(--spacing-base);
         display: flex;
         justify-content: center;
+    }
+
+    .content-section h2 {
+        font-size: var(--font-size-xl) !important;
+    }
+
+    .content-section p {
+        font-size: var(--font-size-base) !important;
+    }
+
+    .video-player {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    /* 导航栏 */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .navbar-brand {
+        flex: 1;
+    }
+
+    .navbar-nav {
+        flex: 1;
+        justify-content: flex-end;
     }
 }
 
@@ -96,6 +170,18 @@
         position: fixed !important;
         bottom: 20px !important;
         right: 20px !important;
+    }
+
+    .page-container {
+        height: calc(100vh - var(--navbar-height)) !important;
+    }
+
+    .content-col {
+        padding: 0 24px !important;
+    }
+
+    .scroll-container {
+        padding: 24px !important;
     }
 }
 

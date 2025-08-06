@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted} from 'vue'
 import contentManager from '@/services/contentManager.js'
 
 export default {
@@ -93,17 +93,9 @@ export default {
       updateContents()
     }
 
-    const unsubscribe = () => {
-      contentManager.unsubscribe(updateContents)
-    }
-
     onMounted(() => {
       updateContents()
       contentManager.subscribe(updateContents)
-    })
-
-    onUnmounted(() => {
-      unsubscribe()
     })
 
     return {

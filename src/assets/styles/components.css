@@ -94,33 +94,9 @@
 }
 
 /* 导航栏 */
-.navbar {
-    display: flex;
-    align-items: center;
-    padding: var(--spacing-base);
-    background: linear-gradient(135deg, var(--color-background) 0%, var(--color-primary) 100%);
-    box-shadow: var(--shadow-base);
-    height: var(--navbar-height);
-    position: relative;
-    z-index: 1000;
-}
+
 
 /* 搜索框 */
-.search-box {
-    position: relative;
-    width: 100%;
-    max-width: 300px;
-}
-
-.search-input {
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-base);
-    padding-left: calc(var(--spacing-base) + 20px);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-small);
-    font-size: var(--font-size-sm);
-    transition: var(--transition-base);
-}
 
 .search-input:focus {
     border-color: var(--color-primary);
@@ -128,64 +104,8 @@
     box-shadow: 0 0 0 0.2rem rgba(66, 185, 131, 0.25);
 }
 
-.search-icon {
-    position: absolute;
-    left: var(--spacing-sm);
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--color-text-muted);
-}
-
 /* 搜索结果面板 */
-.search-results {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: var(--color-background);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-small);
-    box-shadow: var(--shadow-hover);
-    max-height: 300px;
-    overflow-y: auto;
-    z-index: 1000;
-    margin-top: var(--spacing-xs);
-}
 
-.search-result-item {
-    padding: var(--spacing-sm) var(--spacing-base);
-    cursor: pointer;
-    border-bottom: 1px solid var(--color-border);
-    transition: var(--transition-base);
-}
-
-.search-result-item:hover {
-    background-color: var(--color-hover);
-}
-
-.search-result-item:last-child {
-    border-bottom: none;
-}
-
-.result-title {
-    font-weight: 600;
-    color: var(--color-text);
-    margin-bottom: var(--spacing-xs);
-}
-
-.result-content {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-light);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.no-results {
-    padding: var(--spacing-base);
-    color: var(--color-text-muted);
-    text-align: center;
-}
 
 /* 内容区域 */
 .content-section {

@@ -1,32 +1,29 @@
 /* src/assets/styles/variables.css */
 :root {
-    /* 颜色变量 */
-    --color-primary: #4facfe;
-    --color-primary-dark: #3a8cce;
-    --color-primary-light: #42b983;
-    --color-secondary: #2193b0;
-    --color-accent: #1a7a99;
+    /* 高级简约配色 */
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-secondary: #0f172a;
+    --color-accent: #7c3aed;
     --color-background: #ffffff;
-    --color-text: #2c3e50;
-    --color-text-light: #666666;
-    --color-text-muted: #999999;
-    --color-border: #e4e7ed;
-    --color-shadow: rgba(0, 0, 0, 0.1);
-    --color-shadow-dark: rgba(0, 0, 0, 0.2);
-    --color-hover: rgba(33, 147, 176, 0.2);
-    --color-active: rgba(33, 147, 176, 0.3);
-    --color-gradient: linear-gradient(135deg, #ffffff 0%, #4facfe 100%); /* 添加渐变背景变量 */
+    --color-surface: #f8fafc;
+    --color-text: #0f172a;
+    --color-text-secondary: #64748b;
+    --color-text-muted: #94a3b8;
+    --color-border: #e2e8f0;
+    --color-shadow: rgba(15, 23, 42, 0.05);
+    --color-shadow-dark: rgba(15, 23, 42, 0.1);
 
-    /* 尺寸变量 */
-    --navbar-height: 60px;
-    --border-radius: 6px;
-    --border-radius-large: 50px;
+    /* 其他变量保持不变 */
+    --navbar-height: 64px;
+    --border-radius: 8px;
+    --border-radius-large: 12px;
     --border-radius-small: 4px;
-    --transition-base: all 0.3s ease;
-    --transition-fast: all 0.1s ease-out;
-    --shadow-base: 0 2px 4px var(--color-shadow);
-    --shadow-hover: 0 4px 15px var(--color-shadow-dark);
-    --shadow-large: 0 6px 20px rgba(0, 0, 0, 0.3);
+    --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-base: 0 1px 3px 0 var(--color-shadow), 0 1px 2px -1px var(--color-shadow);
+    --shadow-hover: 0 4px 6px -1px var(--color-shadow), 0 2px 4px -2px var(--color-shadow);
+    --shadow-large: 0 10px 15px -3px var(--color-shadow-dark), 0 4px 6px -4px var(--color-shadow-dark);
 
     /* 字体大小 */
     --font-size-xs: 12px;
@@ -35,7 +32,7 @@
     --font-size-lg: 18px;
     --font-size-xl: 20px;
     --font-size-xxl: 24px;
-    --font-size-xxxl: 32px;
+    --font-size-xxxl: 30px;
 
     /* 间距 */
     --spacing-xxs: 4px;
@@ -47,11 +44,4 @@
     --spacing-xl: 32px;
     --spacing-xxl: 40px;
     --spacing-xxxl: 48px;
-
-    /* 断点 */
-    --breakpoint-xs: 480px;
-    --breakpoint-sm: 768px;
-    --breakpoint-md: 992px;
-    --breakpoint-lg: 1200px;
-    --breakpoint-xl: 1920px;
 }

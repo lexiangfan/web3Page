@@ -32,17 +32,7 @@ const routes = [
 ]
 const router = createRouter({
   history: createWebHashHistory(),
-  routes:[]
+  routes
 })
 
-// 添加全局前置守卫来动态修改标题
-router.beforeEach((to, from, next) => {
-  // 设置页面标题
-  if (to.meta.title) {
-    document.title = to.meta.title;
-  } else {
-    document.title = 'Web3 学习平台'; // 默认标题
-  }
-  next();
-})
 export default router

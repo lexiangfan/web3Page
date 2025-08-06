@@ -3,7 +3,7 @@
   <div class="global-search" ref="searchContainerRef">
     <el-input
         v-model="searchText"
-        placeholder="全局搜索..."
+        placeholder="搜索文档..."
         clearable
         @input="performSearch"
         @clear="clearSearch"
@@ -72,7 +72,7 @@ export default {
       const rect = searchContainerRef.value.getBoundingClientRect()
       return {
         position: 'fixed',
-        top: rect.bottom + 'px',
+        top: rect.bottom + 8 + 'px',
         left: rect.left + 'px',
         width: rect.width + 'px',
         zIndex: '9999'
@@ -148,8 +148,8 @@ export default {
 <style scoped>
 .global-search {
   position: relative;
-  width: 300px;
-  margin: 0 20px;
+  width: 100%;
+  max-width: 300px;
 }
 
 .global-search-input {
@@ -157,39 +157,58 @@ export default {
 }
 
 :deep(.global-search-input .el-input__wrapper) {
-  border-radius: 20px !important;
-  background-color: rgba(255, 255, 255, 0.8) !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  border-radius: var(--border-radius-large) !important;
+  background-color: var(--color-surface) !important;
+  box-shadow: var(--shadow-base) !important;
+  border: 1px solid var(--color-border) !important;
+  transition: var(--transition-base);
+}
+
+:deep(.global-search-input .el-input__wrapper:hover) {
+  box-shadow: var(--shadow-hover) !important;
+  border-color: var(--color-primary) !important;
+}
+
+:deep(.global-search-input .el-input__wrapper.is-focus) {
+  box-shadow: var(--shadow-hover) !important;
+  border-color: var(--color-primary) !important;
 }
 
 :deep(.global-search-input .el-input__inner) {
   border: none !important;
-  padding-left: 30px !important;
-  background: transparent;
+  padding-left: 32px !important;
+  background: transparent !important;
+  color: var(--color-text) !important;
+}
+
+:deep(.global-search-input .el-input__inner::placeholder) {
+  color: var(--color-text-muted) !important;
 }
 
 :deep(.global-search-input .el-input__prefix) {
-  left: 10px !important;
+  left: 12px !important;
+  color: var(--color-text-muted) !important;
 }
 
 .global-search-results {
-  background: white;
-  border: 1px solid #e4e7ed;
-  border-radius: 4px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  max-height: 300px;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-large);
+  max-height: 320px;
   overflow-y: auto;
-  margin-top: 5px;
+  margin-top: 8px;
 }
 
 .global-search-result-item {
-  padding: 12px 15px;
+  padding: 16px 20px;
   cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--color-border);
+  transition: var(--transition-base);
 }
 
 .global-search-result-item:hover {
-  background-color: #f5f7fa;
+  background-color: var(--color-surface);
 }
 
 .global-search-result-item:last-child {
@@ -197,14 +216,16 @@ export default {
 }
 
 .result-title {
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
+  font-weight: 600;
+  color: var(--color-secondary);
+  margin-bottom: 6px;
+  font-size: var(--font-size-base);
 }
 
 .result-content {
-  font-size: 14px;
-  color: #666;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -212,33 +233,38 @@ export default {
 
 .result-content :deep(strong) {
   color: var(--color-primary);
-  font-weight: bold;
+  font-weight: 600;
+  background-color: rgba(37, 99, 235, 0.1);
+  padding: 0 2px;
 }
 
 .no-results {
-  background: white;
-  border: 1px solid #e4e7ed;
-  border-radius: 4px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  margin-top: 5px;
-  color: #999;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-large);
+  padding: 20px;
+  margin-top: 8px;
+  color: var(--color-text-muted);
   text-align: center;
+  font-size: var(--font-size-base);
 }
 
+/* 响应式设计 */
 @media (max-width: 768px) {
   .global-search {
-    width: 150px;
+    max-width: 200px;
   }
 
   :deep(.global-search-input .el-input__inner) {
     font-size: 14px;
+    padding: 8px 12px 8px 32px !important;
   }
 }
 
 @media (max-width: 576px) {
   .global-search {
-    width: 120px;
+    max-width: 150px;
   }
 }
 </style>
