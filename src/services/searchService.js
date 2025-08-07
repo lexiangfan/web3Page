@@ -7,26 +7,27 @@ class SearchService {
     }
 
     // 初始化内容索引
-    initializeIndex(contents) {
+    initializeIndex(contents, pagePath = '/Page') {
         this.contentIndex = []
 
         // 递归函数处理所有层级的内容
-        const processContent = (content) => {
+        const processContent = (content, pagePath) => {
             // 只有包含实际内容的条目才加入索引
             if (content.content && content.content.trim() !== '') {
                 this.contentIndex.push({
                     ...content,
+                    pagePath, // 添加页面路径信息
                     searchableText: `${content.title} ${this.stripHtml(content.content || '')}`.toLowerCase()
                 })
             }
 
             // 递归处理子内容
             if (content.children && Array.isArray(content.children)) {
-                content.children.forEach(child => processContent(child))
+                content.children.forEach(child => processContent(child, pagePath))
             }
         }
 
-        contents.forEach(content => processContent(content))
+        contents.forEach(content => processContent(content, pagePath))
 
         this.clearCache()
         this.notifySubscribers()
@@ -98,15 +99,16 @@ class SearchService {
     }
 
     // 添加内容到索引，避免重复
-    addContent(content) {
+    addContent(content, pagePath = '/Page') {
         // 如果是包含子内容的容器，递归处理
         if (content.children && Array.isArray(content.children)) {
-            content.children.forEach(child => this.addContent(child))
+            content.children.forEach(child => this.addContent(child, pagePath))
         } else {
             // 只有包含实际内容的条目才加入索引，并且避免重复添加
             if (content.content && content.content.trim() !== '' && !this.isContentExists(content.id)) {
                 this.contentIndex.push({
                     ...content,
+                    pagePath, // 添加页面路径信息
                     searchableText: `${content.title} ${this.stripHtml(content.content || '')}`.toLowerCase()
                 })
             }
@@ -116,9 +118,9 @@ class SearchService {
     }
 
     // 批量添加内容到索引
-    addContents(contents) {
+    addContents(contents, pagePath = '/Page') {
         contents.forEach(content => {
-            this.addContent(content)
+            this.addContent(content, pagePath)
         })
         this.clearCache()
         this.notifySubscribers()

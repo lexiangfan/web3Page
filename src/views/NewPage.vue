@@ -16,7 +16,7 @@ export default {
   },
   setup() {
     onMounted(() => {
-      searchService.addContents(newPageContents)
+      searchService.addContents(newPageContents,'/newPage')
     })
     return {
       newPageContents

@@ -20,7 +20,7 @@ export default {
 
     // 在组件挂载时将内容添加到搜索索引
     onMounted(() => {
-      searchService.addContents(pageContents)
+      searchService.addContents(pageContents,'/Page')
     })
 
     return {

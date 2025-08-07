@@ -54,7 +54,7 @@ router.afterEach(async (to) => {
     const contentModule = await import(`@/utils/${pageName}Content.js`);
     const content = contentModule.default || contentModule[`${pageName}Contents`];
     if (content) {
-      searchService.addContents(content);
+      searchService.addContents(content, to.path);
     }
   } catch (err) {
     console.log(`No content found for ${to.path}, skipping index`);

@@ -1,9 +1,9 @@
 <!-- src/components/PageNavigationDrawer.vue -->
 <template>
   <div class="page-navigation">
-    <!-- 页面导航按钮 (仅在桌面端显示) -->
+    <!-- 页面导航按钮 (仅在桌面端显示，且作为独立组件使用时) -->
     <el-button
-        v-if="!isMobileView"
+        v-if="!isMobileView && showToggleButton"
         class="nav-toggle-button"
         @click="openDrawer"
     >
@@ -11,9 +11,9 @@
       <span>页面导航</span>
     </el-button>
 
-    <!-- 桌面端页面导航抽屉 -->
+    <!-- 桌面端页面导航抽屉 (仅在作为独立组件使用时显示) -->
     <el-drawer
-        v-if="!isMobileView"
+        v-if="!isMobileView && showToggleButton"
         v-model="drawerVisible"
         title="页面导航"
         direction="ltr"
@@ -58,7 +58,7 @@
     </el-drawer>
 
     <!-- 移动端直接显示内容，不使用抽屉 -->
-    <div v-else class="mobile-page-navigation-content">
+    <div v-else-if="isMobileView" class="mobile-page-navigation-content">
       <!-- 页面列表 -->
       <div class="pages-section">
         <h3 class="section-title">页面列表</h3>
@@ -90,6 +90,42 @@
         />
       </div>
     </div>
+
+    <!-- 桌面端嵌入模式 (在ContentPageTemplate中使用时) -->
+    <div v-else class="desktop-embedded-content">
+      <!-- 页面列表 -->
+      <div class="pages-section">
+        <h3 class="section-title">页面列表</h3>
+        <el-menu
+            :default-active="activePage"
+            @select="handlePageSelect"
+            class="page-menu"
+        >
+          <el-menu-item
+              v-for="page in pages"
+              :key="page.path"
+              :index="page.path"
+          >
+            <el-icon><Document /></el-icon>
+            <span>{{ page.meta.title }}</span>
+          </el-menu-item>
+        </el-menu>
+      </div>
+
+      <!-- 当前页面锚点导航 -->
+      <div v-if="currentContent.length > 0" class="anchors-section">
+        <h3 class="section-title">页面内容</h3>
+        <el-scrollbar class="anchor-scrollbar">
+          <el-tree
+              :data="anchorTreeData"
+              :props="treeProps"
+              node-key="id"
+              @node-click="handleAnchorClick"
+              class="anchor-tree"
+          />
+        </el-scrollbar>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -99,6 +135,15 @@ import { useRouter, useRoute } from 'vue-router'
 import { Menu, Document } from '@element-plus/icons-vue'
 import pageService from '@/services/pageService.js'
 import searchService from "@/services/searchService.js";
+
+// 定义组件属性
+const props = defineProps({
+  // 控制是否显示切换按钮 (用于独立使用组件时)
+  showToggleButton: {
+    type: Boolean,
+    default: true
+  }
+});
 
 const router = useRouter()
 const route = useRoute()
@@ -242,6 +287,12 @@ defineExpose({
 }
 
 .page-nav-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.desktop-embedded-content {
   height: 100%;
   display: flex;
   flex-direction: column;

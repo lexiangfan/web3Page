@@ -1,5 +1,4 @@
 <!-- src/components/ContentPageTemplate.vue -->
-<!-- src/components/ContentPageTemplate.vue -->
 <template>
   <div class="common-layout">
     <el-container class="page-container">
@@ -15,6 +14,16 @@
               :class="{ 'fixed-anchor': isAnchorFixed }"
               :style="fixedAnchorStyle"
           >
+            <div class="page-nav-button-container">
+              <el-button
+                  class="page-nav-button"
+                  @click="openDesktopPageNavigation"
+              >
+                <el-icon><Menu /></el-icon>
+                <span>页面导航</span>
+              </el-button>
+            </div>
+
             <div class="anchor-header">
               <h2>目录</h2>
             </div>
@@ -40,7 +49,7 @@
               v-if="isMobile"
               class="mobile-buttons"
           >
-            <div class="mobile-nav-button" @click="openPageNavigation">
+            <div class="mobile-nav-button" @click="openMobilePageNavigation">
               页面导航
             </div>
             <div class="mobile-toc-button" @click="showMobileToc = true">
@@ -81,7 +90,7 @@
                     <span class="button-text">{{ prevPage.title }}</span>
                   </el-button>
                 </el-col>
-                <el-col :span="2"></el-col> <!-- 间隔 -->
+                <el-col :span="2"></el-col>
                 <el-col :span="11">
                   <el-button
                       v-if="nextPage"
@@ -103,6 +112,18 @@
           </div>
         </el-main>
       </el-container>
+
+      <!-- 桌面端页面导航抽屉 -->
+      <el-drawer
+          v-model="showDesktopPageNav"
+          title="页面导航"
+          direction="ltr"
+          size="300px"
+          class="desktop-page-nav-drawer"
+      >
+        <!-- 在桌面端使用PageNavigationDrawer时，关闭内部的抽屉功能 -->
+        <PageNavigationDrawer :show-toggle-button="false" ref="desktopPageNavDrawer" />
+      </el-drawer>
 
       <!-- 移动端目录抽屉 -->
       <el-drawer
@@ -137,11 +158,11 @@
   </div>
 </template>
 
-<script>
-import { ref, computed, nextTick, onBeforeUnmount, onMounted } from 'vue'
+
+<script>import { ref, computed, nextTick, onBeforeUnmount, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
-import {Collection, Menu} from '@element-plus/icons-vue'
+import { Collection, Menu } from '@element-plus/icons-vue'
 import PageNavigationDrawer from "@/components/PageNavigationDrawer.vue"
 import pageService from '@/services/pageService.js'
 
@@ -165,12 +186,13 @@ export default {
     const containerRef = ref(null)
     const treeRef = ref(null)
     const mobileTreeRef = ref(null)
-    const pageNavDrawer = ref(null) // 引用PageNavigationDrawer组件
+    const desktopPageNavDrawer = ref(null) // 桌面端页面导航抽屉引用
     const mobilePageNavDrawer = ref(null) // 移动端页面导航抽屉引用
     const pageContent = ref(props.contentData)
     const isMobile = ref(false)
     const showMobileToc = ref(false)
     const showMobilePageNav = ref(false) // 控制移动端页面导航抽屉显示
+    const showDesktopPageNav = ref(false) // 控制桌面端页面导航抽屉显示
     const isAnchorFixed = ref(false)
     const isHeaderFixed = ref(false)
     const anchorTop = ref(0)
@@ -279,23 +301,26 @@ export default {
       }, 300)
     }
 
-    // 打开页面导航抽屉
-    const openPageNavigation = () => {
-      if (isMobile.value) {
-        // 在移动端，打开底部抽屉
-        showMobilePageNav.value = true
-        // 确保抽屉内的组件也打开
-        setTimeout(() => {
-          if (mobilePageNavDrawer.value) {
-            mobilePageNavDrawer.value.openDrawer()
-          }
-        }, 100)
-      } else {
-        // 在桌面端，直接调用PageNavigationDrawer组件的openDrawer方法
-        if (pageNavDrawer.value) {
-          pageNavDrawer.value.openDrawer()
+    // 打开桌面端页面导航抽屉
+    const openDesktopPageNavigation = () => {
+      showDesktopPageNav.value = true
+      // 确保抽屉内的组件也打开
+      setTimeout(() => {
+        if (desktopPageNavDrawer.value) {
+          desktopPageNavDrawer.value.openDrawer()
         }
-      }
+      }, 100)
+    }
+
+    // 打开移动端页面导航抽屉
+    const openMobilePageNavigation = () => {
+      showMobilePageNav.value = true
+      // 确保抽屉内的组件也打开
+      setTimeout(() => {
+        if (mobilePageNavDrawer.value) {
+          mobilePageNavDrawer.value.openDrawer()
+        }
+      }, 100)
     }
 
     // 监听窗口大小变化
@@ -434,7 +459,7 @@ export default {
       containerRef,
       treeRef,
       mobileTreeRef,
-      pageNavDrawer,
+      desktopPageNavDrawer,
       mobilePageNavDrawer,
       pageContent,
       treeData,
@@ -442,13 +467,15 @@ export default {
       isMobile,
       showMobileToc,
       showMobilePageNav,
+      showDesktopPageNav, // 添加这个返回值
       isAnchorFixed,
       isHeaderFixed,
       fixedAnchorStyle,
       fixedHeaderStyle,
       handleNodeClick,
       handleMobileNodeClick,
-      openPageNavigation,
+      openDesktopPageNavigation,
+      openMobilePageNavigation,
       currentNodeKey,
       handleContentScroll,
       handleResize,
@@ -469,6 +496,17 @@ export default {
 
 .page-container {
   height: 100%;
+}
+
+.page-nav-button-container {
+  padding: 0 24px 16px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 16px;
+}
+
+.page-nav-button {
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .anchor-aside {
@@ -757,6 +795,17 @@ export default {
 .page-footer p {
   margin: 0;
   font-size: var(--font-size-sm);
+}
+
+/* 桌面端页面导航抽屉样式 */
+:deep(.desktop-page-nav-drawer .el-drawer__header) {
+  margin-bottom: 0;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+:deep(.desktop-page-nav-drawer .el-drawer__body) {
+  padding: 16px 24px;
 }
 
 

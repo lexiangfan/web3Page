@@ -132,8 +132,11 @@ export default {
       showSearchResults.value = false
       searchText.value = ''
 
-      // 跳转到Page页面并滚动到对应元素
-      router.push('/Page').then(() => {
+      // 获取目标页面路径，如果没有则默认为/Page
+      const targetPage = result.pagePath || '/Page'
+
+      // 跳转到对应页面并滚动到对应元素
+      router.push(targetPage).then(() => {
         // 等待页面加载完成后滚动到目标元素
         setTimeout(() => {
           const targetElement = document.getElementById(result.id)
@@ -143,7 +146,7 @@ export default {
           }
         }, 300)
       }).catch(err => {
-        // 如果已经在Page页面，则直接滚动
+        // 如果已经在目标页面，则直接滚动
         if (err.name === 'NavigationDuplicated') {
           const targetElement = document.getElementById(result.id)
           if (targetElement) {
