@@ -25,17 +25,11 @@ html, body {
 /* 移动端视口设置 */
 @media (max-width: 768px) {
     html, body {
-        /* 使用更兼容的写法 */
-        height: 100vh;
-        height: -webkit-fill-available;
-        height: fill-available;
+        height: 100vh; /* 标准写法 */
     }
 
     #app {
-        min-height: 100vh;
-        /* 更安全的兼容写法 */
-        min-height: -webkit-fill-available;
-        min-height: fill-available;
+        min-height: 100vh; /* 标准写法 */
         height: auto;
     }
 }

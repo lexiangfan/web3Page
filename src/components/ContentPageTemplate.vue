@@ -1,4 +1,5 @@
 <!-- src/components/ContentPageTemplate.vue -->
+<!-- src/components/ContentPageTemplate.vue -->
 <template>
   <div class="common-layout">
     <el-container class="page-container">
@@ -14,14 +15,7 @@
               :class="{ 'fixed-anchor': isAnchorFixed }"
               :style="fixedAnchorStyle"
           >
-            <!-- 页面导航抽屉组件 -->
-            <PageNavigationDrawer ref="pageNavDrawer" />
-
-            <div
-                class="anchor-header"
-                :class="{ 'fixed-header': isHeaderFixed }"
-                :style="fixedHeaderStyle"
-            >
+            <div class="anchor-header">
               <h2>目录</h2>
             </div>
             <el-scrollbar class="anchor-scrollbar">
@@ -42,14 +36,15 @@
         <!-- 主内容区域 -->
         <el-main class="content-main">
           <!-- 移动端页面导航和目录按钮 -->
-          <div v-if="isMobile" class="mobile-buttons">
+          <div
+              v-if="isMobile"
+              class="mobile-buttons"
+          >
             <div class="mobile-nav-button" @click="openPageNavigation">
-              <el-icon><Menu /></el-icon>
-              <span>页面导航</span>
+              页面导航
             </div>
             <div class="mobile-toc-button" @click="showMobileToc = true">
-              <el-icon><Collection /></el-icon>
-              <span>目录</span>
+              目录
             </div>
           </div>
 
@@ -61,7 +56,6 @@
                 class="content-part"
             >
               <h2>{{ chapter.title }}</h2>
-
               <div
                   v-for="section in chapter.children"
                   :key="section.id"
@@ -72,59 +66,93 @@
                 <div v-html="section.content"></div>
               </div>
             </div>
+
+            <!-- 页面导航组件 -->
+            <div class="page-navigation">
+              <el-row justify="space-between" align="middle">
+                <el-col :span="11">
+                  <el-button
+                      v-if="prevPage"
+                      class="nav-button prev-button"
+                      @click="goToPage(prevPage.path)"
+                      round
+                  >
+                    <el-icon><ArrowLeft /></el-icon>
+                    <span class="button-text">{{ prevPage.title }}</span>
+                  </el-button>
+                </el-col>
+                <el-col :span="2"></el-col> <!-- 间隔 -->
+                <el-col :span="11">
+                  <el-button
+                      v-if="nextPage"
+                      class="nav-button next-button"
+                      @click="goToPage(nextPage.path)"
+                      round
+                  >
+                    <span class="button-text">{{ nextPage.title }}</span>
+                    <el-icon><ArrowRight /></el-icon>
+                  </el-button>
+                </el-col>
+              </el-row>
+            </div>
+
+            <!-- 页脚 -->
+            <div class="page-footer">
+              <p>© 2025 Web3 入门指南. All rights reserved.</p>
+            </div>
           </div>
         </el-main>
       </el-container>
 
-      <!-- 底部信息 -->
-      <el-footer class="page-footer">
-        <p>© 2025 Web3 入门指南. All rights reserved.</p>
-      </el-footer>
+      <!-- 移动端目录抽屉 -->
+      <el-drawer
+          v-model="showMobileToc"
+          title="目录"
+          direction="btt"
+          size="70%"
+          class="mobile-toc-drawer"
+      >
+        <el-tree
+            :data="treeData"
+            :props="treeProps"
+            node-key="id"
+            ref="mobileTreeRef"
+            @node-click="handleMobileNodeClick"
+            class="mobile-anchor-tree"
+            :current-node-key="currentNodeKey"
+        />
+      </el-drawer>
+
+      <!-- 移动端页面导航抽屉 -->
+      <el-drawer
+          v-model="showMobilePageNav"
+          title="页面导航"
+          direction="btt"
+          size="70%"
+          class="mobile-page-nav-drawer"
+      >
+        <PageNavigationDrawer ref="mobilePageNavDrawer" />
+      </el-drawer>
     </el-container>
-
-    <!-- 移动端目录抽屉 -->
-    <el-drawer
-        v-model="showMobileToc"
-        title="目录"
-        direction="btt"
-        size="70%"
-        class="mobile-toc-drawer"
-    >
-      <el-tree
-          :data="treeData"
-          :props="treeProps"
-          node-key="id"
-          ref="mobileTreeRef"
-          @node-click="handleMobileNodeClick"
-          class="mobile-anchor-tree"
-          :current-node-key="currentNodeKey"
-      />
-    </el-drawer>
-
-    <!-- 移动端页面导航抽屉 -->
-    <el-drawer
-        v-model="showMobilePageNav"
-        title="页面导航"
-        direction="btt"
-        size="70%"
-        class="mobile-page-nav-drawer"
-    >
-      <PageNavigationDrawer ref="mobilePageNavDrawer" />
-    </el-drawer>
   </div>
 </template>
 
 <script>
 import { ref, computed, nextTick, onBeforeUnmount, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import {Collection, Menu} from '@element-plus/icons-vue'
-import PageNavigationDrawer from "@/components/PageNavigationDrawer.vue";
+import PageNavigationDrawer from "@/components/PageNavigationDrawer.vue"
+import pageService from '@/services/pageService.js'
 
 export default {
   name: 'ContentPageTemplate',
   components: {
     PageNavigationDrawer,
     Menu,
-    Collection
+    Collection,
+    ArrowLeft,
+    ArrowRight
   },
   props: {
     // 页面内容数据
@@ -151,6 +179,40 @@ export default {
     const headerHeight = ref(0)
     const currentNodeKey = ref('')
     const scrollTimeout = ref(null)
+    const router = useRouter()
+    const route = useRoute()
+
+    // 添加响应式数据
+    const isMobileButtonsFixed = ref(false)
+
+    // 获取页面列表
+    const pages = computed(() => pageService.getPages())
+
+    // 计算当前页面索引
+    const currentPageIndex = computed(() => {
+      return pages.value.findIndex(page => page.path === route.path)
+    })
+
+    // 上一页
+    const prevPage = computed(() => {
+      if (currentPageIndex.value > 0) {
+        return pages.value[currentPageIndex.value - 1]
+      }
+      return null
+    })
+
+    // 下一页
+    const nextPage = computed(() => {
+      if (currentPageIndex.value < pages.value.length - 1) {
+        return pages.value[currentPageIndex.value + 1]
+      }
+      return null
+    })
+
+    // 跳转到指定页面
+    const goToPage = (path) => {
+      router.push(path)
+    }
 
     // 构建树形数据结构
     const treeData = ref(props.contentData.map(chapter => ({
@@ -286,6 +348,13 @@ export default {
 
     // 处理内容区域滚动事件
     const handleContentScroll = () => {
+      // 检查是否需要固定移动端按钮
+      if (isMobile.value && containerRef.value) {
+        const scrollTop = containerRef.value.scrollTop
+        // 当滚动超过一定距离时固定按钮
+        isMobileButtonsFixed.value = scrollTop > 10
+      }
+
       // 防抖处理，避免频繁计算
       if (scrollTimeout.value) {
         clearTimeout(scrollTimeout.value)
@@ -383,7 +452,11 @@ export default {
       currentNodeKey,
       handleContentScroll,
       handleResize,
-      handleScroll
+      handleScroll,
+      prevPage,
+      nextPage,
+      goToPage,
+      isMobileButtonsFixed
     }
   }
 }
@@ -495,29 +568,16 @@ export default {
 
 .mobile-buttons {
   display: flex;
-  gap: 15px;
-  padding: 12px 20px;
-  justify-content: center; /* 居中对齐 */
+  justify-content: space-between;
+  padding: 10px 15px;
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .mobile-nav-button,
 .mobile-toc-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: var(--color-primary);
-  border-radius: var(--border-radius-large);
-  padding: 10px 20px;
   cursor: pointer;
-  font-size: var(--font-size-base);
-  color: white;
-  transition: var(--transition-base);
-  width: auto; /* 不固定宽度 */
-  min-width: 120px; /* 设置最小宽度 */
-  text-align: center;
-  box-shadow: var(--shadow-base);
-  border: none;
+  padding: 8px 16px;
 }
 
 .mobile-nav-button:hover,
@@ -562,8 +622,10 @@ export default {
   font-size: var(--font-size-xxl);
   font-weight: 700;
   line-height: 1.3;
+  letter-spacing: -0.02em;
 }
 
+/* 章节标题样式 */
 .section {
   padding: 20px 0;
 }
@@ -574,6 +636,8 @@ export default {
   margin-bottom: 16px;
   font-size: var(--font-size-xl);
   font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
 }
 
 .section h4 {
@@ -581,26 +645,95 @@ export default {
   margin-top: 24px;
   margin-bottom: 12px;
   font-size: var(--font-size-lg);
-  font-weight: 500;
+  font-weight: 600;
+  line-height: 1.5;
 }
 
+/* 段落样式 */
 .section p {
   font-size: var(--font-size-base);
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--color-text);
   margin-bottom: 16px;
+  letter-spacing: 0.01em;
 }
 
+/* 列表样式 */
 .section ul,
 .section ol {
   margin-bottom: 24px;
   padding-left: 24px;
 }
 
-.section li {
+.section ul li,
+.section ol li {
   margin-bottom: 8px;
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--color-text);
+  letter-spacing: 0.01em;
+}
+
+/* 代码块样式 */
+.section code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  background-color: var(--color-surface);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: var(--font-size-sm);
+  color: var(--color-accent);
+}
+
+/* 引用块样式 */
+.section blockquote {
+  border-left: 4px solid var(--color-primary);
+  padding: 8px 20px;
+  margin: 20px 0;
+  background-color: var(--color-surface);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.section blockquote p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* 链接样式 */
+.section a {
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--color-primary);
+  transition: var(--transition-base);
+}
+
+.section a:hover {
+  color: var(--color-accent);
+  border-bottom-style: solid;
+}
+
+/* 表格样式 */
+.section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: var(--font-size-base);
+}
+
+.section table th,
+.section table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.section table th {
+  background-color: var(--color-surface);
+  font-weight: 600;
+  color: var(--color-secondary);
+}
+
+.section table tr:hover {
+  background-color: var(--color-surface);
 }
 
 .page-footer {
@@ -609,13 +742,23 @@ export default {
   text-align: center;
   padding: 20px;
   border-top: 1px solid var(--color-border);
-  height: 70px;
+  /* 移除固定定位相关样式 */
+  position: relative;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  width: auto;
+  height: auto; /* 改为 auto，让高度根据内容自适应 */
+  box-shadow: none;
+  z-index: auto;
+  margin-top: 20px;
 }
 
 .page-footer p {
   margin: 0;
   font-size: var(--font-size-sm);
 }
+
 
 /* 移动端目录抽屉 */
 :deep(.mobile-toc-drawer .el-drawer__header) {
@@ -673,6 +816,56 @@ export default {
   background-color: rgba(37, 99, 235, 0.15);
 }
 
+.page-navigation {
+  padding: 40px 20px 20px;
+  border-top: 1px solid var(--color-border);
+  margin-top: 20px;
+  position: relative; /* 移除 fixed 定位 */
+  bottom: auto; /* 重置底部定位 */
+  left: auto;
+  right: auto;
+  background-color: transparent; /* 移除背景色 */
+  box-shadow: none; /* 移除阴影 */
+  z-index: auto; /* 重置层级 */
+}
+
+.nav-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-weight: 500;
+  transition: var(--transition-base);
+}
+
+.nav-button:hover {
+  background-color: var(--color-background);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.nav-button:active {
+  transform: translateY(0);
+}
+
+.prev-button {
+  justify-content: flex-start;
+}
+
+.next-button {
+  justify-content: flex-end;
+}
+
+.button-text {
+  flex: 1;
+  text-align: center;
+}
+
 /* 移动端适配 */
 @media (max-width: 768px) {
   .anchor-aside {
@@ -681,19 +874,16 @@ export default {
 
   .mobile-buttons {
     padding: 10px 15px;
-    gap: 12px;
   }
 
   .mobile-nav-button,
   .mobile-toc-button {
     padding: 8px 16px;
     font-size: var(--font-size-sm);
-    gap: 6px;
-    min-width: 100px;
   }
 
   .scroll-container {
-    height: calc(100vh - 120px); /* 增加按钮区域高度 */
+    height: calc(100vh - 70px);
     padding: 20px 15px;
   }
 
@@ -722,7 +912,7 @@ export default {
   .section p {
     font-size: var(--font-size-base);
     margin-bottom: 14px;
-    line-height: 1.6;
+    line-height: 1.7;
   }
 
   .section ul,
@@ -733,6 +923,19 @@ export default {
 
   .section li {
     margin-bottom: 6px;
+  }
+
+  .page-navigation {
+    padding: 20px 10px;
+  }
+
+  .nav-button {
+    padding: 12px 16px;
+    font-size: var(--font-size-sm);
+  }
+
+  .button-text {
+    font-size: var(--font-size-sm);
   }
 }
 
@@ -781,15 +984,16 @@ export default {
 
   .mobile-buttons {
     padding: 8px 10px;
-    gap: 10px;
   }
 
   .mobile-nav-button,
   .mobile-toc-button {
     padding: 6px 12px;
     font-size: var(--font-size-sm);
-    gap: 5px;
-    min-width: 90px;
+  }
+
+  .page-navigation {
+    padding: 15px 5px;
   }
 }
 </style>

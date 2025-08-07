@@ -23,8 +23,7 @@
     }
 
     .content-area {
-        padding: 0;
-        padding-top: var(--navbar-height);
+        padding: var(--navbar-height) 0 0;
         /* 修复高度设置 */
         min-height: calc(100vh - var(--navbar-height));
         height: auto;

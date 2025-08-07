@@ -49,7 +49,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { Expand, Fold, ArrowDown } from '@element-plus/icons-vue'
+import { Expand, Fold } from '@element-plus/icons-vue'
 import router from '@/router/router'
 import '@/assets/styles/global.css'
 import GlobalSearch from '@/components/GlobalSearch.vue'
