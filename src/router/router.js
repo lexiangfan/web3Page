@@ -4,7 +4,7 @@ import Home from '@/views/Home.vue'
 import Page from "@/views/page.vue";
 import NewPage from "@/views/NewPage.vue";
 import About from "@/views/About.vue";
-import pageService from '@/services/pageService.js'
+import searchService from "@/services/searchService.js";
 
 const routes = [
   {
@@ -24,19 +24,19 @@ const routes = [
     }
   },
   {
-    path:'/about',
-    name:'About',
-    component: About,
-    meta: {
-      title: '关于我们'
-    }
-  },
-  {
     path:'/newPage',
     name:'NewPage',
     component: NewPage,
     meta: {
       title: '添加新页面'
+    }
+  },
+  {
+    path:'/about',
+    name:'About',
+    component: About,
+    meta: {
+      title: '关于我们'
     }
   },
 ]
@@ -46,21 +46,18 @@ const router = createRouter({
   routes
 })
 
-// 当路由发生变化时，同步到页面服务
-router.beforeEach((to, from, next) => {
-  // 检查页面是否已存在
-  const existingPage = pageService.findPageByPath(to.path);
-
-  // 如果页面不存在，则添加到页面服务中
-  if (!existingPage && to.meta && to.meta.title) {
-    pageService.addPage({
-      title: to.name || to.path,
-      path: to.path,
-      meta: to.meta
-    });
+// 路由切换后，索引当前页面内容
+router.afterEach(async (to) => {
+  try {
+    // 根据当前路径获取内容
+    const pageName = to.path.substring(1); // 移除 '/'
+    const contentModule = await import(`@/utils/${pageName}Content.js`);
+    const content = contentModule.default || contentModule[`${pageName}Contents`];
+    if (content) {
+      searchService.addContents(content);
+    }
+  } catch (err) {
+    console.log(`No content found for ${to.path}, skipping index`);
   }
-
-  next();
 });
-
 export default router

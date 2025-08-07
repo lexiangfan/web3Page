@@ -55,6 +55,7 @@
 <script>
 import { ref, onMounted} from 'vue'
 import contentManager from '@/services/contentManager.js'
+import searchService from "@/services/searchService.js";
 
 export default {
   name: 'ContentManager',
@@ -72,10 +73,17 @@ export default {
 
     const addContent = () => {
       if (newContent.value.title.trim() && newContent.value.content.trim()) {
-        contentManager.addContent({
+        // 生成唯一ID（确保与现有内容不重复）
+        const newItem = {
+          id: 'custom-' + Date.now(), // 示例ID生成方式
           title: newContent.value.title,
           content: newContent.value.content
-        })
+        }
+
+        // 添加到内容管理
+        contentManager.addContent(newItem);
+        // 同时添加到搜索索引
+        searchService.addContent(newItem);
 
         // 清空表单
         newContent.value = {

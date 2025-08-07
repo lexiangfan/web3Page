@@ -30,9 +30,9 @@
                 type="primary"
                 link
                 class="github-button"
-                @click="goToGithub"
+                @click="goToImKey"
             >
-              GitHub
+              imKey
             </el-button>
           </el-menu-item>
           <!-- 移动端菜单按钮 -->
@@ -55,6 +55,7 @@ import '@/assets/styles/global.css'
 import GlobalSearch from '@/components/GlobalSearch.vue'
 import contentManager from '@/services/contentManager.js'
 import pageContents from '@/utils/page.js'
+import searchService from "@/services/searchService.js";
 
 const activeIndex = ref('1')
 const isMobileMenuCollapsed = ref(true)
@@ -78,11 +79,10 @@ const handleSelect = (key) => {
   }
 }
 
-const goToGithub = () => {
-  window.open('https://github.com', '_blank')
+const goToImKey = () => {
+  window.open('https://imkey.im', '_blank')
 }
 
-// 初始化内容 - 修复版本
 const initializeContent = () => {
   // 递归展平所有内容以便搜索
   const flattenContents = (contents) => {
@@ -96,8 +96,17 @@ const initializeContent = () => {
     return result
   }
 
-  const allContents = flattenContents(pageContents)
-  contentManager.initializeContents(allContents)
+  // 1. 索引默认页面内容
+  const allContents = flattenContents(pageContents);
+  contentManager.initializeContents(allContents);
+
+  // 2. 额外索引其他已知页面（如newPage）
+  import('@/utils/newPageContent.js').then(module => {
+    const newPageContents = module.default || module.newPageContents;
+    searchService.addContents(flattenContents(newPageContents));
+  }).catch(err => {
+    console.log('No newPage content found, skipping');
+  });
 }
 
 // 切换移动端菜单

@@ -5,18 +5,18 @@
     <section class="hero-section">
       <div class="hero-content">
         <div class="hero-badge animate__animated animate__fadeInUp">
-          <span class="badge-text">Web3 革命</span>
+          <span class="badge-text">Web3新手小白手册</span>
         </div>
         <h1 class="hero-title">
           <span class="title-line animate__animated animate__fadeInUp" data-animate-delay="200">
-            探索下一代
+            新手入门必备
           </span>
           <span class="title-line gradient-text animate__animated animate__fadeInUp" data-animate-delay="400">
-            互联网世界
+            web3世界手册
           </span>
         </h1>
         <p class="hero-description animate__animated animate__fadeInUp" data-animate-delay="600">
-          从区块链基础到去中心化应用开发，一站式 Web3 学习平台。
+          区块链基础，新手学习平台。
           掌握未来科技，开启数字新纪元。
         </p>
         <div class="hero-actions animate__animated animate__fadeInUp" data-animate-delay="800">
@@ -31,10 +31,10 @@
           </el-button>
           <el-button
               size="large"
-              @click="viewDocumentation"
               class="secondary-button"
+              @click="goToImKey"
           >
-            查看文档
+            查看官网
           </el-button>
         </div>
       </div>
@@ -114,12 +114,12 @@ const features = ref([
   {
     icon: 'el-icon-lock',
     title: '去中心化',
-    description: '深入理解区块链去中心化原理和应用场景'
+    description: '理解区块链去中心化原理和应用场景'
   },
   {
     icon: 'el-icon-document',
     title: '智能合约',
-    description: '从基础到高级的智能合约开发教程'
+    description: '基础的智能合约开发教程'
   },
   {
     icon: 'el-icon-wallet',
@@ -129,7 +129,7 @@ const features = ref([
   {
     icon: 'el-icon-network',
     title: '网络协议',
-    description: '掌握各种区块链网络协议和标准'
+    description: '学习各种区块链网络协议和标准'
   }
 ])
 
@@ -137,9 +137,8 @@ const startLearning = () => {
   router.push('/Page')
 }
 
-const viewDocumentation = () => {
-  // 可以跳转到文档页面
-  console.log('查看文档')
+const goToImKey = () => {
+  window.open('https://imkey.im', '_blank')
 }
 </script>
 
@@ -220,6 +219,7 @@ const viewDocumentation = () => {
 .hero-actions {
   display: flex;
   gap: 16px;
+  margin-top: 40px;
 }
 
 .primary-button {
@@ -512,6 +512,11 @@ const viewDocumentation = () => {
 
 /* 响应式设计 */
 @media (max-width: 992px) {
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .hero-section {
     flex-direction: column;
     text-align: center;
@@ -520,6 +525,7 @@ const viewDocumentation = () => {
 
   .hero-content {
     max-width: 100%;
+    width: 100%;
   }
 
   .hero-actions {
@@ -537,24 +543,41 @@ const viewDocumentation = () => {
 }
 
 @media (max-width: 768px) {
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .hero-section {
     padding: 60px 20px 40px;
     gap: 50px;
   }
 
+  .hero-actions {
+    justify-content: center;
+    width: 100%;
+    display: flex;
+  }
+
+  .hero-content {
+    text-align: center;
+    max-width: 100%;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  .hero-badge {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .hero-title {
     font-size: 40px;
-    margin-bottom: 20px;
   }
 
   .hero-description {
     font-size: 16px;
-    margin-bottom: 30px;
-  }
-
-  .hero-actions {
-    flex-direction: column;
-    gap: 12px;
+    padding: 0 10px;
   }
 
   .primary-button,
@@ -607,26 +630,6 @@ const viewDocumentation = () => {
     transform: rotateX(-90deg) translateZ(60px);
   }
 
-  .stats-section {
-    padding: 60px 20px;
-  }
-
-  .stats-container {
-    gap: 20px;
-  }
-
-  .stat-item {
-    min-width: 150px;
-  }
-
-  .stat-number {
-    font-size: 36px;
-  }
-
-  .stat-label {
-    font-size: 16px;
-  }
-
   .features-section {
     padding: 40px 20px;
   }
@@ -676,6 +679,24 @@ const viewDocumentation = () => {
     gap: 30px;
   }
 
+  .hero-actions {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+  }
+
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .hero-description {
+    font-size: 14px;
+  }
+
   .hero-badge {
     padding: 4px 12px;
     font-size: 12px;
@@ -692,14 +713,12 @@ const viewDocumentation = () => {
     margin-bottom: 24px;
   }
 
-  .hero-actions {
-    gap: 10px;
-  }
-
   .primary-button,
   .secondary-button {
     padding: 14px 20px !important;
     font-size: 14px !important;
+    width: 100%;
+    margin-left: auto !important;
   }
 
   .hero-visual {
@@ -758,27 +777,6 @@ const viewDocumentation = () => {
   .element-3 {
     width: 60px;
     height: 60px;
-  }
-
-  .stats-section {
-    padding: 40px 16px;
-  }
-
-  .stats-container {
-    gap: 15px;
-  }
-
-  .stat-item {
-    min-width: 120px;
-  }
-
-  .stat-number {
-    font-size: 28px;
-    margin-bottom: 4px;
-  }
-
-  .stat-label {
-    font-size: 14px;
   }
 
   .features-section {

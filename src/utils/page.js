@@ -192,16 +192,4 @@ export const pageContents = [
     }
 ];
 
-// 生成树形结构数据
-export const generateTreeData = () => {
-    return pageContents.map(chapter => ({
-        id: chapter.id,
-        label: chapter.title,
-        children: chapter.children ? chapter.children.map(section => ({
-            id: section.id,
-            label: section.title
-        })) : []
-    }));
-};
-
 export default pageContents;

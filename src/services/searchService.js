@@ -6,7 +6,7 @@ class SearchService {
         this.searchCache = new Map()
     }
 
-    // 初始化内容索引 - 修复版本
+    // 初始化内容索引
     initializeIndex(contents) {
         this.contentIndex = []
 
@@ -92,14 +92,19 @@ class SearchService {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     }
 
-    // 添加内容到索引 - 修复版本
+    // 检查内容是否已存在
+    isContentExists(contentId) {
+        return this.contentIndex.some(item => item.id === contentId);
+    }
+
+    // 添加内容到索引，避免重复
     addContent(content) {
         // 如果是包含子内容的容器，递归处理
         if (content.children && Array.isArray(content.children)) {
             content.children.forEach(child => this.addContent(child))
         } else {
-            // 只有包含实际内容的条目才加入索引
-            if (content.content && content.content.trim() !== '') {
+            // 只有包含实际内容的条目才加入索引，并且避免重复添加
+            if (content.content && content.content.trim() !== '' && !this.isContentExists(content.id)) {
                 this.contentIndex.push({
                     ...content,
                     searchableText: `${content.title} ${this.stripHtml(content.content || '')}`.toLowerCase()
@@ -136,9 +141,14 @@ class SearchService {
 
     // 删除内容索引
     removeContent(id) {
+        const initialLength = this.contentIndex.length;
         this.contentIndex = this.contentIndex.filter(item => item.id !== id)
-        this.clearCache()
-        this.notifySubscribers()
+        if (this.contentIndex.length !== initialLength) {
+            this.clearCache()
+            this.notifySubscribers()
+            return true;
+        }
+        return false;
     }
 
     // 清空缓存
@@ -159,6 +169,11 @@ class SearchService {
     // 通知所有订阅者
     notifySubscribers() {
         this.callbacks.forEach(callback => callback(this.contentIndex))
+    }
+
+    // 获取当前索引内容（用于调试）
+    getContentIndex() {
+        return this.contentIndex;
     }
 }
 

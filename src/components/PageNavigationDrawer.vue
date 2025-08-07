@@ -98,6 +98,7 @@ import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Menu, Document } from '@element-plus/icons-vue'
 import pageService from '@/services/pageService.js'
+import searchService from "@/services/searchService.js";
 
 const router = useRouter()
 const route = useRoute()
@@ -179,32 +180,27 @@ const updateCurrentContent = async (path) => {
   try {
     // 根据路径动态导入对应的内容文件
     let contentModule;
+    contentModule = await import('@/utils/page.js')
+    currentContent.value = contentModule.default || contentModule.pageContents
 
-    switch(path) {
-      case '/Page':
-        contentModule = await import('@/utils/page.js')
-        currentContent.value = contentModule.default || contentModule.pageContents
-        break
-      case '/newPage':
-        contentModule = await import('@/utils/newPageContent.js')
-        currentContent.value = contentModule.default || contentModule.newPageContents
-        break
-      default:
-        // 尝试通用模式导入
-        const pageName = path.substring(1) // 移除开头的 '/'
-        try {
-          contentModule = await import(`@/utils/${pageName}Content.js`)
-          currentContent.value = contentModule.default
-        } catch (e) {
-          // 如果特定内容文件不存在，尝试默认命名
-          try {
-            contentModule = await import(`@/utils/${pageName}.js`)
-            currentContent.value = contentModule.default
-          } catch (e2) {
-            currentContent.value = []
-          }
-        }
+    const pageName = path.substring(1) // 移除开头的 '/'
+    try {
+      contentModule = await import(`@/utils/${pageName}Content.js`)
+      currentContent.value = contentModule.default
+    } catch (e) {
+      // 如果特定内容文件不存在，尝试默认命名
+      try {
+        contentModule = await import(`@/utils/${pageName}.js`)
+        currentContent.value = contentModule.default
+      } catch (e2) {
+        currentContent.value = []
+      }
     }
+    // 动态导入内容后，自动添加到搜索索引
+    currentContent.value = contentModule.default || contentModule.newPageContents;
+    // 关键：调用批量添加方法，自动处理子内容
+    searchService.addContents(currentContent.value);
+
   } catch (error) {
     console.error('Failed to load content for path:', path, error)
     currentContent.value = []

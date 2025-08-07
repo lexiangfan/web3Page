@@ -1,30 +1,24 @@
-<!-- src/views/page.vue -->
+<!--页面模板-->
 <template>
   <ContentPageTemplate :content-data="pageContents" />
 </template>
 
 <script>
-import {onMounted, ref} from 'vue'
-import pageContents from '@/utils/page.js'
+import { ref } from 'vue'
+import pageTemplate from "@/utils/pageTemplate.js";
 import ContentPageTemplate from '@/components/ContentPageTemplate.vue'
-import searchService from "@/services/searchService.js";
 
 export default {
-  name: 'Page',
+  name: 'PageTemplate',
   components: {
     ContentPageTemplate
   },
   setup() {
     // 如果需要对内容进行特殊处理，可以在这里进行
-    const processedContents = ref(pageContents)
-
-    // 在组件挂载时将内容添加到搜索索引
-    onMounted(() => {
-      searchService.addContents(pageContents)
-    })
+    const processedContents = ref(pageTemplate)
 
     return {
-      pageContents: processedContents
+      pageTemplate: processedContents,
     }
   }
 }
