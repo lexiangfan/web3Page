@@ -14,7 +14,14 @@
               :class="{ 'fixed-anchor': isAnchorFixed }"
               :style="fixedAnchorStyle"
           >
-            <div class="anchor-header">
+            <!-- 页面导航抽屉组件 -->
+            <PageNavigationDrawer ref="pageNavDrawer" />
+
+            <div
+                class="anchor-header"
+                :class="{ 'fixed-header': isHeaderFixed }"
+                :style="fixedHeaderStyle"
+            >
               <h2>目录</h2>
             </div>
             <el-scrollbar class="anchor-scrollbar">
@@ -34,10 +41,16 @@
 
         <!-- 主内容区域 -->
         <el-main class="content-main">
-          <!-- 移动端目录按钮 -->
-          <div v-if="isMobile" class="mobile-toc-button" @click="showMobileToc = true">
-            <el-icon><Menu /></el-icon>
-            <span>目录</span>
+          <!-- 移动端页面导航和目录按钮 -->
+          <div v-if="isMobile" class="mobile-buttons">
+            <div class="mobile-nav-button" @click="openPageNavigation">
+              <el-icon><Menu /></el-icon>
+              <span>页面导航</span>
+            </div>
+            <div class="mobile-toc-button" @click="showMobileToc = true">
+              <el-icon><Collection /></el-icon>
+              <span>目录</span>
+            </div>
           </div>
 
           <div ref="containerRef" class="scroll-container" @scroll="handleContentScroll">
@@ -65,7 +78,7 @@
 
       <!-- 底部信息 -->
       <el-footer class="page-footer">
-        <p>© 2023 Web3 入门指南. All rights reserved.</p>
+        <p>© 2025 Web3 入门指南. All rights reserved.</p>
       </el-footer>
     </el-container>
 
@@ -92,12 +105,15 @@
 
 <script>
 import { ref, onMounted, onBeforeUnmount, computed, nextTick } from 'vue'
-import { Menu } from '@element-plus/icons-vue'
+import { Menu, Collection } from '@element-plus/icons-vue'
+import PageNavigationDrawer from "@/components/PageNavigationDrawer.vue";
 
 export default {
   name: 'ContentPageTemplate',
   components: {
-    Menu
+    PageNavigationDrawer,
+    Menu,
+    Collection
   },
   props: {
     // 页面内容数据
@@ -110,13 +126,16 @@ export default {
     const containerRef = ref(null)
     const treeRef = ref(null)
     const mobileTreeRef = ref(null)
+    const pageNavDrawer = ref(null) // 引用PageNavigationDrawer组件
     const pageContent = ref(props.contentData)
     const isMobile = ref(false)
     const showMobileToc = ref(false)
     const isAnchorFixed = ref(false)
+    const isHeaderFixed = ref(false)
     const anchorTop = ref(0)
     const anchorWidth = ref(0)
     const anchorOffset = ref(0)
+    const headerHeight = ref(0)
     const currentNodeKey = ref('')
     const scrollTimeout = ref(null)
 
@@ -139,6 +158,17 @@ export default {
     // 固定侧边栏的样式
     const fixedAnchorStyle = computed(() => {
       if (isAnchorFixed.value) {
+        return {
+          width: anchorWidth.value + 'px',
+          top: anchorOffset.value + 'px'
+        }
+      }
+      return {}
+    })
+
+    // 固定目录标题的样式
+    const fixedHeaderStyle = computed(() => {
+      if (isHeaderFixed.value) {
         return {
           width: anchorWidth.value + 'px',
           top: anchorOffset.value + 'px'
@@ -175,6 +205,14 @@ export default {
       }, 300)
     }
 
+    // 打开页面导航抽屉
+    const openPageNavigation = () => {
+      // 直接调用PageNavigationDrawer组件的openDrawer方法
+      if (pageNavDrawer.value) {
+        pageNavDrawer.value.openDrawer()
+      }
+    }
+
     // 监听窗口大小变化
     const handleResize = () => {
       checkIsMobile()
@@ -186,10 +224,15 @@ export default {
       if (isMobile.value) return
 
       const anchorWrapper = document.querySelector('.anchor-wrapper')
-      if (anchorWrapper) {
+      const anchorHeader = document.querySelector('.anchor-header')
+
+      if (anchorWrapper && anchorHeader) {
         const rect = anchorWrapper.getBoundingClientRect()
+        const headerRect = anchorHeader.getBoundingClientRect()
+
         anchorTop.value = rect.top + window.scrollY
         anchorWidth.value = rect.width
+        headerHeight.value = headerRect.height
 
         // 获取导航栏高度作为偏移量
         const navbarHeight = parseInt(getComputedStyle(document.documentElement)
@@ -198,12 +241,14 @@ export default {
       }
     }
 
-    // 处理滚动事件，控制侧边栏固定
+    // 处理滚动事件，控制侧边栏固定和目录标题固定
     const handleScroll = () => {
       if (isMobile.value) return
 
       const anchorWrapper = document.querySelector('.anchor-wrapper')
-      if (!anchorWrapper) return
+      const anchorHeader = document.querySelector('.anchor-header')
+
+      if (!anchorWrapper || !anchorHeader) return
 
       // 获取导航栏高度
       const navbarHeight = parseInt(getComputedStyle(document.documentElement)
@@ -211,6 +256,10 @@ export default {
 
       // 当页面滚动超过侧边栏原始位置时，固定侧边栏
       isAnchorFixed.value = window.scrollY >= anchorTop.value - navbarHeight
+
+      // 当页面滚动超过目录标题位置时，固定目录标题
+      const headerTop = anchorTop.value + 24 // 24px是anchor-wrapper的padding-top
+      isHeaderFixed.value = window.scrollY >= headerTop - navbarHeight
     }
 
     // 处理内容区域滚动事件
@@ -294,15 +343,19 @@ export default {
       containerRef,
       treeRef,
       mobileTreeRef,
+      pageNavDrawer,
       pageContent,
       treeData,
       treeProps,
       isMobile,
       showMobileToc,
       isAnchorFixed,
+      isHeaderFixed,
       fixedAnchorStyle,
+      fixedHeaderStyle,
       handleNodeClick,
       handleMobileNodeClick,
+      openPageNavigation,
       currentNodeKey,
       handleContentScroll,
       handleResize,
@@ -350,6 +403,15 @@ export default {
   padding: 0 24px 16px;
   border-bottom: 1px solid var(--color-border);
   margin-bottom: 16px;
+  background-color: var(--color-background);
+  z-index: 10;
+}
+
+.anchor-header.fixed-header {
+  position: fixed;
+  padding: 0 24px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .anchor-header h2 {
@@ -407,8 +469,15 @@ export default {
   background-color: #ffffff;
 }
 
-.mobile-toc-button {
+.mobile-buttons {
   display: none;
+  gap: 10px;
+  padding: 10px 20px;
+}
+
+.mobile-nav-button,
+.mobile-toc-button {
+  display: flex;
   align-items: center;
   gap: 8px;
   background: var(--color-primary);
@@ -418,10 +487,10 @@ export default {
   font-size: var(--font-size-base);
   color: white;
   transition: var(--transition-base);
-  margin: 10px 20px;
   width: fit-content;
 }
 
+.mobile-nav-button:hover,
 .mobile-toc-button:hover {
   opacity: 0.9;
 }
@@ -567,12 +636,12 @@ export default {
     display: none;
   }
 
-  .mobile-toc-button {
+  .mobile-buttons {
     display: flex;
   }
 
   .scroll-container {
-    height: calc(100vh - 70px);
+    height: calc(100vh - 120px); /* 增加按钮区域高度 */
     padding: 20px 15px;
   }
 
@@ -658,6 +727,7 @@ export default {
     font-size: var(--font-size-sm);
   }
 
+  .mobile-nav-button,
   .mobile-toc-button {
     margin: 10px 15px;
     padding: 6px 12px;

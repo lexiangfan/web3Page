@@ -1,4 +1,4 @@
-<!-- src/App.vue -->
+<!-- src/App.vue (删除文档菜单版) -->
 <template>
   <div id="app">
     <el-menu
@@ -17,16 +17,10 @@
           </el-menu-item>
         </div>
 
-        <!-- 在小屏幕上隐藏的导航项 -->
+        <!-- 删除了文档下拉菜单 -->
         <div class="navbar-center" :class="{ 'hidden-mobile': isMobileMenuCollapsed }">
           <el-menu-item index="1">首页</el-menu-item>
           <el-menu-item index="2">关于我们</el-menu-item>
-          <el-sub-menu index="3">
-            <template #title>文档</template>
-            <el-menu-item index="3-1">入门指南</el-menu-item>
-            <el-menu-item index="3-2">技术文档</el-menu-item>
-            <el-menu-item index="3-3">最佳实践</el-menu-item>
-          </el-sub-menu>
         </div>
 
         <div class="navbar-right">
@@ -38,13 +32,12 @@
                 class="github-button"
                 @click="goToGithub"
             >
-<!--              <i class="el-icon-link"></i>-->
               GitHub
             </el-button>
           </el-menu-item>
           <!-- 移动端菜单按钮 -->
           <el-menu-item class="mobile-menu-toggle" @click="toggleMobileMenu">
-            <el-icon><Expand v-if="isMobileMenuCollapsed" /><Fold v-else /></el-icon>
+            <el-icon><expand v-if="isMobileMenuCollapsed" /><fold v-else /></el-icon>
           </el-menu-item>
         </div>
       </div>
@@ -56,7 +49,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { Expand, Fold } from '@element-plus/icons-vue'
+import { Expand, Fold, ArrowDown } from '@element-plus/icons-vue'
 import router from '@/router/router'
 import '@/assets/styles/global.css'
 import GlobalSearch from '@/components/GlobalSearch.vue'
@@ -196,7 +189,8 @@ onMounted(() => {
   display: none !important;
 }
 
-:deep(.el-menu-item) {
+/* 通用菜单项样式 */
+:deep(.navbar .el-menu-item) {
   color: var(--color-text-secondary) !important;
   font-size: var(--font-size-base);
   font-weight: 500;
@@ -210,12 +204,13 @@ onMounted(() => {
   border: none !important;
 }
 
-:deep(.el-menu-item:hover) {
+:deep(.navbar .el-menu-item:hover) {
   background: var(--color-surface) !important;
   color: var(--color-primary) !important;
 }
 
-:deep(.el-sub-menu__title) {
+/* 子菜单标题样式 */
+:deep(.navbar .el-sub-menu__title) {
   color: var(--color-text-secondary) !important;
   font-size: var(--font-size-base);
   font-weight: 500;
@@ -228,11 +223,12 @@ onMounted(() => {
   transition: var(--transition-base);
 }
 
-:deep(.el-sub-menu__title:hover) {
+:deep(.navbar .el-sub-menu__title:hover) {
   background: var(--color-surface) !important;
   color: var(--color-primary) !important;
 }
 
+/* 激活状态的菜单项 */
 :deep(.el-menu--horizontal > .el-menu-item.is-active) {
   background: var(--color-primary) !important;
   color: white !important;
@@ -349,7 +345,7 @@ onMounted(() => {
     min-width: 40px;
   }
 
-  :deep(.el-menu-item) {
+  :deep(.navbar .el-menu-item) {
     padding: 0 4px !important;
     margin: 2px 0;
     width: 100%;
@@ -417,6 +413,14 @@ onMounted(() => {
   /* 确保GitHub项隐藏 */
   .github-item {
     display: none !important;
+  }
+}
+
+/* 超小屏幕适配 */
+@media (max-width: 400px) {
+  .navbar-search {
+    width: 80px;
+    min-width: 60px;
   }
 }
 </style>
