@@ -1,8 +1,9 @@
 <!-- src/components/PageNavigationDrawer.vue -->
 <template>
   <div class="page-navigation">
-    <!-- 页面导航按钮 -->
+    <!-- 页面导航按钮 (仅在桌面端显示) -->
     <el-button
+        v-if="!isMobileView"
         class="nav-toggle-button"
         @click="openDrawer"
     >
@@ -12,12 +13,13 @@
 
     <!-- 桌面端页面导航抽屉 -->
     <el-drawer
-        v-if="!isMobile"
+        v-if="!isMobileView"
         v-model="drawerVisible"
         title="页面导航"
         direction="ltr"
         size="300px"
         class="page-navigation-drawer"
+        @closed="handleDrawerClosed"
     >
       <div class="page-nav-content">
         <!-- 页面列表 -->
@@ -55,53 +57,44 @@
       </div>
     </el-drawer>
 
-    <!-- 移动端页面导航抽屉 (从底部弹出) -->
-    <el-drawer
-        v-else
-        v-model="drawerVisible"
-        title="页面导航"
-        direction="btt"
-        size="70%"
-        class="mobile-page-navigation-drawer"
-    >
-      <div class="page-nav-content">
-        <!-- 页面列表 -->
-        <div class="pages-section">
-          <h3 class="section-title">页面列表</h3>
-          <el-menu
-              :default-active="activePage"
-              @select="handlePageSelect"
-              class="page-menu"
+    <!-- 移动端直接显示内容，不使用抽屉 -->
+    <div v-else class="mobile-page-navigation-content">
+      <!-- 页面列表 -->
+      <div class="pages-section">
+        <h3 class="section-title">页面列表</h3>
+        <el-menu
+            :default-active="activePage"
+            @select="handlePageSelect"
+            class="page-menu"
+        >
+          <el-menu-item
+              v-for="page in pages"
+              :key="page.path"
+              :index="page.path"
           >
-            <el-menu-item
-                v-for="page in pages"
-                :key="page.path"
-                :index="page.path"
-            >
-              <el-icon><Document /></el-icon>
-              <span>{{ page.meta.title }}</span>
-            </el-menu-item>
-          </el-menu>
-        </div>
-
-        <!-- 当前页面锚点导航 -->
-        <div v-if="currentContent.length > 0" class="anchors-section">
-          <h3 class="section-title">页面内容</h3>
-          <el-tree
-              :data="anchorTreeData"
-              :props="treeProps"
-              node-key="id"
-              @node-click="handleAnchorClick"
-              class="anchor-tree mobile-anchor-tree"
-          />
-        </div>
+            <el-icon><Document /></el-icon>
+            <span>{{ page.meta.title }}</span>
+          </el-menu-item>
+        </el-menu>
       </div>
-    </el-drawer>
+
+      <!-- 当前页面锚点导航 -->
+      <div v-if="currentContent.length > 0" class="anchors-section">
+        <h3 class="section-title">页面内容</h3>
+        <el-tree
+            :data="anchorTreeData"
+            :props="treeProps"
+            node-key="id"
+            @node-click="handleAnchorClick"
+            class="anchor-tree mobile-anchor-tree"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Menu, Document } from '@element-plus/icons-vue'
 import pageService from '@/services/pageService.js'
@@ -111,7 +104,7 @@ const route = useRoute()
 const drawerVisible = ref(false)
 const pages = ref([])
 const currentContent = ref([])
-const isMobile = ref(false)
+const isMobileView = ref(false)
 
 // 树形控件属性
 const treeProps = {
@@ -136,7 +129,7 @@ const anchorTreeData = computed(() => {
 
 // 检查是否为移动设备
 const checkIsMobile = () => {
-  isMobile.value = window.innerWidth <= 768
+  isMobileView.value = window.innerWidth <= 768
 }
 
 // 监听窗口大小变化
@@ -144,15 +137,26 @@ const handleResize = () => {
   checkIsMobile()
 }
 
+// 处理抽屉关闭事件
+const handleDrawerClosed = () => {
+  drawerVisible.value = false
+}
+
 // 打开抽屉
 const openDrawer = () => {
-  drawerVisible.value = true
+  // 强制重新检查设备类型，确保在窗口大小改变后正确显示
+  checkIsMobile()
+
+  // 使用 nextTick 确保 DOM 更新后再显示抽屉
+  nextTick(() => {
+    drawerVisible.value = true
+  })
 }
 
 // 处理页面选择
 const handlePageSelect = async (path) => {
   drawerVisible.value = false
-  router.push(path)
+  await router.push(path)
   // 更新当前页面内容
   await updateCurrentContent(path)
 }
@@ -163,7 +167,10 @@ const handleAnchorClick = (data) => {
   const element = document.getElementById(data.id)
   if (element) {
     element.scrollIntoView({ behavior: 'smooth' })
-    drawerVisible.value = false
+    // 在移动端，点击后不需要关闭抽屉，因为没有抽屉
+    if (!isMobileView.value) {
+      drawerVisible.value = false
+    }
   }
 }
 
@@ -244,6 +251,10 @@ defineExpose({
   flex-direction: column;
 }
 
+.mobile-page-navigation-content {
+  padding: 16px 0;
+}
+
 .pages-section,
 .anchors-section {
   margin-bottom: 24px;
@@ -271,7 +282,7 @@ defineExpose({
   background-color: var(--color-surface);
 }
 
-:deep(.page-menu .el-menu-item.is-active) {
+:deep(.page-menu) .el-menu-item.is-active {
   background-color: rgba(37, 99, 235, 0.1);
   color: var(--color-primary);
 }
@@ -311,20 +322,10 @@ defineExpose({
   padding: 16px 24px;
 }
 
-/* 移动端抽屉样式 */
-:deep(.mobile-page-navigation-drawer .el-drawer__header) {
-  margin-bottom: 0;
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--color-border);
-}
-
-:deep(.mobile-page-navigation-drawer .el-drawer__body) {
-  padding: 16px 24px;
-}
-
 .mobile-anchor-tree {
   width: 100%;
   background: transparent;
+  margin-top: 12px;
 }
 
 :deep(.mobile-anchor-tree .el-tree-node) {

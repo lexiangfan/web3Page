@@ -192,7 +192,7 @@ export default {
 .global-search {
   position: relative;
   width: 100%;
-  max-width: 300px;
+  max-width: 350px;
 }
 
 .global-search-input {
@@ -205,6 +205,7 @@ export default {
   box-shadow: var(--shadow-base) !important;
   border: 1px solid var(--color-border) !important;
   transition: var(--transition-base);
+  min-height: 36px;
 }
 
 :deep(.global-search-input .el-input__wrapper:hover) {
@@ -219,19 +220,24 @@ export default {
 
 :deep(.global-search-input .el-input__inner) {
   border: none !important;
-  padding-left: 32px !important;
+  padding-left: 36px !important;
   background: transparent !important;
   color: var(--color-text) !important;
-  min-width: 60px;
+  min-width: 80px;
+  font-size: var(--font-size-base);
+  height: 36px;
+  line-height: 36px;
 }
 
 :deep(.global-search-input .el-input__inner::placeholder) {
   color: var(--color-text-muted) !important;
+  font-size: var(--font-size-sm);
 }
 
 :deep(.global-search-input .el-input__prefix) {
-  left: 12px !important;
+  left: 14px !important;
   color: var(--color-text-muted) !important;
+  font-size: 16px;
 }
 
 .global-search-results {
@@ -299,37 +305,43 @@ export default {
 /* 移动端适配 */
 @media (max-width: 768px) {
   .global-search {
-    max-width: 100px;
-    margin-right: 2px;
-    min-width: 80px;
+    max-width: 200px;
+    margin-right: 4px;
+    min-width: 150px;
   }
 
   :deep(.global-search-input .el-input__inner) {
-    font-size: 13px;
-    padding: 6px 8px 6px 28px !important;
-    min-width: 60px;
+    font-size: 14px;
+    padding: 8px 10px 8px 32px !important;
+    min-width: 100px;
+    height: 34px;
+    line-height: 34px;
   }
 
   :deep(.global-search-input .el-input__prefix) {
-    left: 8px !important;
+    left: 10px !important;
+    font-size: 15px;
   }
 }
 
 @media (max-width: 576px) {
   .global-search {
-    max-width: 70px;
-    margin-right: 1px;
-    min-width: 70px;
+    max-width: 160px;
+    margin-right: 2px;
+    min-width: 130px;
   }
 
   :deep(.global-search-input .el-input__inner) {
-    font-size: 12px;
-    padding: 4px 6px 4px 24px !important;
-    min-width: 50px;
+    font-size: 13px;
+    padding: 6px 8px 6px 28px !important;
+    min-width: 90px;
+    height: 32px;
+    line-height: 32px;
   }
 
   :deep(.global-search-input .el-input__prefix) {
-    left: 6px !important;
+    left: 8px !important;
+    font-size: 14px;
   }
 
   .result-title {
@@ -338,6 +350,26 @@ export default {
 
   .result-content {
     font-size: var(--font-size-xs);
+  }
+}
+
+@media (max-width: 400px) {
+  .global-search {
+    max-width: 130px; /* 在超小屏幕上设置合适的最大宽度 */
+    min-width: 110px;
+  }
+
+  :deep(.global-search-input .el-input__inner) {
+    font-size: 12px;
+    padding: 5px 6px 5px 26px !important;
+    min-width: 80px;
+    height: 30px;
+    line-height: 30px;
+  }
+
+  :deep(.global-search-input .el-input__prefix) {
+    left: 7px !important;
+    font-size: 13px;
   }
 }
 </style>

@@ -82,7 +82,7 @@
       </el-footer>
     </el-container>
 
-    <!-- 移动端目录抽窗 -->
+    <!-- 移动端目录抽屉 -->
     <el-drawer
         v-model="showMobileToc"
         title="目录"
@@ -100,12 +100,23 @@
           :current-node-key="currentNodeKey"
       />
     </el-drawer>
+
+    <!-- 移动端页面导航抽屉 -->
+    <el-drawer
+        v-model="showMobilePageNav"
+        title="页面导航"
+        direction="btt"
+        size="70%"
+        class="mobile-page-nav-drawer"
+    >
+      <PageNavigationDrawer ref="mobilePageNavDrawer" />
+    </el-drawer>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount, computed, nextTick } from 'vue'
-import { Menu, Collection } from '@element-plus/icons-vue'
+import { ref, computed, nextTick, onBeforeUnmount, onMounted } from 'vue'
+import {Collection, Menu} from '@element-plus/icons-vue'
 import PageNavigationDrawer from "@/components/PageNavigationDrawer.vue";
 
 export default {
@@ -127,9 +138,11 @@ export default {
     const treeRef = ref(null)
     const mobileTreeRef = ref(null)
     const pageNavDrawer = ref(null) // 引用PageNavigationDrawer组件
+    const mobilePageNavDrawer = ref(null) // 移动端页面导航抽屉引用
     const pageContent = ref(props.contentData)
     const isMobile = ref(false)
     const showMobileToc = ref(false)
+    const showMobilePageNav = ref(false) // 控制移动端页面导航抽屉显示
     const isAnchorFixed = ref(false)
     const isHeaderFixed = ref(false)
     const anchorTop = ref(0)
@@ -154,7 +167,6 @@ export default {
       label: 'label',
       children: 'children'
     }
-
     // 固定侧边栏的样式
     const fixedAnchorStyle = computed(() => {
       if (isAnchorFixed.value) {
@@ -207,9 +219,20 @@ export default {
 
     // 打开页面导航抽屉
     const openPageNavigation = () => {
-      // 直接调用PageNavigationDrawer组件的openDrawer方法
-      if (pageNavDrawer.value) {
-        pageNavDrawer.value.openDrawer()
+      if (isMobile.value) {
+        // 在移动端，打开底部抽屉
+        showMobilePageNav.value = true
+        // 确保抽屉内的组件也打开
+        setTimeout(() => {
+          if (mobilePageNavDrawer.value) {
+            mobilePageNavDrawer.value.openDrawer()
+          }
+        }, 100)
+      } else {
+        // 在桌面端，直接调用PageNavigationDrawer组件的openDrawer方法
+        if (pageNavDrawer.value) {
+          pageNavDrawer.value.openDrawer()
+        }
       }
     }
 
@@ -235,9 +258,8 @@ export default {
         headerHeight.value = headerRect.height
 
         // 获取导航栏高度作为偏移量
-        const navbarHeight = parseInt(getComputedStyle(document.documentElement)
+        anchorOffset.value = parseInt(getComputedStyle(document.documentElement)
             .getPropertyValue('--navbar-height'), 10) || 60
-        anchorOffset.value = navbarHeight
       }
     }
 
@@ -344,11 +366,13 @@ export default {
       treeRef,
       mobileTreeRef,
       pageNavDrawer,
+      mobilePageNavDrawer,
       pageContent,
       treeData,
       treeProps,
       isMobile,
       showMobileToc,
+      showMobilePageNav,
       isAnchorFixed,
       isHeaderFixed,
       fixedAnchorStyle,
@@ -470,29 +494,37 @@ export default {
 }
 
 .mobile-buttons {
-  display: none;
-  gap: 10px;
-  padding: 10px 20px;
+  display: flex;
+  gap: 15px;
+  padding: 12px 20px;
+  justify-content: center; /* 居中对齐 */
 }
 
 .mobile-nav-button,
 .mobile-toc-button {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: var(--color-primary);
-  border-radius: var(--border-radius);
-  padding: 8px 16px;
+  border-radius: var(--border-radius-large);
+  padding: 10px 20px;
   cursor: pointer;
   font-size: var(--font-size-base);
   color: white;
   transition: var(--transition-base);
-  width: fit-content;
+  width: auto; /* 不固定宽度 */
+  min-width: 120px; /* 设置最小宽度 */
+  text-align: center;
+  box-shadow: var(--shadow-base);
+  border: none;
 }
 
 .mobile-nav-button:hover,
 .mobile-toc-button:hover {
   opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
 }
 
 .scroll-container {
@@ -596,6 +628,17 @@ export default {
   padding: 16px 24px;
 }
 
+/* 移动端页面导航抽屉 */
+:deep(.mobile-page-nav-drawer .el-drawer__header) {
+  margin-bottom: 0;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+:deep(.mobile-page-nav-drawer .el-drawer__body) {
+  padding: 16px 24px;
+}
+
 .mobile-anchor-tree {
   width: 100%;
   background: transparent;
@@ -637,7 +680,16 @@ export default {
   }
 
   .mobile-buttons {
-    display: flex;
+    padding: 10px 15px;
+    gap: 12px;
+  }
+
+  .mobile-nav-button,
+  .mobile-toc-button {
+    padding: 8px 16px;
+    font-size: var(--font-size-sm);
+    gap: 6px;
+    min-width: 100px;
   }
 
   .scroll-container {
@@ -727,11 +779,17 @@ export default {
     font-size: var(--font-size-sm);
   }
 
+  .mobile-buttons {
+    padding: 8px 10px;
+    gap: 10px;
+  }
+
   .mobile-nav-button,
   .mobile-toc-button {
-    margin: 10px 15px;
     padding: 6px 12px;
     font-size: var(--font-size-sm);
+    gap: 5px;
+    min-width: 90px;
   }
 }
 </style>

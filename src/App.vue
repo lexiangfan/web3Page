@@ -236,8 +236,9 @@ onMounted(() => {
 }
 
 .navbar-search {
-  width: 200px;
+  width: 250px;
   margin: 0 12px;
+  min-width: 180px;
 }
 
 .github-item {
@@ -297,7 +298,7 @@ onMounted(() => {
   }
 
   .navbar-container {
-    padding: 0 2px;
+    padding: 0 5px;
     display: flex;
     align-items: center;
     position: relative;
@@ -316,6 +317,15 @@ onMounted(() => {
     z-index: 1000;
     transition: var(--transition-base);
     width: 100%;
+    max-height: calc(100vh - var(--navbar-height));
+    overflow-y: auto;
+    margin-top: 0 !important;
+    border-top: none;
+    border-radius: 0 !important;
+  }
+
+  .navbar-center:not(.hidden-mobile) {
+    display: flex;
   }
 
   .navbar-center.hidden-mobile {
@@ -331,18 +341,18 @@ onMounted(() => {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;
+    width: 180px;
     margin: 0;
-    min-width: 80px;
+    min-width: 150px;
   }
 
   .mobile-menu-toggle {
     display: flex !important;
     align-items: center;
     justify-content: center;
-    padding: 0 4px !important;
-    margin-left: 1px;
-    min-width: 40px;
+    padding: 0 6px !important;
+    margin-left: 2px;
+    min-width: 45px;
   }
 
   :deep(.navbar .el-menu-item) {
@@ -366,14 +376,14 @@ onMounted(() => {
   .navbar-right {
     display: flex;
     align-items: center;
-    gap: 1px;
+    gap: 3px;
     flex-shrink: 0;
     margin-left: auto;
   }
 
   .github-button {
     font-size: var(--font-size-xs);
-    padding: 4px 6px !important;
+    padding: 5px 8px !important;
   }
 
   /* 在移动端隐藏GitHub菜单项 */
@@ -389,25 +399,43 @@ onMounted(() => {
   }
 
   .navbar-container {
-    padding: 0 1px;
+    padding: 0 2px;
+  }
+
+  .navbar-center {
+    padding: 8px; /* 减小内边距 */
+    margin: 0;
+    box-shadow: var(--shadow-base); /* 调整阴影 */
+    /* 确保没有顶部边距 */
+    top: var(--navbar-height); /* 确保紧贴导航栏底部 */
+  }
+
+  /* 菜单项样式优化 */
+  :deep(.navbar-center .el-menu-item) {
+    margin: 1px 0; /* 减小菜单项间距 */
+    width: 100%;
+  }
+
+  :deep(.navbar-center .el-sub-menu) {
+    width: 100%;
   }
 
   .navbar-search {
-    width: 100px;
-    min-width: 70px;
+    width: 150px;
+    min-width: 120px;
   }
 
   .navbar-right {
-    gap: 0;
+    gap: 1px;
   }
 
   .logo-text {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .mobile-menu-toggle {
-    padding: 0 2px !important;
-    margin-left: 0;
+    padding: 0 3px !important;
+    margin-left: 1px;
   }
 
   /* 确保GitHub项隐藏 */
@@ -419,8 +447,8 @@ onMounted(() => {
 /* 超小屏幕适配 */
 @media (max-width: 400px) {
   .navbar-search {
-    width: 80px;
-    min-width: 60px;
+    width: 120px;
+    min-width: 100px;
   }
 }
 </style>

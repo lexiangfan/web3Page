@@ -1,90 +1,143 @@
 <!-- src/views/Home.vue -->
 <template>
   <div class="home-container">
-    <div class="hero-section">
+    <!-- Hero Section -->
+    <section class="hero-section">
       <div class="hero-content">
-        <h1 class="hero-title">Web3 入门指南</h1>
-        <p class="hero-subtitle">从基础概念到实战应用，一站式学习平台</p>
-        <div class="hero-actions">
+        <div class="hero-badge animate__animated animate__fadeInUp">
+          <span class="badge-text">Web3 革命</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="title-line animate__animated animate__fadeInUp" data-animate-delay="200">
+            探索下一代
+          </span>
+          <span class="title-line gradient-text animate__animated animate__fadeInUp" data-animate-delay="400">
+            互联网世界
+          </span>
+        </h1>
+        <p class="hero-description animate__animated animate__fadeInUp" data-animate-delay="600">
+          从区块链基础到去中心化应用开发，一站式 Web3 学习平台。
+          掌握未来科技，开启数字新纪元。
+        </p>
+        <div class="hero-actions animate__animated animate__fadeInUp" data-animate-delay="800">
           <el-button
               type="primary"
               size="large"
               @click="startLearning"
-              class="cta-button"
+              class="primary-button"
           >
             开始学习
-            <i class="el-icon-arrow-right el-icon--right"></i>
+            <el-icon class="button-icon"><ArrowRight /></el-icon>
           </el-button>
           <el-button
               size="large"
-              @click="viewDocs"
-              class="docs-button"
+              @click="viewDocumentation"
+              class="secondary-button"
           >
             查看文档
           </el-button>
         </div>
       </div>
       <div class="hero-visual">
-        <div class="visual-element element-1"></div>
-        <div class="visual-element element-2"></div>
-        <div class="visual-element element-3"></div>
+        <div class="visual-container">
+          <div class="cube-wrapper animate__animated animate__zoomIn" data-animate-delay="1000">
+            <div class="cube">
+              <div class="cube-face front"></div>
+              <div class="cube-face back"></div>
+              <div class="cube-face right"></div>
+              <div class="cube-face left"></div>
+              <div class="cube-face top"></div>
+              <div class="cube-face bottom"></div>
+            </div>
+          </div>
+          <div class="floating-elements">
+            <div class="floating-element element-1 animate__animated animate__zoomIn" data-animate-delay="1200"></div>
+            <div class="floating-element element-2 animate__animated animate__zoomIn" data-animate-delay="1400"></div>
+            <div class="floating-element element-3 animate__animated animate__zoomIn" data-animate-delay="1600"></div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="features-section">
+    <!-- Stats Section -->
+<!--    <section class="stats-section">-->
+<!--      <div class="stats-container">-->
+<!--        <div-->
+<!--            v-for="(stat, index) in stats"-->
+<!--            :key="index"-->
+<!--            class="stat-item animate__animated animate__fadeInUp"-->
+<!--            :data-animate-delay="index * 200"-->
+<!--        >-->
+<!--          <div class="stat-number">{{ stat.number }}</div>-->
+<!--          <div class="stat-label">{{ stat.label }}</div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </section>-->
+
+    <!-- Features Section -->
+    <section class="features-section">
       <div class="section-header">
         <h2>为什么选择我们</h2>
         <p>为您提供最全面的 Web3 学习体验</p>
       </div>
-<!--      <div class="features-grid">-->
-<!--        <div-->
-<!--            v-for="(feature, index) in features"-->
-<!--            :key="index"-->
-<!--            class="feature-card"-->
-<!--        >-->
-<!--          <div class="feature-icon">-->
-<!--            <i :class="feature.icon"></i>-->
-<!--          </div>-->
-<!--          <h3 class="feature-title">{{ feature.title }}</h3>-->
-<!--          <p class="feature-description">{{ feature.description }}</p>-->
-<!--        </div>-->
-<!--      </div>-->
-    </div>
+      <div class="features-grid">
+        <div
+            v-for="(feature, index) in features"
+            :key="index"
+            class="feature-card animate__animated animate__fadeInUp"
+            :data-animate-delay="index * 200"
+        >
+          <div class="feature-icon">
+            <i :class="feature.icon"></i>
+          </div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script setup>
-// import { ref } from 'vue'
+import { ref } from 'vue'
 import router from '@/router/router'
+import { ArrowRight } from '@element-plus/icons-vue'
 
-// const features = ref([
-//   {
-//     icon: 'el-icon-lock',
-//     title: '去中心化',
-//     description: '深入理解区块链去中心化原理和应用场景'
-//   },
-//   {
-//     icon: 'el-icon-document',
-//     title: '智能合约',
-//     description: '从基础到高级的智能合约开发教程'
-//   },
-//   {
-//     icon: 'el-icon-wallet',
-//     title: '钱包集成',
-//     description: '学习如何集成主流加密货币钱包'
-//   },
-//   {
-//     icon: 'el-icon-network',
-//     title: '网络协议',
-//     description: '掌握各种区块链网络协议和标准'
-//   }
+// const stats = ref([
+//   { number: '50+', label: '课程模块' },
+//   { number: '1000+', label: '学习者' },
+//   { number: '50+', label: '实战项目' },
+//   { number: '24/7', label: '技术支持' }
 // ])
+
+const features = ref([
+  {
+    icon: 'el-icon-lock',
+    title: '去中心化',
+    description: '深入理解区块链去中心化原理和应用场景'
+  },
+  {
+    icon: 'el-icon-document',
+    title: '智能合约',
+    description: '从基础到高级的智能合约开发教程'
+  },
+  {
+    icon: 'el-icon-wallet',
+    title: '钱包集成',
+    description: '学习如何集成主流加密货币钱包'
+  },
+  {
+    icon: 'el-icon-network',
+    title: '网络协议',
+    description: '掌握各种区块链网络协议和标准'
+  }
+])
 
 const startLearning = () => {
   router.push('/Page')
 }
 
-const viewDocs = () => {
+const viewDocumentation = () => {
   // 可以跳转到文档页面
   console.log('查看文档')
 }
@@ -92,17 +145,19 @@ const viewDocs = () => {
 
 <style scoped>
 .home-container {
-  background-color: var(--color-background);
+  background: linear-gradient(135deg, #f0f4f8 0%, #e6f0ff 100%);
   min-height: calc(100vh - var(--navbar-height));
+  overflow-x: hidden;
 }
 
+/* Hero Section */
 .hero-section {
   display: flex;
   align-items: center;
-  padding: 80px 24px;
+  padding: 100px 24px 60px;
   max-width: 1400px;
   margin: 0 auto;
-  gap: 60px;
+  gap: 80px;
 }
 
 .hero-content {
@@ -110,20 +165,56 @@ const viewDocs = () => {
   max-width: 600px;
 }
 
-.hero-title {
-  font-size: var(--font-size-xxxl);
-  font-weight: 800;
-  line-height: 1.2;
-  color: var(--color-secondary);
+.hero-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #4f46e5 0%, #3a5bed 100%);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 50px;
   margin-bottom: 24px;
-  letter-spacing: -0.5px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 1px;
+  animation: pulse 2s infinite;
 }
 
-.hero-subtitle {
-  font-size: var(--font-size-lg);
-  color: var(--color-text-secondary);
-  line-height: 1.6;
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(124, 58, 237, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
+  }
+}
+
+.hero-title {
+  font-size: 60px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  color: #0f172a;
+}
+
+.title-line {
+  display: block;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #4f46e5 0%, #3a5bed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-description {
+  font-size: 18px;
+  color: #64748b;
+  line-height: 1.7;
   margin-bottom: 40px;
+  max-width: 500px;
 }
 
 .hero-actions {
@@ -131,53 +222,152 @@ const viewDocs = () => {
   gap: 16px;
 }
 
-.cta-button {
-  background: var(--color-primary) !important;
+.primary-button {
+  background: linear-gradient(135deg, #4f46e5 0%, #3a5bed 100%) !important;
   border: none !important;
-  border-radius: var(--border-radius-large) !important;
-  padding: 16px 32px !important;
-  font-size: var(--font-size-base) !important;
+  border-radius: 12px !important;
+  padding: 18px 32px !important;
+  font-size: 16px !important;
   font-weight: 600 !important;
-  transition: var(--transition-base);
+  color: white !important;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
 }
 
-.cta-button:hover {
-  background: var(--color-primary-dark) !important;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover) !important;
+.primary-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
 }
 
-.docs-button {
-  border: 1px solid var(--color-border) !important;
-  border-radius: var(--border-radius-large) !important;
-  padding: 16px 32px !important;
-  font-size: var(--font-size-base) !important;
+.button-icon {
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.primary-button:hover .button-icon {
+  transform: translateX(3px);
+}
+
+.secondary-button {
+  border: 2px solid #cbd5e1 !important;
+  border-radius: 12px !important;
+  padding: 18px 32px !important;
+  font-size: 16px !important;
   font-weight: 600 !important;
-  color: var(--color-text) !important;
-  background: var(--color-background) !important;
-  transition: var(--transition-base);
+  color: #475569 !important;
+  background: white !important;
+  transition: all 0.3s ease;
 }
 
-.docs-button:hover {
-  border-color: var(--color-primary) !important;
-  color: var(--color-primary) !important;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover) !important;
+.secondary-button:hover {
+  border-color: #3a5bed !important;
+  color: #3a5bed !important;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .hero-visual {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.visual-container {
   position: relative;
+  width: 400px;
   height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.visual-element {
+.cube-wrapper {
+  transform-style: preserve-3d;
+  animation: float 6s ease-in-out infinite;
+}
+
+.cube {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  transform-style: preserve-3d;
+  animation: rotateCube 20s infinite linear;
+}
+
+@keyframes rotateCube {
+  0% {
+    transform: rotateX(0) rotateY(0) rotateZ(0);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.cube-face {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.8) 0%, rgb(58, 91, 237) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 0 20px rgba(79, 70, 229, 0.5);
+}
+
+.cube-face.front {
+  transform: translateZ(75px);
+}
+
+.cube-face.back {
+  transform: rotateY(180deg) translateZ(75px);
+}
+
+.cube-face.right {
+  transform: rotateY(90deg) translateZ(75px);
+}
+
+.cube-face.left {
+  transform: rotateY(-90deg) translateZ(75px);
+}
+
+.cube-face.top {
+  transform: rotateX(90deg) translateZ(75px);
+}
+
+.cube-face.bottom {
+  transform: rotateX(-90deg) translateZ(75px);
+}
+
+.floating-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.floating-element {
   position: absolute;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background: linear-gradient(135deg, #4f46e5, #3a5bed);
   opacity: 0.1;
   filter: blur(20px);
 }
@@ -206,15 +396,46 @@ const viewDocs = () => {
   animation: float 8s infinite ease-in-out 2s;
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(10px, 10px);
-  }
+/* Stats Section */
+.stats-section {
+  padding: 80px 24px;
+  background: white;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
 }
 
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.stat-number {
+  font-size: 48px;
+  font-weight: 800;
+  color: #3a5bed;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #4f46e5 0%, #3a5bed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 18px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Features Section */
 .features-section {
   padding: 80px 24px;
   max-width: 1400px;
@@ -254,11 +475,13 @@ const viewDocs = () => {
   text-align: center;
   box-shadow: var(--shadow-base);
   transition: var(--transition-base);
+  border: 1px solid var(--color-border);
 }
 
 .feature-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-hover);
+  border-color: #3a5bed;
 }
 
 .feature-icon {
@@ -268,10 +491,10 @@ const viewDocs = () => {
   align-items: center;
   justify-content: center;
   margin: 0 auto 24px;
-  background: var(--color-surface);
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
   border-radius: 50%;
   font-size: 32px;
-  color: var(--color-primary);
+  color: #3a5bed;
 }
 
 .feature-title {
@@ -292,7 +515,7 @@ const viewDocs = () => {
   .hero-section {
     flex-direction: column;
     text-align: center;
-    padding: 60px 24px;
+    padding: 80px 24px 60px;
   }
 
   .hero-content {
@@ -315,29 +538,17 @@ const viewDocs = () => {
 
 @media (max-width: 768px) {
   .hero-section {
-    min-height: calc(100vh - var(--navbar-height));
-    padding: 40px 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .content {
-    min-height: calc(100vh - var(--navbar-height));
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 15px;
-    margin-top: 0;
+    padding: 60px 20px 40px;
+    gap: 50px;
   }
 
   .hero-title {
-    font-size: 32px;
+    font-size: 40px;
     margin-bottom: 20px;
   }
 
-  .hero-subtitle {
-    font-size: var(--font-size-base);
+  .hero-description {
+    font-size: 16px;
     margin-bottom: 30px;
   }
 
@@ -346,30 +557,74 @@ const viewDocs = () => {
     gap: 12px;
   }
 
-  .cta-button,
-  .docs-button {
+  .primary-button,
+  .secondary-button {
     width: 100%;
-    padding: 14px 24px !important;
-    font-size: var(--font-size-base) !important;
+    padding: 16px 24px !important;
+    font-size: 16px !important;
   }
 
   .hero-visual {
     height: 250px;
   }
 
-  .element-1 {
-    width: 150px;
-    height: 150px;
+  .visual-container {
+    width: 300px;
+    height: 300px;
   }
 
-  .element-2 {
+  .cube {
     width: 120px;
     height: 120px;
   }
 
-  .element-3 {
-    width: 80px;
-    height: 80px;
+  .cube-face {
+    width: 120px;
+    height: 120px;
+  }
+
+  .cube-face.front {
+    transform: translateZ(60px);
+  }
+
+  .cube-face.back {
+    transform: rotateY(180deg) translateZ(60px);
+  }
+
+  .cube-face.right {
+    transform: rotateY(90deg) translateZ(60px);
+  }
+
+  .cube-face.left {
+    transform: rotateY(-90deg) translateZ(60px);
+  }
+
+  .cube-face.top {
+    transform: rotateX(90deg) translateZ(60px);
+  }
+
+  .cube-face.bottom {
+    transform: rotateX(-90deg) translateZ(60px);
+  }
+
+  .stats-section {
+    padding: 60px 20px;
+  }
+
+  .stats-container {
+    gap: 20px;
+  }
+
+  .stat-item {
+    min-width: 150px;
+  }
+
+  .stat-number {
+    font-size: 36px;
+  }
+
+  .stat-label {
+    font-size: 16px;
   }
 
   .features-section {
@@ -417,32 +672,77 @@ const viewDocs = () => {
 
 @media (max-width: 576px) {
   .hero-section {
-    padding: 30px 15px;
-    min-height: calc(100vh - var(--navbar-height));
+    padding: 40px 15px;
+    gap: 30px;
   }
 
-  .content {
-    padding: 0 10px;
-  }
-
-  .hero-title {
-    font-size: 28px;
+  .hero-badge {
+    padding: 4px 12px;
+    font-size: 12px;
     margin-bottom: 16px;
   }
 
-  .hero-subtitle {
-    font-size: var(--font-size-sm);
+  .hero-title {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+
+  .hero-description {
+    font-size: 14px;
     margin-bottom: 24px;
   }
 
-  .cta-button,
-  .docs-button {
-    padding: 12px 20px !important;
-    font-size: var(--font-size-sm) !important;
+  .hero-actions {
+    gap: 10px;
+  }
+
+  .primary-button,
+  .secondary-button {
+    padding: 14px 20px !important;
+    font-size: 14px !important;
   }
 
   .hero-visual {
     height: 200px;
+  }
+
+  .visual-container {
+    width: 250px;
+    height: 250px;
+  }
+
+  .cube {
+    width: 100px;
+    height: 100px;
+  }
+
+  .cube-face {
+    width: 100px;
+    height: 100px;
+  }
+
+  .cube-face.front {
+    transform: translateZ(50px);
+  }
+
+  .cube-face.back {
+    transform: rotateY(180deg) translateZ(50px);
+  }
+
+  .cube-face.right {
+    transform: rotateY(90deg) translateZ(50px);
+  }
+
+  .cube-face.left {
+    transform: rotateY(-90deg) translateZ(50px);
+  }
+
+  .cube-face.top {
+    transform: rotateX(90deg) translateZ(50px);
+  }
+
+  .cube-face.bottom {
+    transform: rotateX(-90deg) translateZ(50px);
   }
 
   .element-1 {
@@ -460,6 +760,27 @@ const viewDocs = () => {
     height: 60px;
   }
 
+  .stats-section {
+    padding: 40px 16px;
+  }
+
+  .stats-container {
+    gap: 15px;
+  }
+
+  .stat-item {
+    min-width: 120px;
+  }
+
+  .stat-number {
+    font-size: 28px;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+  }
+
   .features-section {
     padding: 30px 16px;
   }
@@ -474,6 +795,10 @@ const viewDocs = () => {
 
   .section-header p {
     font-size: var(--font-size-sm);
+  }
+
+  .features-grid {
+    gap: 16px;
   }
 
   .feature-card {
