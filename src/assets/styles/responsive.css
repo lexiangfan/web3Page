@@ -1,6 +1,4 @@
-/* src/assets/styles/responsive.css */
 /* 移动端优先的响应式设计 */
-
 /* 超小屏幕 (手机, 小于 576px) */
 @media (max-width: 575.98px) {
     :root {
@@ -24,7 +22,6 @@
 
     .content-area {
         padding: var(--navbar-height) 0 0;
-        /* 修复高度设置 */
         min-height: calc(100vh - var(--navbar-height));
         height: auto;
     }

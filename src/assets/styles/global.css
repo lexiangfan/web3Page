@@ -1,4 +1,3 @@
-/* src/assets/styles/global.css */
 /* 全局样式入口文件 */
 @import './variables.css';
 @import './reset.css';
@@ -25,11 +24,11 @@ html, body {
 /* 移动端视口设置 */
 @media (max-width: 768px) {
     html, body {
-        height: 100vh; /* 标准写法 */
+        height: 100vh;
     }
 
     #app {
-        min-height: 100vh; /* 标准写法 */
+        min-height: 100vh;
         height: auto;
     }
 }

@@ -1,4 +1,3 @@
-<!-- src/components/ContentManager.vue -->
 <template>
   <div class="content-manager">
     <div class="content-actions">
@@ -75,7 +74,7 @@ export default {
       if (newContent.value.title.trim() && newContent.value.content.trim()) {
         // 生成唯一ID（确保与现有内容不重复）
         const newItem = {
-          id: 'custom-' + Date.now(), // 示例ID生成方式
+          id: 'custom-' + Date.now(),
           title: newContent.value.title,
           content: newContent.value.content
         }

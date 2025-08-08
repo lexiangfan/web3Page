@@ -1,4 +1,3 @@
-<!-- src/components/ContentPageTemplate.vue -->
 <template>
   <div class="common-layout">
     <el-container class="page-container">
@@ -44,7 +43,6 @@
 
         <!-- 主内容区域 -->
         <el-main class="content-main">
-          <!-- 移动端页面导航和目录按钮 -->
           <div
               v-if="isMobile"
               class="mobile-buttons"
@@ -76,7 +74,6 @@
               </div>
             </div>
 
-            <!-- 页面导航组件 -->
             <div class="page-navigation">
               <el-row justify="space-between" align="middle">
                 <el-col :span="11">
@@ -159,7 +156,8 @@
 </template>
 
 
-<script>import { ref, computed, nextTick, onBeforeUnmount, onMounted } from 'vue'
+<script>
+import { ref, computed, nextTick, onBeforeUnmount, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { Collection, Menu } from '@element-plus/icons-vue'
@@ -176,7 +174,6 @@ export default {
     ArrowRight
   },
   props: {
-    // 页面内容数据
     contentData: {
       type: Array,
       required: true
@@ -186,13 +183,13 @@ export default {
     const containerRef = ref(null)
     const treeRef = ref(null)
     const mobileTreeRef = ref(null)
-    const desktopPageNavDrawer = ref(null) // 桌面端页面导航抽屉引用
-    const mobilePageNavDrawer = ref(null) // 移动端页面导航抽屉引用
+    const desktopPageNavDrawer = ref(null)
+    const mobilePageNavDrawer = ref(null)
     const pageContent = ref(props.contentData)
     const isMobile = ref(false)
     const showMobileToc = ref(false)
-    const showMobilePageNav = ref(false) // 控制移动端页面导航抽屉显示
-    const showDesktopPageNav = ref(false) // 控制桌面端页面导航抽屉显示
+    const showMobilePageNav = ref(false)
+    const showDesktopPageNav = ref(false)
     const isAnchorFixed = ref(false)
     const isHeaderFixed = ref(false)
     const anchorTop = ref(0)
@@ -206,10 +203,8 @@ export default {
 
     // 添加响应式数据
     const isMobileButtonsFixed = ref(false)
-
     // 获取页面列表
     const pages = computed(() => pageService.getPages())
-
     // 计算当前页面索引
     const currentPageIndex = computed(() => {
       return pages.value.findIndex(page => page.path === route.path)
@@ -283,19 +278,16 @@ export default {
       const targetElement = document.getElementById(id)
       if (targetElement) {
         targetElement.scrollIntoView({ behavior: 'smooth' })
-        // 更新当前节点
         currentNodeKey.value = id
       }
     }
 
     const handleNodeClick = (data) => {
-      // 滚动到对应的锚点
       scrollToElement(data.id)
     }
 
     const handleMobileNodeClick = (data) => {
       showMobileToc.value = false
-      // 延迟执行滚动，确保抽屉关闭后再滚动
       setTimeout(() => {
         scrollToElement(data.id)
       }, 300)
@@ -304,7 +296,6 @@ export default {
     // 打开桌面端页面导航抽屉
     const openDesktopPageNavigation = () => {
       showDesktopPageNav.value = true
-      // 确保抽屉内的组件也打开
       setTimeout(() => {
         if (desktopPageNavDrawer.value) {
           desktopPageNavDrawer.value.openDrawer()
@@ -315,7 +306,6 @@ export default {
     // 打开移动端页面导航抽屉
     const openMobilePageNavigation = () => {
       showMobilePageNav.value = true
-      // 确保抽屉内的组件也打开
       setTimeout(() => {
         if (mobilePageNavDrawer.value) {
           mobilePageNavDrawer.value.openDrawer()
@@ -344,7 +334,6 @@ export default {
         anchorWidth.value = rect.width
         headerHeight.value = headerRect.height
 
-        // 获取导航栏高度作为偏移量
         anchorOffset.value = parseInt(getComputedStyle(document.documentElement)
             .getPropertyValue('--navbar-height'), 10) || 60
       }
@@ -359,15 +348,12 @@ export default {
 
       if (!anchorWrapper || !anchorHeader) return
 
-      // 获取导航栏高度
       const navbarHeight = parseInt(getComputedStyle(document.documentElement)
           .getPropertyValue('--navbar-height'), 10) || 60
-
       // 当页面滚动超过侧边栏原始位置时，固定侧边栏
       isAnchorFixed.value = window.scrollY >= anchorTop.value - navbarHeight
-
       // 当页面滚动超过目录标题位置时，固定目录标题
-      const headerTop = anchorTop.value + 24 // 24px是anchor-wrapper的padding-top
+      const headerTop = anchorTop.value + 24
       isHeaderFixed.value = window.scrollY >= headerTop - navbarHeight
     }
 
@@ -442,7 +428,6 @@ export default {
       // 等待DOM渲染完成后获取位置信息
       setTimeout(() => {
         updateAnchorPosition()
-        // 初始化检测当前章节
         detectCurrentSection()
       }, 100)
     })
@@ -467,7 +452,7 @@ export default {
       isMobile,
       showMobileToc,
       showMobilePageNav,
-      showDesktopPageNav, // 添加这个返回值
+      showDesktopPageNav,
       isAnchorFixed,
       isHeaderFixed,
       fixedAnchorStyle,
@@ -626,18 +611,15 @@ export default {
 }
 
 .scroll-container {
-  height: calc(100vh - 70px); /* 减去 footer 高度 */
+  height: calc(100vh - 70px);
   overflow-y: auto;
   padding: 30px 40px;
   box-sizing: border-box;
   background-color: #ffffff;
-
-  /* 隐藏滚动条 - Webkit浏览器 */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* 隐藏Webkit浏览器滚动条 */
 .scroll-container::-webkit-scrollbar {
   display: none;
 }
@@ -663,7 +645,6 @@ export default {
   letter-spacing: -0.02em;
 }
 
-/* 章节标题样式 */
 .section {
   padding: 20px 0;
 }
@@ -780,13 +761,12 @@ export default {
   text-align: center;
   padding: 20px;
   border-top: 1px solid var(--color-border);
-  /* 移除固定定位相关样式 */
   position: relative;
   bottom: auto;
   left: auto;
   right: auto;
   width: auto;
-  height: auto; /* 改为 auto，让高度根据内容自适应 */
+  height: auto;
   box-shadow: none;
   z-index: auto;
   margin-top: 20px;
@@ -869,13 +849,13 @@ export default {
   padding: 40px 20px 20px;
   border-top: 1px solid var(--color-border);
   margin-top: 20px;
-  position: relative; /* 移除 fixed 定位 */
-  bottom: auto; /* 重置底部定位 */
+  position: relative;
+  bottom: auto;
   left: auto;
   right: auto;
-  background-color: transparent; /* 移除背景色 */
-  box-shadow: none; /* 移除阴影 */
-  z-index: auto; /* 重置层级 */
+  background-color: transparent;
+  box-shadow: none;
+  z-index: auto;
 }
 
 .nav-button {

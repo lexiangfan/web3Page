@@ -1,4 +1,3 @@
-<!-- src/components/PageNavigationDrawer.vue -->
 <template>
   <div class="page-navigation">
     <!-- 页面导航按钮 (仅在桌面端显示，且作为独立组件使用时) -->
@@ -22,7 +21,6 @@
         @closed="handleDrawerClosed"
     >
       <div class="page-nav-content">
-        <!-- 页面列表 -->
         <div class="pages-section">
           <h3 class="section-title">页面列表</h3>
           <el-menu
@@ -91,9 +89,8 @@
       </div>
     </div>
 
-    <!-- 桌面端嵌入模式 (在ContentPageTemplate中使用时) -->
+    <!-- 桌面端嵌入模式 (在ContentPageTemplate中使用) -->
     <div v-else class="desktop-embedded-content">
-      <!-- 页面列表 -->
       <div class="pages-section">
         <h3 class="section-title">页面列表</h3>
         <el-menu
@@ -136,9 +133,7 @@ import { Menu, Document } from '@element-plus/icons-vue'
 import pageService from '@/services/pageService.js'
 import searchService from "@/services/searchService.js";
 
-// 定义组件属性
 const props = defineProps({
-  // 控制是否显示切换按钮 (用于独立使用组件时)
   showToggleButton: {
     type: Boolean,
     default: true
@@ -152,16 +147,13 @@ const pages = ref([])
 const currentContent = ref([])
 const isMobileView = ref(false)
 
-// 树形控件属性
 const treeProps = {
   label: 'label',
   children: 'children'
 }
 
-// 当前激活的页面
 const activePage = computed(() => route.path)
 
-// 锚点树形数据
 const anchorTreeData = computed(() => {
   return currentContent.value.map(chapter => ({
     id: chapter.id,
@@ -190,10 +182,8 @@ const handleDrawerClosed = () => {
 
 // 打开抽屉
 const openDrawer = () => {
-  // 强制重新检查设备类型，确保在窗口大小改变后正确显示
   checkIsMobile()
 
-  // 使用 nextTick 确保 DOM 更新后再显示抽屉
   nextTick(() => {
     drawerVisible.value = true
   })
@@ -203,7 +193,6 @@ const openDrawer = () => {
 const handlePageSelect = async (path) => {
   drawerVisible.value = false
   await router.push(path)
-  // 更新当前页面内容
   await updateCurrentContent(path)
 }
 
@@ -213,7 +202,6 @@ const handleAnchorClick = (data) => {
   const element = document.getElementById(data.id)
   if (element) {
     element.scrollIntoView({ behavior: 'smooth' })
-    // 在移动端，点击后不需要关闭抽屉，因为没有抽屉
     if (!isMobileView.value) {
       drawerVisible.value = false
     }
@@ -358,7 +346,6 @@ defineExpose({
   color: var(--color-primary);
 }
 
-/* 桌面端抽屉样式优化 */
 :deep(.page-navigation-drawer .el-drawer__header) {
   margin-bottom: 0;
   padding: 16px 24px;
@@ -404,7 +391,6 @@ defineExpose({
   background-color: rgba(37, 99, 235, 0.15);
 }
 
-/* 桌面端适配 */
 @media (max-width: 768px) {
   :deep(.page-navigation-drawer .el-drawer__body) {
     padding: 12px 16px;

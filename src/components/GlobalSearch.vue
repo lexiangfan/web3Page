@@ -1,4 +1,3 @@
-<!-- src/components/GlobalSearch.vue -->
 <template>
   <div class="global-search" ref="searchContainerRef">
     <el-input
@@ -79,7 +78,7 @@ export default {
 
       const rect = searchContainerRef.value.getBoundingClientRect();
 
-      // 移动端适配 - 横向铺满屏幕
+      // 移动端适配
       if (windowWidth.value <= 768) {
         return {
           position: 'fixed',
@@ -91,7 +90,7 @@ export default {
         }
       }
 
-      // 中等及以上屏幕 - 宽度与搜索框保持一致
+      // 中等及以上屏幕
       return {
         position: 'fixed',
         top: rect.bottom + 8 + 'px',
@@ -305,7 +304,6 @@ export default {
   box-sizing: border-box;
 }
 
-/* 移动端适配 */
 @media (max-width: 768px) {
   .global-search {
     max-width: 200px;
@@ -358,7 +356,7 @@ export default {
 
 @media (max-width: 400px) {
   .global-search {
-    max-width: 130px; /* 在超小屏幕上设置合适的最大宽度 */
+    max-width: 130px;
     min-width: 110px;
   }
 

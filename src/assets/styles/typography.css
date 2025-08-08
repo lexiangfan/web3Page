@@ -1,5 +1,4 @@
-/* src/assets/styles/typography.css */
-/* 标题样式 - 优化后的标题样式 */
+/* 标题样式 */
 .title-xxxl {
     font-size: var(--font-size-xxxl);
     font-weight: 800;
@@ -35,7 +34,7 @@
     letter-spacing: -0.005em;
 }
 
-/* 正文样式 - 优化后的正文样式 */
+/* 正文样式 */
 .body-lg {
     font-size: var(--font-size-lg);
     line-height: 1.6;
