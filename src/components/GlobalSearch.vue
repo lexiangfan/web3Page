@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted} from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import searchService from '@/services/searchService.js'
 import router from '@/router/router.js'

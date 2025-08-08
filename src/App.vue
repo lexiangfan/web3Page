@@ -1,4 +1,3 @@
-<!-- src/App.vue (删除文档菜单版) -->
 <template>
   <div id="app">
     <el-menu
@@ -17,7 +16,6 @@
           </el-menu-item>
         </div>
 
-        <!-- 删除了文档下拉菜单 -->
         <div class="navbar-center" :class="{ 'hidden-mobile': isMobileMenuCollapsed }">
           <el-menu-item index="1">首页</el-menu-item>
           <el-menu-item index="2">关于我们</el-menu-item>
@@ -35,7 +33,7 @@
               imKey
             </el-button>
           </el-menu-item>
-          <!-- 移动端菜单按钮 -->
+
           <el-menu-item class="mobile-menu-toggle" @click="toggleMobileMenu">
             <el-icon><expand v-if="isMobileMenuCollapsed" /><fold v-else /></el-icon>
           </el-menu-item>
@@ -73,7 +71,6 @@ const handleSelect = (key) => {
       break
   }
   activeIndex.value = key
-  // 在移动端选择后关闭菜单
   if (window.innerWidth <= 768) {
     isMobileMenuCollapsed.value = true
   }
@@ -84,7 +81,6 @@ const goToImKey = () => {
 }
 
 const initializeContent = () => {
-  // 递归展平所有内容以便搜索
   const flattenContents = (contents) => {
     let result = []
     contents.forEach(item => {
@@ -109,7 +105,6 @@ const initializeContent = () => {
   });
 }
 
-// 切换移动端菜单
 const toggleMobileMenu = () => {
   isMobileMenuCollapsed.value = !isMobileMenuCollapsed.value
 }
@@ -198,7 +193,6 @@ onMounted(() => {
   display: none !important;
 }
 
-/* 通用菜单项样式 */
 :deep(.navbar .el-menu-item) {
   color: var(--color-text-secondary) !important;
   font-size: var(--font-size-base);
@@ -218,7 +212,6 @@ onMounted(() => {
   color: var(--color-primary) !important;
 }
 
-/* 子菜单标题样式 */
 :deep(.navbar .el-sub-menu__title) {
   color: var(--color-text-secondary) !important;
   font-size: var(--font-size-base);
@@ -237,7 +230,6 @@ onMounted(() => {
   color: var(--color-primary) !important;
 }
 
-/* 激活状态的菜单项 */
 :deep(.el-menu--horizontal > .el-menu-item.is-active) {
   background: var(--color-primary) !important;
   color: white !important;
@@ -265,7 +257,6 @@ onMounted(() => {
   color: var(--color-primary) !important;
 }
 
-/* 全局搜索样式覆盖 */
 :deep(.global-search .el-input__wrapper) {
   background: var(--color-surface) !important;
   border-radius: var(--border-radius-large) !important;
@@ -293,7 +284,6 @@ onMounted(() => {
   color: var(--color-text-muted) !important;
 }
 
-/* 移动端适配 */
 @media (max-width: 768px) {
   .content-area {
     min-height: calc(100vh - var(--navbar-height));
@@ -345,7 +335,6 @@ onMounted(() => {
     display: flex;
   }
 
-  /* 在小屏幕上将搜索框移到中间 */
   .navbar-search {
     position: absolute;
     left: 50%;
@@ -371,7 +360,6 @@ onMounted(() => {
     min-width: 40px;
   }
 
-  /* 在移动端实现 logo 左对齐，其他元素右对齐的效果 */
   .navbar-left {
     margin-right: auto;
     flex-shrink: 0;
@@ -395,7 +383,6 @@ onMounted(() => {
     padding: 5px 8px !important;
   }
 
-  /* 在移动端隐藏GitHub菜单项 */
   .github-item {
     display: none !important;
   }
@@ -412,16 +399,14 @@ onMounted(() => {
   }
 
   .navbar-center {
-    padding: 8px; /* 减小内边距 */
+    padding: 8px;
     margin: 0;
-    box-shadow: var(--shadow-base); /* 调整阴影 */
-    /* 确保没有顶部边距 */
-    top: var(--navbar-height); /* 确保紧贴导航栏底部 */
+    box-shadow: var(--shadow-base);
+    top: var(--navbar-height);
   }
 
-  /* 菜单项样式优化 */
   :deep(.navbar-center .el-menu-item) {
-    margin: 1px 0; /* 减小菜单项间距 */
+    margin: 1px 0;
     width: 100%;
   }
 
@@ -447,13 +432,11 @@ onMounted(() => {
     margin-left: 1px;
   }
 
-  /* 确保GitHub项隐藏 */
   .github-item {
     display: none !important;
   }
 }
 
-/* 超小屏幕适配 */
 @media (max-width: 400px) {
   .navbar-search {
     width: 120px;

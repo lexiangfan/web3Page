@@ -1,4 +1,4 @@
-// src/router/router.js
+//这边需要添加page页面路由
 import {createRouter, createWebHashHistory} from "vue-router"
 import Home from '@/views/Home.vue'
 import Page from "@/views/page.vue";

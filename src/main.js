@@ -1,4 +1,3 @@
-// src/main.js (增强版本)
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'

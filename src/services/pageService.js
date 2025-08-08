@@ -1,4 +1,4 @@
-// src/services/pageService.js
+// 这边需要增加page路由，按顺序来
 class PageService {
     constructor() {
         // 初始化默认页面
