@@ -12,28 +12,33 @@ class ContentManager {
     }
 
     // 添加新内容
-    addContent(content) {
+    addContent(content, pagePath = '/Page') {
         // 确保内容有唯一ID
         if (!content.id) {
             content.id = 'content-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11)
         }
 
+        // 添加页面路径信息
+        content.pagePath = pagePath;
+
         this.contents.push(content)
-        searchService.addContent(content)
+        searchService.addContent(content, pagePath)
         return content.id
     }
 
     // 批量添加内容
-    addContents(contents) {
+    addContents(contents, pagePath = '/Page') {
         const newContents = contents.map(content => {
             if (!content.id) {
                 content.id = 'content-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11)
             }
+            // 添加页面路径信息
+            content.pagePath = pagePath;
             return content
         })
 
         this.contents.push(...newContents)
-        searchService.addContents(newContents)
+        searchService.addContents(newContents, pagePath)
         return newContents.map(c => c.id)
     }
 

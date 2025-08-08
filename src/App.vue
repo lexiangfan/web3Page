@@ -45,6 +45,7 @@
   </div>
 </template>
 
+// App.vue
 <script setup>
 import { ref, onMounted } from 'vue'
 import { Expand, Fold } from '@element-plus/icons-vue'
@@ -52,8 +53,8 @@ import router from '@/router/router'
 import '@/assets/styles/global.css'
 import GlobalSearch from '@/components/GlobalSearch.vue'
 import contentManager from '@/services/contentManager.js'
-import pageContents from '@/utils/page.js'
-import searchService from "@/services/searchService.js";
+import searchService from "@/services/searchService.js"
+import contentLoader from "@/services/contentLoader.js"
 
 const activeIndex = ref('1')
 const isMobileMenuCollapsed = ref(true)
@@ -80,29 +81,34 @@ const goToImKey = () => {
   window.open('https://imkey.im', '_blank')
 }
 
-const initializeContent = () => {
-  const flattenContents = (contents) => {
-    let result = []
-    contents.forEach(item => {
-      result.push(item)
-      if (item.children && Array.isArray(item.children)) {
-        result = result.concat(flattenContents(item.children))
-      }
-    })
-    return result
+// 初始化内容 - 改进版本
+const initializeContent = async () => {
+  try {
+    // 递归展平所有内容以便搜索
+    const flattenContents = (contents) => {
+      let result = []
+      contents.forEach(item => {
+        result.push(item)
+        if (item.children && Array.isArray(item.children)) {
+          result = result.concat(flattenContents(item.children))
+        }
+      })
+      return result
+    }
+
+    // 加载所有页面内容并初始化搜索索引
+    const allPageContents = await contentLoader.loadAllPageContents();
+    searchService.initializeAllContents(allPageContents);
+
+    // 初始化内容管理器（主要用于默认页面）
+    const defaultPageContent = allPageContents['/Page']?.content || [];
+    const allContents = flattenContents(defaultPageContent);
+    contentManager.initializeContents(allContents);
+
+    console.log('Successfully initialized all content for search');
+  } catch (error) {
+    console.error('Failed to initialize content:', error);
   }
-
-  // 1. 索引默认页面内容
-  const allContents = flattenContents(pageContents);
-  contentManager.initializeContents(allContents);
-
-  // 2. 额外索引其他已知页面（如newPage）
-  import('@/utils/page1.js').then(module => {
-    const newPageContents = module.default;
-    searchService.addContents(flattenContents(newPageContents), '/page1');
-  }).catch(() => {
-    console.log('No newPage content found, skipping');
-  });
 }
 
 const toggleMobileMenu = () => {
@@ -113,6 +119,7 @@ onMounted(() => {
   initializeContent()
 })
 </script>
+
 
 <style scoped>
 #app {

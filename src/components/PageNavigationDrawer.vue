@@ -126,12 +126,14 @@
   </div>
 </template>
 
+// components/PageNavigationDrawer.vue
 <script setup>
 import {computed, nextTick, onMounted, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import {Document, Menu} from '@element-plus/icons-vue'
 import pageService from '@/services/pageService.js'
 import searchService from "@/services/searchService.js";
+import contentLoader from "@/services/contentLoader.js";
 
 const props = defineProps({
   showToggleButton: {
@@ -212,29 +214,17 @@ const handleAnchorClick = (data) => {
 // 更新当前页面内容
 const updateCurrentContent = async (path) => {
   try {
-    // 根据路径动态导入对应的内容文件
-    let contentModule;
-    contentModule = await import('@/utils/page.js')
-    currentContent.value = contentModule.default || contentModule.pageContents
+    // 使用内容加载服务加载页面内容
+    const result = await contentLoader.loadPageContent(path);
 
-    const pageName = path.substring(1) // 移除开头的 '/'
-    try {
-      contentModule = await import(`@/utils/${pageName}Content.js`)
-      currentContent.value = contentModule.default
-    } catch (e) {
-      // 如果特定内容文件不存在，尝试默认命名
-      try {
-        contentModule = await import(`@/utils/${pageName}.js`)
-        currentContent.value = contentModule.default
-      } catch (e2) {
-        currentContent.value = []
-      }
+    if (result && result.content) {
+      currentContent.value = Array.isArray(result.content) ? result.content : [result.content];
+
+      // 确保内容被添加到搜索索引
+      searchService.addContents(currentContent.value, path, result.title);
+    } else {
+      currentContent.value = [];
     }
-    // 动态导入内容后，自动添加到搜索索引
-    currentContent.value = contentModule.default || contentModule.newPageContents;
-    // 关键：调用批量添加方法，自动处理子内容
-    searchService.addContents(currentContent.value);
-
   } catch (error) {
     console.error('Failed to load content for path:', path, error)
     currentContent.value = []
@@ -268,6 +258,7 @@ defineExpose({
   openDrawer
 })
 </script>
+
 
 <style scoped>
 .nav-toggle-button {

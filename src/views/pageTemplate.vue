@@ -1,17 +1,12 @@
-<!--页面模板-->
 <template>
   <ContentPageTemplate :content-data="pageContents" />
 </template>
 
 <script>
-//导入vue初始化 （不可删）
 import {onMounted, ref} from 'vue'
-// 页面内容数据 需要自己引入
 import pageContents from '@/utils/pageTemplate.js'
-//导入内容样式模板 （不可删）
 import ContentPageTemplate from '@/components/ContentPageTemplate.vue'
-//导入搜索引擎服务（不可删）
-import searchService from "@/services/searchService.js";
+import searchService from "@/services/searchService.js"
 
 export default {
   name: 'pageTemplate',
@@ -19,12 +14,12 @@ export default {
     ContentPageTemplate
   },
   setup() {
-    // 如果需要对内容进行特殊处理，可以在这里进行
     const processedContents = ref(pageContents)
 
     // 在组件挂载时将内容添加到搜索索引
     onMounted(() => {
-      searchService.addContents(pageContents,'/pageTemplate')//这边是路径引用，需要修改
+      // 使用统一的路径格式
+      searchService.addContents(pageContents, '/pageTemplate', '页面标题')
     })
 
     return {
@@ -34,6 +29,7 @@ export default {
 }
 </script>
 
+
 <style scoped>
-/* 如果需要特定的样式覆盖，可以在这里添加 */
+
 </style>

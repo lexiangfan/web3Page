@@ -6,7 +6,7 @@
 import {onMounted, ref} from 'vue'
 import pageContents from '@/utils/page.js'
 import ContentPageTemplate from '@/components/ContentPageTemplate.vue'
-import searchService from "@/services/searchService.js";
+import searchService from "@/services/searchService.js"
 
 export default {
   name: 'Page',
@@ -15,8 +15,11 @@ export default {
   },
   setup() {
     const processedContents = ref(pageContents)
+
+    // 在组件挂载时将内容添加到搜索索引
     onMounted(() => {
-      searchService.addContents(pageContents,'/Page')
+      // 使用统一的路径格式
+      searchService.addContents(pageContents, '/Page','Web3 内容第一章')
     })
 
     return {
@@ -25,6 +28,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 
