@@ -60,8 +60,7 @@ class SearchService {
     // 获取页面标题
     getPageTitle(path) {
         const pageTitles = {
-            '/': 'Web3 入门必看',
-            '/Page': 'Web3 内容第一章',
+            '/page': 'Web3 内容第一章',
             '/page1': '内容第二章',
             '/page2': '内容第三章',
         };

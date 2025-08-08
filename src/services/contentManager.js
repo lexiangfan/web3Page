@@ -12,7 +12,7 @@ class ContentManager {
     }
 
     // 添加新内容
-    addContent(content, pagePath = '/Page') {
+    addContent(content, pagePath = '/page') {
         // 确保内容有唯一ID
         if (!content.id) {
             content.id = 'content-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11)
@@ -27,7 +27,7 @@ class ContentManager {
     }
 
     // 批量添加内容
-    addContents(contents, pagePath = '/Page') {
+    addContents(contents, pagePath = '/page') {
         const newContents = contents.map(content => {
             if (!content.id) {
                 content.id = 'content-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11)

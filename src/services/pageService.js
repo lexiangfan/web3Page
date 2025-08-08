@@ -14,7 +14,7 @@ class PageService {
             {
                 id: 'page',
                 title: '第一章',
-                path: '/Page',
+                path: '/page',
                 meta: {
                     title: 'Web3 内容第一章'
                 }
@@ -104,7 +104,7 @@ class PageService {
     // 发现页面关联的内容文件
     discoverPageContent(pagePath) {
         const contentMap = {
-            '/Page': '@/utils/page.js',
+            '/page': '@/utils/page.js',
             '/page1': '@/utils/page1.js',
             '/page2': '@/utils/page2.js'
         }

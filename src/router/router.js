@@ -1,7 +1,7 @@
 //这边需要添加page页面路由
 import {createRouter, createWebHashHistory} from "vue-router"
 import Home from '@/views/Home.vue'
-import Page from "@/views/page.vue";
+import page from "@/views/page.vue";
 import page1 from "@/views/page1.vue";
 import page2 from "@/views/page2.vue";
 import About from "@/views/About.vue";
@@ -17,9 +17,9 @@ const routes = [
     }
   },
   {
-    path:'/Page',
-    name:'Page',
-    component: Page,
+    path:'/page',
+    name:'page',
+    component: page,
     meta: {
       title: 'Web3 内容第一章'
     }
@@ -63,7 +63,6 @@ router.afterEach(async (to) => {
 
     const contentModules = {
       'page': () => import('@/utils/page.js'),
-      'Page': () => import('@/utils/page.js'),
       'page1': () => import('@/utils/page1.js'),
       'page2': () => import('@/utils/page2.js'),
     };

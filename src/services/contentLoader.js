@@ -3,16 +3,14 @@ class ContentLoader {
     constructor() {
         // 定义页面内容映射关系
         this.pageContentMap = {
-            '/': () => import('@/utils/page.js'),
-            '/Page': () => import('@/utils/page.js'),
+            '/page': () => import('@/utils/page.js'),
             '/page1': () => import('@/utils/page1.js'),
             '/page2': () => import('@/utils/page2.js'),
         };
 
         // 页面标题映射
         this.pageTitles = {
-            '/': 'Web3 入门必看',
-            '/Page': 'Web3 内容第一章',
+            '/page': 'Web3 内容第一章',
             '/page1': '内容第二章',
             '/page2': '内容第三章',
         };
