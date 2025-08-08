@@ -9,7 +9,7 @@ import ContentPageTemplate from '@/components/ContentPageTemplate.vue'
 import searchService from "@/services/searchService.js"
 
 export default {
-  name: 'Page',
+  name: 'page',
   components: {
     ContentPageTemplate
   },
@@ -19,7 +19,7 @@ export default {
     // 在组件挂载时将内容添加到搜索索引
     onMounted(() => {
       // 使用统一的路径格式
-      searchService.addContents(pageContents, '/Page','Web3 内容第一章')
+      searchService.addContents(pageContents, '/page','Web3 内容第一章')
     })
 
     return {

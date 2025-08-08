@@ -131,7 +131,7 @@ const features = ref([
 ])
 
 const startLearning = () => {
-  router.push('/Page')
+  router.push('/page')
 }
 
 const goToImKey = () => {
