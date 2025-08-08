@@ -1,7 +1,5 @@
-<!-- src/views/Home.vue -->
 <template>
   <div class="home-container">
-    <!-- Hero Section -->
     <section class="hero-section">
       <div class="hero-content">
         <div class="hero-badge animate__animated animate__fadeInUp">
@@ -74,7 +72,6 @@
 <!--      </div>-->
 <!--    </section>-->
 
-    <!-- Features Section -->
     <section class="features-section">
       <div class="section-header">
         <h2>为什么选择我们</h2>
@@ -149,7 +146,6 @@ const goToImKey = () => {
   overflow-x: hidden;
 }
 
-/* Hero Section */
 .hero-section {
   display: flex;
   align-items: center;
@@ -396,7 +392,6 @@ const goToImKey = () => {
   animation: float 8s infinite ease-in-out 2s;
 }
 
-/* Stats Section */
 .stats-section {
   padding: 80px 24px;
   background: white;
@@ -435,7 +430,6 @@ const goToImKey = () => {
   font-weight: 500;
 }
 
-/* Features Section */
 .features-section {
   padding: 80px 24px;
   max-width: 1400px;
@@ -510,7 +504,6 @@ const goToImKey = () => {
   line-height: 1.6;
 }
 
-/* 响应式设计 */
 @media (max-width: 992px) {
   .hero-description {
     margin-left: auto;
