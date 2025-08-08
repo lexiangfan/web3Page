@@ -1,4 +1,3 @@
-// src/utils/newPageContent.js
 export const newPageContents = [
     {
         id: 'new-chapter1',

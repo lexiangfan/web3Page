@@ -1,4 +1,3 @@
-// src/utils/page.js
 export const pageContents = [
     {
         id: 'chapter1',
