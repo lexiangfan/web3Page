@@ -660,6 +660,12 @@ export default {
   overflow-y: auto;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
 }
 
 .content-part {

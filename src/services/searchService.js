@@ -35,19 +35,52 @@ class SearchService {
             return this.searchCache.get(cacheKey)
         }
 
-        const term = query.toLowerCase()
+        const terms = query.toLowerCase().split(/\s+/).filter(term => term.length > 0)
+
         const results = this.contentIndex
-            .filter(item => item.searchableText.includes(term))
+            .filter(item => {
+                // 使用所有搜索词进行匹配（AND逻辑）
+                return terms.every(term => item.searchableText.includes(term))
+            })
             .map(item => {
-                const preview = this.generatePreview(item.content || '', term)
+                const preview = this.generatePreview(item.content || '', query)
+                // 添加相关性评分
+                const score = this.calculateRelevanceScore(item, terms)
                 return {
                     ...item,
-                    preview
+                    preview,
+                    score
                 }
             })
+            // 按相关性排序
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 10) // 限制返回结果数量
 
         this.searchCache.set(cacheKey, results)
         return results
+    }
+
+// 计算相关性评分
+    calculateRelevanceScore(item, terms) {
+        let score = 0
+        const text = item.searchableText
+
+        terms.forEach(term => {
+            // 标题匹配权重更高
+            const titleMatches = (item.title.toLowerCase().match(new RegExp(term, 'g')) || []).length
+            score += titleMatches * 10
+
+            // 内容匹配
+            const contentMatches = (text.match(new RegExp(term, 'g')) || []).length
+            score += contentMatches
+
+            // 精确匹配加分
+            if (text.includes(term)) {
+                score += 5
+            }
+        })
+
+        return score
     }
 
     generatePreview(content, term) {

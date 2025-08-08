@@ -3,6 +3,7 @@ import {createRouter, createWebHashHistory} from "vue-router"
 import Home from '@/views/Home.vue'
 import Page from "@/views/page.vue";
 import page1 from "@/views/page1.vue";
+import page2 from "@/views/page2.vue";
 import About from "@/views/About.vue";
 import searchService from "@/services/searchService.js";
 
@@ -29,6 +30,14 @@ const routes = [
     component: page1,
     meta: {
       title: '内容第二章'
+    }
+  },
+  {
+    path:'/page2',
+    name:'page2',
+    component: page2,
+    meta: {
+      title: '内容第三章'
     }
   },
   {

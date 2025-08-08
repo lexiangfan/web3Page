@@ -28,6 +28,14 @@ class PageService {
                 }
             },
             {
+                id: 'page2',
+                title: '第三章',
+                path: '/page2',
+                meta: {
+                    title: '内容第三章'
+                }
+            },
+            {
                 id: 'about',
                 title: '关于我们',
                 path: '/about',
@@ -97,7 +105,8 @@ class PageService {
     discoverPageContent(pagePath) {
         const contentMap = {
             '/Page': '@/utils/page.js',
-            '/newPage': '@/utils/page1.js'
+            '/page1': '@/utils/page1.js',
+            '/page2': '@/utils/page2.js'
         }
 
         return contentMap[pagePath] || null
