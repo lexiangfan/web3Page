@@ -127,9 +127,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { Menu, Document } from '@element-plus/icons-vue'
+import {computed, nextTick, onMounted, ref, watch} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
+import {Document, Menu} from '@element-plus/icons-vue'
 import pageService from '@/services/pageService.js'
 import searchService from "@/services/searchService.js";
 
@@ -149,10 +149,11 @@ const isMobileView = ref(false)
 
 const treeProps = {
   label: 'label',
-  children: 'children'
+  children: 'children',
 }
 
-const activePage = computed(() => route.path)
+const {path: path1} = route;
+const activePage = computed(() => path1)
 
 const anchorTreeData = computed(() => {
   return currentContent.value.map(chapter => ({
@@ -246,7 +247,7 @@ const initPages = () => {
 }
 
 // 监听路由变化
-watch(() => route.path, async (newPath) => {
+watch(() => path1, async (newPath) => {
   await updateCurrentContent(newPath)
 })
 
@@ -254,7 +255,7 @@ onMounted(async () => {
   checkIsMobile()
   window.addEventListener('resize', handleResize)
   initPages()
-  await updateCurrentContent(route.path)
+  await updateCurrentContent(path1)
 
   // 订阅页面服务变化
   pageService.subscribe((updatedPages) => {

@@ -71,7 +71,7 @@ export default {
     }
 
     const addContent = () => {
-      if (newContent.value.title.trim() && newContent.value.content.trim()) {
+      if ((newContent.value.title || '').trim() && (newContent.value.content || '').trim()) {
         // 生成唯一ID（确保与现有内容不重复）
         const newItem = {
           id: 'custom-' + Date.now(),
@@ -102,7 +102,6 @@ export default {
 
     onMounted(() => {
       updateContents()
-      contentManager.subscribe(updateContents)
     })
 
     return {

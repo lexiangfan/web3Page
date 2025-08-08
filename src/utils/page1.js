@@ -1,4 +1,4 @@
-export const newPageContents = [
+export const page1 = [
     {
         id: 'new-chapter1',
         title: '新页面第一章',
@@ -52,4 +52,4 @@ export const newPageContents = [
     }
 ];
 
-export default newPageContents;
+export default page1;

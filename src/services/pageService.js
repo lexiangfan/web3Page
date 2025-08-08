@@ -13,18 +13,18 @@ class PageService {
             },
             {
                 id: 'page',
-                title: '文档',
+                title: '第一章',
                 path: '/Page',
                 meta: {
-                    title: 'Web3 内容页面'
+                    title: 'Web3 内容第一章'
                 }
             },
             {
-                id: 'newPage',
-                title: '新页面',
-                path: '/newPage',
+                id: 'page1',
+                title: '第二章',
+                path: '/page1',
                 meta: {
-                    title: '添加新页面'
+                    title: '内容第二章'
                 }
             },
             {
@@ -97,7 +97,7 @@ class PageService {
     discoverPageContent(pagePath) {
         const contentMap = {
             '/Page': '@/utils/page.js',
-            '/newPage': '@/utils/newPageContent.js'
+            '/newPage': '@/utils/page1.js'
         }
 
         return contentMap[pagePath] || null

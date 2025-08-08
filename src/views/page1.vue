@@ -4,18 +4,18 @@
 
 <script>
 import ContentPageTemplate from '@/components/ContentPageTemplate.vue'
-import newPageContents from '@/utils/newPageContent.js'
+import newPageContents from '@/utils/page1.js'
 import searchService from "@/services/searchService.js";
 import { onMounted } from "vue";
 
 export default {
-  name: 'NewPage',
+  name: 'page1',
   components: {
     ContentPageTemplate
   },
   setup() {
     onMounted(() => {
-      searchService.addContents(newPageContents,'/newPage')
+      searchService.addContents(newPageContents,'/page1')
     })
     return {
       newPageContents

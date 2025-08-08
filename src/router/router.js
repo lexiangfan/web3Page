@@ -2,7 +2,7 @@
 import {createRouter, createWebHashHistory} from "vue-router"
 import Home from '@/views/Home.vue'
 import Page from "@/views/page.vue";
-import NewPage from "@/views/NewPage.vue";
+import page1 from "@/views/page1.vue";
 import About from "@/views/About.vue";
 import searchService from "@/services/searchService.js";
 
@@ -20,15 +20,15 @@ const routes = [
     name:'Page',
     component: Page,
     meta: {
-      title: 'Web3 内容页面'
+      title: 'Web3 内容第一章'
     }
   },
   {
-    path:'/newPage',
-    name:'NewPage',
-    component: NewPage,
+    path:'/page1',
+    name:'page1',
+    component: page1,
     meta: {
-      title: '添加新页面'
+      title: '内容第二章'
     }
   },
   {

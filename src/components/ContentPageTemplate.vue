@@ -30,7 +30,6 @@
               <el-tree
                   :data="treeData"
                   :props="treeProps"
-                  :default-expand-all="true"
                   node-key="id"
                   ref="treeRef"
                   @node-click="handleNodeClick"
@@ -63,6 +62,7 @@
                 class="content-part"
             >
               <h2>{{ chapter.title }}</h2>
+
               <div
                   v-for="section in chapter.children"
                   :key="section.id"
@@ -152,21 +152,31 @@
         <PageNavigationDrawer ref="mobilePageNavDrawer" />
       </el-drawer>
     </el-container>
+
+    <!-- 回到顶部按钮 -->
+    <div
+        v-if="showBackToTop"
+        class="back-to-top"
+        @click="scrollToTop"
+    >
+      <div class="progress-text">{{ readingProgress }}%</div>
+      <el-icon class="arrow-up-icon"><ArrowUp /></el-icon>
+    </div>
   </div>
 </template>
 
 
 <script>
-import { ref, computed, nextTick, onBeforeUnmount, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
-import { Collection, Menu } from '@element-plus/icons-vue'
+import {computed, nextTick, onBeforeUnmount, onMounted, ref} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
+import {ArrowLeft, ArrowRight, ArrowUp, Collection, Menu} from '@element-plus/icons-vue'
 import PageNavigationDrawer from "@/components/PageNavigationDrawer.vue"
 import pageService from '@/services/pageService.js'
 
 export default {
   name: 'ContentPageTemplate',
   components: {
+    ArrowUp,
     PageNavigationDrawer,
     Menu,
     Collection,
@@ -200,6 +210,8 @@ export default {
     const scrollTimeout = ref(null)
     const router = useRouter()
     const route = useRoute()
+    const readingProgress = ref(0)
+    const showBackToTop = ref(false)
 
     // 添加响应式数据
     const isMobileButtonsFixed = ref(false)
@@ -207,7 +219,7 @@ export default {
     const pages = computed(() => pageService.getPages())
     // 计算当前页面索引
     const currentPageIndex = computed(() => {
-      return pages.value.findIndex(page => page.path === route.path)
+      return pages.value.findIndex(page => page && page.path === route.path)
     })
 
     // 上一页
@@ -229,6 +241,31 @@ export default {
     // 跳转到指定页面
     const goToPage = (path) => {
       router.push(path)
+    }
+
+    // 计算阅读进度
+    const calculateReadingProgress = () => {
+      const {value} = containerRef;
+      const container = value
+      if (!container) return
+
+      const scrollTop = container.scrollTop
+      const scrollHeight = container.scrollHeight - container.clientHeight
+      const progress = Math.round((scrollTop / scrollHeight) * 100)
+
+      readingProgress.value = isNaN(progress) ? 0 : progress
+      showBackToTop.value = progress > 10
+    }
+
+    // 滚动到顶部
+    const scrollToTop = () => {
+      const {value} = containerRef;
+      if (value) {
+        value.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
+      }
     }
 
     // 构建树形数据结构
@@ -297,8 +334,9 @@ export default {
     const openDesktopPageNavigation = () => {
       showDesktopPageNav.value = true
       setTimeout(() => {
-        if (desktopPageNavDrawer.value) {
-          desktopPageNavDrawer.value.openDrawer()
+        const {value} = desktopPageNavDrawer;
+        if (value) {
+          value.openDrawer()
         }
       }, 100)
     }
@@ -307,8 +345,9 @@ export default {
     const openMobilePageNavigation = () => {
       showMobilePageNav.value = true
       setTimeout(() => {
-        if (mobilePageNavDrawer.value) {
-          mobilePageNavDrawer.value.openDrawer()
+        const {value} = mobilePageNavDrawer;
+        if (value) {
+          value.openDrawer()
         }
       }, 100)
     }
@@ -359,9 +398,13 @@ export default {
 
     // 处理内容区域滚动事件
     const handleContentScroll = () => {
+      // 添加进度计算
+      calculateReadingProgress()
+
       // 检查是否需要固定移动端按钮
-      if (isMobile.value && containerRef.value) {
-        const scrollTop = containerRef.value.scrollTop
+      const {value} = containerRef;
+      if (isMobile.value && value) {
+        const scrollTop = value.scrollTop
         // 当滚动超过一定距离时固定按钮
         isMobileButtonsFixed.value = scrollTop > 10
       }
@@ -378,7 +421,8 @@ export default {
 
     // 检测当前可视区域的章节
     const detectCurrentSection = () => {
-      const scrollContainer = containerRef.value
+      const {value} = containerRef;
+      const scrollContainer = value
       if (!scrollContainer) return
 
       const scrollTop = scrollContainer.scrollTop
@@ -387,12 +431,13 @@ export default {
       // 收集所有章节元素
       const sections = []
       pageContent.value.forEach(chapter => {
-        sections.push(chapter.id)
-        if (chapter.children) {
-          chapter.children.forEach(section => {
-            sections.push(section.id)
-          })
-        }
+        const {children, id} = chapter;
+        sections.push(id)
+        if (children) {
+          children.forEach(section => {
+                sections.push(section.id)
+              }
+          )}
       })
 
       // 查找当前可视区域的章节
@@ -407,11 +452,13 @@ export default {
             currentNodeKey.value = sectionId
             // 更新树节点的选中状态
             nextTick(() => {
-              if (treeRef.value) {
-                treeRef.value.setCurrentKey(sectionId)
+              const {value: value1} = treeRef;
+              if (value1) {
+                value1.setCurrentKey(sectionId)
               }
-              if (mobileTreeRef.value) {
-                mobileTreeRef.value.setCurrentKey(sectionId)
+              const {value: value2} = mobileTreeRef;
+              if (value2) {
+                value2.setCurrentKey(sectionId)
               }
             })
             break
@@ -419,6 +466,16 @@ export default {
         }
       }
     }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
 
     onMounted(() => {
       checkIsMobile()
@@ -429,7 +486,14 @@ export default {
       setTimeout(() => {
         updateAnchorPosition()
         detectCurrentSection()
+        // 初始化进度计算
+        calculateReadingProgress()
       }, 100)
+
+      nextTick(() => {
+        const contentParts = document.querySelectorAll('.content-part');
+        contentParts.forEach(part => observer.observe(part));
+      });
     })
 
     onBeforeUnmount(() => {
@@ -438,6 +502,8 @@ export default {
       if (scrollTimeout.value) {
         clearTimeout(scrollTimeout.value)
       }
+      const contentParts = document.querySelectorAll('.content-part');
+      contentParts.forEach(part => observer.unobserve(part));
     })
 
     return {
@@ -468,7 +534,10 @@ export default {
       prevPage,
       nextPage,
       goToPage,
-      isMobileButtonsFixed
+      isMobileButtonsFixed,
+      readingProgress,
+      showBackToTop,
+      scrollToTop
     }
   }
 }
@@ -547,30 +616,25 @@ export default {
 
 .anchor-tree {
   width: 100%;
-  border: none;
-  padding: 0 16px;
-  box-sizing: border-box;
   background: transparent;
 }
 
 :deep(.anchor-tree .el-tree-node) {
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 :deep(.anchor-tree .el-tree-node__content) {
   border-radius: var(--border-radius-small);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 10px 16px;
-  font-size: var(--font-size-sm);
+  padding: 12px 16px;
+  font-size: var(--font-size-base);
   color: var(--color-text-secondary);
   position: relative;
-  overflow: hidden;
 }
 
 :deep(.anchor-tree .el-tree-node__content:hover) {
   background-color: var(--color-surface);
   color: var(--color-primary);
-  transform: translateX(2px);
 }
 
 :deep(.anchor-tree .el-tree-node.is-current > .el-tree-node__content) {
@@ -586,42 +650,16 @@ export default {
 
 .content-main {
   padding: 0;
-  background-color: #ffffff;
-}
-
-.mobile-buttons {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 15px;
-  background-color: var(--color-background);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.mobile-nav-button,
-.mobile-toc-button {
-  cursor: pointer;
-  padding: 8px 16px;
-}
-
-.mobile-nav-button:hover,
-.mobile-toc-button:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
+  height: 100%;
+  position: relative;
 }
 
 .scroll-container {
-  height: calc(100vh - 70px);
+  height: calc(100vh - var(--navbar-height));
+  padding: 40px;
   overflow-y: auto;
-  padding: 30px 40px;
   box-sizing: border-box;
-  background-color: #ffffff;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.scroll-container::-webkit-scrollbar {
-  display: none;
+  scroll-behavior: smooth;
 }
 
 .content-part {
@@ -636,148 +674,232 @@ export default {
 }
 
 .content-part h2 {
-  color: var(--color-secondary);
-  margin-top: 0;
-  margin-bottom: 24px;
   font-size: var(--font-size-xxl);
+  margin-bottom: 24px;
+  color: var(--color-primary-dark);
   font-weight: 700;
   line-height: 1.3;
-  letter-spacing: -0.02em;
+  position: relative;
+  padding-left: 15px;
+}
+
+.content-part h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 80%;
+  background: var(--color-primary);
+  border-radius: 2px;
 }
 
 .section {
-  padding: 20px 0;
+  margin-bottom: 32px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
 }
 
 .section h3 {
-  color: var(--color-secondary);
+  font-size: var(--font-size-xl);
   margin-top: 32px;
   margin-bottom: 16px;
-  font-size: var(--font-size-xl);
+  color: var(--color-secondary);
   font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
+  border-left: 3px solid var(--color-primary);
+  padding-left: 12px;
 }
 
 .section h4 {
-  color: var(--color-secondary);
+  font-size: var(--font-size-lg);
   margin-top: 24px;
   margin-bottom: 12px;
-  font-size: var(--font-size-lg);
+  color: var(--color-secondary);
   font-weight: 600;
-  line-height: 1.5;
 }
 
-/* 段落样式 */
 .section p {
   font-size: var(--font-size-base);
-  line-height: 1.75;
-  color: var(--color-text);
   margin-bottom: 16px;
-  letter-spacing: 0.01em;
+  line-height: 1.8;
+  color: var(--color-text);
 }
 
-/* 列表样式 */
 .section ul,
 .section ol {
   margin-bottom: 24px;
   padding-left: 24px;
 }
 
-.section ul li,
-.section ol li {
+.section li {
   margin-bottom: 8px;
-  line-height: 1.75;
-  color: var(--color-text);
-  letter-spacing: 0.01em;
+  line-height: 1.8;
 }
 
-/* 代码块样式 */
-.section code {
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  background-color: var(--color-surface);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: var(--font-size-sm);
-  color: var(--color-accent);
-}
-
-/* 引用块样式 */
-.section blockquote {
-  border-left: 4px solid var(--color-primary);
-  padding: 8px 20px;
-  margin: 20px 0;
-  background-color: var(--color-surface);
-  border-radius: 0 var(--border-radius) var(--border-radius) 0;
-}
-
-.section blockquote p {
-  margin: 0;
-  color: var(--color-text-secondary);
-  font-style: italic;
-}
-
-/* 链接样式 */
 .section a {
   color: var(--color-primary);
   text-decoration: none;
-  border-bottom: 1px dotted var(--color-primary);
+  border-bottom: 1px dashed var(--color-primary);
   transition: var(--transition-base);
 }
 
 .section a:hover {
   color: var(--color-accent);
-  border-bottom-style: solid;
+  border-bottom-color: var(--color-accent);
 }
 
-/* 表格样式 */
-.section table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: var(--font-size-base);
-}
-
-.section table th,
-.section table td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.section table th {
-  background-color: var(--color-surface);
-  font-weight: 600;
-  color: var(--color-secondary);
-}
-
-.section table tr:hover {
-  background-color: var(--color-surface);
-}
-
-.page-footer {
-  background-color: var(--color-background);
-  color: var(--color-text-muted);
-  text-align: center;
-  padding: 20px;
-  border-top: 1px solid var(--color-border);
-  position: relative;
-  bottom: auto;
-  left: auto;
-  right: auto;
-  width: auto;
+.section img {
+  max-width: 100%;
   height: auto;
-  box-shadow: none;
-  z-index: auto;
+  border-radius: var(--border-radius);
+  margin: 16px 0;
+  box-shadow: var(--shadow-base);
+}
+
+.section code {
+  background-color: #f7fafc;
+  padding: 2px 6px;
+  border-radius: var(--border-radius-small);
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: var(--font-size-sm);
+  color: #e53e3e;
+}
+
+.section pre {
+  position: relative;
+  background-color: #2d3748;
+  border-radius: var(--border-radius);
+  padding: 16px;
+  overflow: auto;
+  margin: 16px 0;
+  box-shadow: var(--shadow-base);
+}
+
+.section blockquote {
+  border-left: 4px solid var(--color-primary);
+  padding: 20px 24px;
+  margin: 24px 0;
+  background-color: rgba(37, 99, 235, 0.05);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  position: relative;
+}
+
+.section blockquote::before {
+  content: " ";
+  font-size: 60px;
+  color: var(--color-primary);
+  opacity: 0.2;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  font-family: Georgia, serif;
+}
+
+.section blockquote p {
+  margin-bottom: 0;
+  color: var(--color-secondary);
+  font-style: italic;
+}
+
+.page-navigation {
+  padding: 40px 0 20px;
+  border-top: 1px solid var(--color-border);
   margin-top: 20px;
 }
 
-.page-footer p {
-  margin: 0;
+.nav-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-weight: 500;
+  transition: var(--transition-base);
+}
+
+.nav-button:hover {
+  background-color: var(--color-background);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.nav-button:active {
+  transform: translateY(0);
+}
+
+.prev-button {
+  justify-content: flex-start;
+}
+
+.next-button {
+  justify-content: flex-end;
+}
+
+.button-text {
+  flex: 1;
+  text-align: center;
+}
+
+.page-footer {
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 20px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
   font-size: var(--font-size-sm);
 }
 
-/* 桌面端页面导航抽屉样式 */
+/* 移动端按钮 */
+.mobile-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  transition: transform 0.3s ease;
+}
+
+.mobile-buttons.fixed {
+  position: fixed;
+  width: 100%;
+  top: var(--navbar-height);
+  left: 0;
+  box-shadow: var(--shadow-base);
+}
+
+.mobile-nav-button,
+.mobile-toc-button {
+  padding: 8px 16px;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-base);
+  flex: 1;
+  text-align: center;
+  margin: 0 5px;
+}
+
+.mobile-nav-button:hover,
+.mobile-toc-button:hover {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* 桌面端页面导航抽屉 */
 :deep(.desktop-page-nav-drawer .el-drawer__header) {
   margin-bottom: 0;
   padding: 16px 24px;
@@ -785,9 +907,8 @@ export default {
 }
 
 :deep(.desktop-page-nav-drawer .el-drawer__body) {
-  padding: 16px 24px;
+  padding: 0;
 }
-
 
 /* 移动端目录抽屉 */
 :deep(.mobile-toc-drawer .el-drawer__header) {
@@ -895,6 +1016,39 @@ export default {
   text-align: center;
 }
 
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-hover);
+  transition: var(--transition-base);
+  z-index: 100;
+}
+
+.back-to-top:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-3px);
+}
+
+.progress-text {
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.arrow-up-icon {
+  font-size: 18px;
+}
+
 /* 移动端适配 */
 @media (max-width: 768px) {
   .anchor-aside {
@@ -912,18 +1066,36 @@ export default {
   }
 
   .scroll-container {
-    height: calc(100vh - 70px);
     padding: 20px 15px;
   }
 
   .content-part {
-    padding: 0 0 30px;
-    margin-bottom: 30px;
+    padding: 0 0 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--color-border);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+  }
+
+  .content-part.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .content-part h2 {
     font-size: var(--font-size-xl);
     margin-bottom: 20px;
+    position: relative;
+    padding-left: 12px;
+  }
+
+  .content-part h2::before {
+    width: 3px;
+  }
+
+  .section {
+    margin-bottom: 24px;
   }
 
   .section h3 {
@@ -965,6 +1137,21 @@ export default {
 
   .button-text {
     font-size: var(--font-size-sm);
+  }
+
+  .back-to-top {
+    bottom: 80px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+
+  .progress-text {
+    font-size: 9px;
+  }
+
+  .arrow-up-icon {
+    font-size: 16px;
   }
 }
 
@@ -1024,5 +1211,28 @@ export default {
   .page-navigation {
     padding: 15px 5px;
   }
+}
+
+/* 暗色主题 */
+[data-theme="dark"] .section pre {
+  background-color: #1e293b;
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .section code {
+  background-color: #334155;
+  color: #f87171;
+}
+
+[data-theme="dark"] .section blockquote {
+  background-color: rgba(37, 99, 235, 0.15);
+}
+
+[data-theme="dark"] .nav-button,
+[data-theme="dark"] .mobile-nav-button,
+[data-theme="dark"] .mobile-toc-button {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 </style>

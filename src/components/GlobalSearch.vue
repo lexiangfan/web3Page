@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted} from 'vue'
-import { Search } from '@element-plus/icons-vue'
+import {computed, onMounted, onUnmounted, ref} from 'vue'
+import {Search} from '@element-plus/icons-vue'
 import searchService from '@/services/searchService.js'
 import router from '@/router/router.js'
 
@@ -65,8 +65,9 @@ export default {
     }
 
     // 计算搜索结果面板的位置和样式
+    const {value} = searchContainerRef;
     const searchResultsStyle = computed(() => {
-      if (!searchContainerRef.value) {
+      if (!value) {
         return {
           position: 'fixed',
           top: '60px',
@@ -76,7 +77,7 @@ export default {
         }
       }
 
-      const rect = searchContainerRef.value.getBoundingClientRect();
+      const rect = value.getBoundingClientRect();
 
       // 移动端适配
       if (windowWidth.value <= 768) {
@@ -102,15 +103,16 @@ export default {
 
     // 搜索方法
     const performSearch = () => {
-      if (!searchText.value.trim()) {
-        searchResults.value = []
-        showSearchResults.value = false
-        return
+      const text = searchText.value;
+      if (!text || typeof text !== 'string' || !text.trim()) {
+        searchResults.value = [];
+        showSearchResults.value = false;
+        return;
       }
 
-      searchResults.value = searchService.search(searchText.value)
-      showSearchResults.value = true
-    }
+      searchResults.value = searchService.search(text);
+      showSearchResults.value = true;
+    };
 
     // 清空搜索
     const clearSearch = () => {
@@ -157,7 +159,7 @@ export default {
 
     // 点击其他地方隐藏搜索结果
     const handleClickOutside = (event) => {
-      if (searchContainerRef.value && !searchContainerRef.value.contains(event.target)) {
+      if (value && !value.contains(event.target)) {
         showSearchResults.value = false
       }
     }

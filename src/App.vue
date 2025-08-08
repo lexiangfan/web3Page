@@ -97,10 +97,10 @@ const initializeContent = () => {
   contentManager.initializeContents(allContents);
 
   // 2. 额外索引其他已知页面（如newPage）
-  import('@/utils/newPageContent.js').then(module => {
-    const newPageContents = module.default || module.newPageContents;
-    searchService.addContents(flattenContents(newPageContents), '/newPage');
-  }).catch(err => {
+  import('@/utils/page1.js').then(module => {
+    const newPageContents = module.default;
+    searchService.addContents(flattenContents(newPageContents), '/page1');
+  }).catch(() => {
     console.log('No newPage content found, skipping');
   });
 }
