@@ -48,7 +48,7 @@ class PageService {
     addPage(page) {
         // 确保页面有唯一ID
         if (!page.id) {
-            page.id = 'page-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            page.id = 'page-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11);
         }
 
         this.pages.push(page);

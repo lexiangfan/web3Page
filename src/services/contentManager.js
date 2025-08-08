@@ -1,4 +1,3 @@
-// src/services/contentManager.js
 import searchService from './searchService.js'
 
 class ContentManager {
@@ -16,7 +15,7 @@ class ContentManager {
     addContent(content) {
         // 确保内容有唯一ID
         if (!content.id) {
-            content.id = 'content-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9)
+            content.id = 'content-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11)
         }
 
         this.contents.push(content)
@@ -28,7 +27,7 @@ class ContentManager {
     addContents(contents) {
         const newContents = contents.map(content => {
             if (!content.id) {
-                content.id = 'content-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9)
+                content.id = 'content-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11)
             }
             return content
         })

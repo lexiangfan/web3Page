@@ -1,4 +1,3 @@
-// src/services/searchService.js
 class SearchService {
     constructor() {
         this.contentIndex = []
@@ -6,13 +5,10 @@ class SearchService {
         this.searchCache = new Map()
     }
 
-    // 初始化内容索引
     initializeIndex(contents, pagePath = '/Page') {
         this.contentIndex = []
 
-        // 递归函数处理所有层级的内容
         const processContent = (content, pagePath) => {
-            // 只有包含实际内容的条目才加入索引
             if (content.content && content.content.trim() !== '') {
                 this.contentIndex.push({
                     ...content,
@@ -20,8 +16,6 @@ class SearchService {
                     searchableText: `${content.title} ${this.stripHtml(content.content || '')}`.toLowerCase()
                 })
             }
-
-            // 递归处理子内容
             if (content.children && Array.isArray(content.children)) {
                 content.children.forEach(child => processContent(child, pagePath))
             }
@@ -33,7 +27,6 @@ class SearchService {
         this.notifySubscribers()
     }
 
-    // 搜索方法（带缓存）
     search(query) {
         if (!query.trim()) return []
 
@@ -53,12 +46,10 @@ class SearchService {
                 }
             })
 
-        // 缓存结果
         this.searchCache.set(cacheKey, results)
         return results
     }
 
-    // 生成搜索结果预览
     generatePreview(content, term) {
         // 处理空内容
         if (!content) return ''
