@@ -9,7 +9,8 @@ class ContentLoader {
                 '/': () => import('../utils/HomeContents.js'),
                 '/page': () => import('../utils/page.js'),
                 '/page1': () => import('../utils/page1.js'),
-                '/page2': () => import('../utils/page2.js')
+                '/page2': () => import('../utils/page2.js'),
+                '/about': () => import('../utils/about.js')
             };
 
             // 并行加载所有模块
@@ -23,7 +24,8 @@ class ContentLoader {
                             '/': 'Web3 入门必看',
                             '/page': 'Web3 内容第一章',
                             '/page1': '内容第二章',
-                            '/page2': '内容第三章'
+                            '/page2': '内容第三章',
+                            '/about': '产品文档'
                         };
 
                         pageContents[path] = {

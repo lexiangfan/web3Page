@@ -114,6 +114,7 @@ class SearchService {
             '/page': 'Web3 内容第一章',
             '/page1': '内容第二章',
             '/page2': '内容第三章',
+            '/about': '产品文档'
         };
         return pageTitles[path] || '未知页面';
     }

@@ -37,10 +37,10 @@ class PageService {
             },
             {
                 id: 'about',
-                title: '关于我们',
+                title: '产品文档',
                 path: '/about',
                 meta: {
-                    title: '关于我们'
+                    title: '产品文档'
                 }
             }
         ];

@@ -18,7 +18,8 @@
 
         <div class="navbar-center" :class="{ 'hidden-mobile': isMobileMenuCollapsed }">
           <el-menu-item index="1">首页</el-menu-item>
-          <el-menu-item index="2">关于我们</el-menu-item>
+          <el-menu-item index="2">查看文档</el-menu-item>
+          <el-menu-item index="3">产品文档</el-menu-item>
         </div>
 
         <div class="navbar-right">
@@ -68,6 +69,9 @@ const handleSelect = (key) => {
       router.push('/')
       break
     case '2':
+      router.push('/page')
+      break
+    case '3':
       router.push('/about')
       break
   }

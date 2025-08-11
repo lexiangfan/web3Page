@@ -1,6 +1,6 @@
 :root {
     /* 高级简约配色 */
-    --color-primary: #2563eb;
+    --color-primary: #89b1e2;
     --color-primary-dark: #1b2e67;
     --color-secondary: #272323;
     --color-accent: #7c3aed;
@@ -46,7 +46,7 @@
 }
 
 [data-theme="dark"] {
-    --color-primary: #60a5fa;
+    --color-primary: #3d4966;
     --color-primary-dark: #2e4f87;
     --color-secondary: #f1f5f9;
     --color-accent: #a78bfa;
