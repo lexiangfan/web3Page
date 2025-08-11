@@ -4,17 +4,19 @@ class SearchService {
         this.contentIndex = [];
         this.callbacks = [];
         this.searchCache = new Map();
-        this.pageContents = new Map(); // 存储每个页面的内容
+        this.pageContents = new Map();
+        this.indexedPaths = new Set();
     }
 
     // 初始化整个应用的内容索引
     initializeAllContents(pageContentsMap) {
         this.contentIndex = [];
         this.pageContents = new Map();
+        this.indexedPaths.clear();
 
         // 遍历所有页面内容
         Object.entries(pageContentsMap).forEach(([path, {content, title}]) => {
-            if (path !== '/') {  // 过滤掉无效路径
+            if (path !== '/') {
                 this.pageContents.set(path, content);
                 this.addContents(content, path, title);
             }
@@ -25,7 +27,17 @@ class SearchService {
     }
 
     // 添加页面内容到索引
+    // 替换整个 addContents 方法（从第26行开始）
     addContents(contents, pagePath, pageTitle = '') {
+        // 检查是否已经索引过该路径的内容
+        if (this.indexedPaths.has(pagePath)) {
+            console.log(`Content for ${pagePath} already indexed, skipping`);
+            return;
+        }
+
+        // 标记该路径已索引
+        this.indexedPaths.add(pagePath);
+
         // 移除旧的路径相关内容
         this.contentIndex = this.contentIndex.filter(item => item.pagePath !== pagePath);
 
@@ -59,9 +71,46 @@ class SearchService {
         this.notifySubscribers();
     }
 
+    addContent(content, pagePath = '/page') {
+        // 检查是否已经索引过该路径的内容
+        if (this.indexedPaths.has(pagePath)) {
+            console.log(`Content for ${pagePath} already indexed, skipping`);
+            return;
+        }
+
+        // 确保内容有唯一ID
+        if (!content.id) {
+            content.id = 'content-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11)
+        }
+
+        // 添加页面路径信息
+        content.pagePath = pagePath;
+
+        this.contentIndex.push({
+            ...content,
+            pagePath,
+            pageTitle: content.pageTitle || this.getPageTitle(pagePath),
+            searchableText: `${content.title} ${this.stripHtml(content.content || '')}`.toLowerCase()
+        });
+
+        this.indexedPaths.add(pagePath);
+        this.pageContents.set(pagePath, content);
+        this.clearCache();
+        this.notifySubscribers();
+    }
+
+    // 重置索引（用于重新初始化）
+    resetIndex() {
+        this.contentIndex = [];
+        this.pageContents = new Map();
+        this.indexedPaths.clear();
+        this.clearCache();
+    }
+
     // 获取页面标题
     getPageTitle(path) {
         const pageTitles = {
+            '/': 'Web3 入门必看',
             '/page': 'Web3 内容第一章',
             '/page1': '内容第二章',
             '/page2': '内容第三章',
@@ -93,7 +142,9 @@ class SearchService {
                     ...item,
                     preview,
                     score,
-                    path: item.path || item.pagePath || '/Page'
+                    // 确保返回正确的路径属性
+                    path: item.path || item.pagePath || '/',
+                    pagePath: item.pagePath || item.path || '/'
                 }
             })
             // 按相关性排序

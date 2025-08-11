@@ -34,7 +34,7 @@
         >
           <div class="result-title">{{ result.title }}</div>
           <div class="result-content" v-html="result.preview"></div>
-          <div class="result-path">{{ result.pagePath }}</div>
+          <div class="result-path">{{ result.pagePath || result.path || '/' }}</div>
         </div>
       </div>
 
@@ -192,17 +192,13 @@ export default {
       activeResultIndex.value = -1
 
       try {
-        // 构造完整的路径，包括hash
-        let targetPath = result.path || '/Page';
+        // 构造完整的路径，适配 GitHub Pages
+        let targetPath = result.pagePath || result.path || '/';
 
         // 如果有ID，则添加锚点
         if (result.id) {
           // 确保使用 hash 模式正确的锚点格式
-          if (targetPath.includes('#')) {
-            targetPath += `#${result.id}`;
-          } else {
-            targetPath += `/#${result.id}`; // 注意这里的格式适配hash路由
-          }
+          targetPath += `#${result.id}`;
         }
 
         // 跳转到对应页面

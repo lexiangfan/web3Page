@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "validate-pages": "node scripts/validatePages.js",
     "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {

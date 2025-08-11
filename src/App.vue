@@ -52,9 +52,9 @@ import { Expand, Fold } from '@element-plus/icons-vue'
 import router from '@/router/router'
 import '@/assets/styles/global.css'
 import GlobalSearch from '@/components/GlobalSearch.vue'
-import contentManager from '@/services/contentManager.js'
 import searchService from "@/services/searchService.js"
 import contentLoader from "@/services/contentLoader.js"
+
 
 const activeIndex = ref('1')
 const isMobileMenuCollapsed = ref(true)
@@ -81,30 +81,14 @@ const goToImKey = () => {
   window.open('https://imkey.im', '_blank')
 }
 
-// 初始化内容 - 改进版本
+// 初始化内容
 const initializeContent = async () => {
   try {
-    // 递归展平所有内容以便搜索
-    const flattenContents = (contents) => {
-      let result = []
-      contents.forEach(item => {
-        result.push(item)
-        if (item.children && Array.isArray(item.children)) {
-          result = result.concat(flattenContents(item.children))
-        }
-      })
-      return result
-    }
-
+    // 重置搜索索引以避免重复
+    searchService.resetIndex();
     // 加载所有页面内容并初始化搜索索引
     const allPageContents = await contentLoader.loadAllPageContents();
     searchService.initializeAllContents(allPageContents);
-
-    // 初始化内容管理器（主要用于默认页面）
-    const defaultPageContent = allPageContents['/Page']?.content || [];
-    const allContents = flattenContents(defaultPageContent);
-    contentManager.initializeContents(allContents);
-
     console.log('Successfully initialized all content for search');
   } catch (error) {
     console.error('Failed to initialize content:', error);
@@ -116,7 +100,10 @@ const toggleMobileMenu = () => {
 }
 
 onMounted(() => {
-  initializeContent()
+  // 延迟初始化以确保路由已准备就绪
+  setTimeout(() => {
+    initializeContent()
+  }, 100)
 })
 </script>
 

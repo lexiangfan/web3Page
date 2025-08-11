@@ -1,12 +1,11 @@
 <template>
-  <ContentPageTemplate :content-data="newPageContent" />
+  <ContentPageTemplate :content-data="pageContents" />
 </template>
 
 <script>
+import pageContents from '@/utils/page1.js'
 import ContentPageTemplate from '@/components/ContentPageTemplate.vue'
-import newPageContent from '@/utils/page1.js'
-import searchService from "@/services/searchService.js";
-import { onMounted,ref } from "vue";
+
 
 export default {
   name: 'page1',
@@ -14,16 +13,13 @@ export default {
     ContentPageTemplate
   },
   setup() {
-    const newPageContents = ref(newPageContent)
-    onMounted(() => {
-      searchService.addContents(newPageContents,'/page1','内容第二章')
-    })
     return {
-      newPageContent: newPageContents
+      pageContents
     }
   }
 }
 </script>
+
 
 <style scoped>
 

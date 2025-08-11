@@ -219,9 +219,6 @@ const updateCurrentContent = async (path) => {
 
     if (result && result.content) {
       currentContent.value = Array.isArray(result.content) ? result.content : [result.content];
-
-      // 确保内容被添加到搜索索引
-      searchService.addContents(currentContent.value, path, result.title);
     } else {
       currentContent.value = [];
     }

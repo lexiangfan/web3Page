@@ -47,6 +47,8 @@ class PageService {
         this.callbacks = [];
     }
 
+
+
     // 获取所有页面
     getPages() {
         return [...this.pages];
@@ -104,6 +106,7 @@ class PageService {
     // 发现页面关联的内容文件
     discoverPageContent(pagePath) {
         const contentMap = {
+            '/': '@/utils/HomeContents.js',
             '/page': '@/utils/page.js',
             '/page1': '@/utils/page1.js',
             '/page2': '@/utils/page2.js'
