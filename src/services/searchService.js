@@ -14,8 +14,10 @@ class SearchService {
 
         // 遍历所有页面内容
         Object.entries(pageContentsMap).forEach(([path, {content, title}]) => {
-            this.pageContents.set(path, content);
-            this.addContents(content, path, title);
+            if (path !== '/') {  // 过滤掉无效路径
+                this.pageContents.set(path, content);
+                this.addContents(content, path, title);
+            }
         });
 
         this.clearCache();
@@ -69,36 +71,37 @@ class SearchService {
 
     // 搜索方法（带缓存和相关性评分）
     search(query) {
-        if (!query.trim()) return [];
+        if (!query.trim()) return []
 
-        const cacheKey = query.toLowerCase();
+        const cacheKey = query.toLowerCase()
         if (this.searchCache.has(cacheKey)) {
-            return this.searchCache.get(cacheKey);
+            return this.searchCache.get(cacheKey)
         }
 
-        const terms = query.toLowerCase().split(/\s+/).filter(term => term.length > 0);
+        const terms = query.toLowerCase().split(/\s+/).filter(term => term.length > 0)
 
         const results = this.contentIndex
             .filter(item => {
                 // 使用所有搜索词进行匹配（AND逻辑）
-                return terms.every(term => item.searchableText.includes(term));
+                return terms.every(term => item.searchableText.includes(term))
             })
             .map(item => {
-                const preview = this.generatePreview(item.content || '', query);
+                const preview = this.generatePreview(item.content || '', query)
                 // 添加相关性评分
-                const score = this.calculateRelevanceScore(item, terms);
+                const score = this.calculateRelevanceScore(item, terms)
                 return {
                     ...item,
                     preview,
-                    score
-                };
+                    score,
+                    path: item.path || item.pagePath || '/Page'
+                }
             })
             // 按相关性排序
             .sort((a, b) => b.score - a.score)
-            .slice(0, 20); // 限制返回结果数量
+            .slice(0, 10) // 限制返回结果数量
 
-        this.searchCache.set(cacheKey, results);
-        return results;
+        this.searchCache.set(cacheKey, results)
+        return results
     }
 
     // 计算相关性评分

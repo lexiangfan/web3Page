@@ -191,28 +191,44 @@ export default {
       searchText.value = ''
       activeResultIndex.value = -1
 
-      // 获取目标页面路径，如果没有则默认为/Page
-      const targetPage = result.pagePath || '/Page'
+      try {
+        // 构造完整的路径，包括hash
+        let targetPath = result.path || '/Page';
 
-      // 跳转到对应页面并滚动到对应元素
-      router.push(targetPage).then(() => {
-        // 等待页面加载完成后滚动到目标元素
-        setTimeout(() => {
-          const targetElement = document.getElementById(result.id)
-          if (targetElement) {
-            // 使用平滑滚动
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
-          }
-        }, 300)
-      }).catch(err => {
-        // 如果已经在目标页面，则直接滚动
-        if (err.name === 'NavigationDuplicated') {
-          const targetElement = document.getElementById(result.id)
-          if (targetElement) {
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        // 如果有ID，则添加锚点
+        if (result.id) {
+          // 确保使用 hash 模式正确的锚点格式
+          if (targetPath.includes('#')) {
+            targetPath += `#${result.id}`;
+          } else {
+            targetPath += `/#${result.id}`; // 注意这里的格式适配hash路由
           }
         }
-      })
+
+        // 跳转到对应页面
+        router.push(targetPath).then(() => {
+          // 等待页面加载完成后滚动到目标元素
+          setTimeout(() => {
+            if (result.id) {
+              const targetElement = document.getElementById(result.id);
+              if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }
+          }, 300);
+        }).catch(err => {
+          console.error('路由跳转失败:', err);
+          // 如果路由跳转失败，尝试直接滚动到元素
+          if (result.id) {
+            const targetElement = document.getElementById(result.id);
+            if (targetElement) {
+              targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }
+        });
+      } catch (error) {
+        console.error('跳转过程中发生错误:', error);
+      }
     }
 
     // 点击其他地方隐藏搜索结果

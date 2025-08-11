@@ -62,6 +62,7 @@ router.afterEach(async (to) => {
     const pageName = to.path === '/' ? 'page' : to.path.substring(1);
 
     const contentModules = {
+      '': () => import('@/utils/HomeContents.js'),
       'page': () => import('@/utils/page.js'),
       'page1': () => import('@/utils/page1.js'),
       'page2': () => import('@/utils/page2.js'),
