@@ -135,7 +135,6 @@ import pageService from '@/services/pageService.js'
 import searchService from "@/services/searchService.js";
 import contentLoader from "@/services/contentLoader.js";
 
-
 const props = defineProps({
   showToggleButton: {
     type: Boolean,
@@ -227,7 +226,7 @@ const handleAnchorClick = (data) => {
 const updateCurrentContent = async (path) => {
   try {
     // 使用内容加载服务加载页面内容
-    const result = await contentLoader.loadPageContent(path);
+    const result = await contentLoader.loadAllPageContents();
 
     if (result && result.content) {
       currentContent.value = Array.isArray(result.content) ? result.content : [result.content];

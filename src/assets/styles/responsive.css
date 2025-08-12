@@ -132,6 +132,16 @@
         flex: 1;
         justify-content: flex-end;
     }
+
+    /* 表格响应式优化 */
+    .table-responsive {
+        font-size: var(--font-size-xs);
+    }
+
+    .table th,
+    .table td {
+        padding: var(--spacing-xs);
+    }
 }
 
 /* 小屏幕 (平板, 576px 及以上) */
@@ -178,6 +188,31 @@
 
     .scroll-container {
         padding: 24px !important;
+    }
+
+    .table-stacked-mobile thead {
+        display: table-header-group;
+    }
+
+    .table-stacked-mobile tbody {
+        display: table-row-group;
+    }
+
+    .table-stacked-mobile tr {
+        display: table-row;
+        margin-bottom: 0;
+        border: none;
+        padding: 0;
+    }
+
+    .table-stacked-mobile td {
+        display: table-cell;
+        padding: var(--spacing-base) !important;
+        text-align: left;
+    }
+
+    .table-stacked-mobile td:before {
+        display: none;
     }
 }
 
@@ -228,3 +263,5 @@
         margin-top: 0 !important;
     }
 }
+
+

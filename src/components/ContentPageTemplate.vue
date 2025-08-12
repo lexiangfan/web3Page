@@ -63,7 +63,7 @@
             >
               <h2>{{ chapter.title }}</h2>
               <!-- 如果有直接内容则显示 -->
-              <div v-if="chapter.content" v-html="chapter.content"></div>
+              <div v-if="chapter.content && chapter.content.trim()" v-html="chapter.content"></div>
 
               <!-- 渲染子章节 -->
               <div
@@ -73,7 +73,8 @@
                   class="section"
               >
                 <h3>{{ section.title }}</h3>
-                <div v-html="section.content"></div>
+                <div v-if="section.content && section.content.trim()" v-html="section.content"></div>
+
                 <!-- 如果子章节还有子章节，继续渲染 -->
                 <div
                     v-for="subSection in section.children"
@@ -82,7 +83,8 @@
                     class="subsection"
                 >
                   <h4>{{ subSection.title }}</h4>
-                  <div v-if="subSection.content"></div>
+                  <div v-if="subSection.content && subSection.content.trim()" v-html="subSection.content"></div>
+
                   <!-- 支持更多层级 -->
                   <div
                       v-for="subSubSection in subSection.children"
@@ -124,7 +126,6 @@
                 </el-col>
               </el-row>
             </div>
-
             <!-- 页脚 -->
             <div class="page-footer">
               <p>© 2025 Web3 入门指南. All rights reserved.</p>
@@ -388,6 +389,14 @@ export default {
     const handleResize = () => {
       checkIsMobile()
       updateAnchorPosition()
+      if (isMobile.value) {
+        nextTick(() => {
+          const contentParts = document.querySelectorAll('.content-part');
+          contentParts.forEach(part => {
+            part.classList.add('visible');
+          });
+        });
+      }
     }
 
     // 更新锚点位置信息
@@ -500,7 +509,7 @@ export default {
       }
     }
 
-    const observer = new IntersectionObserver((entries) => {
+    let observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
@@ -525,7 +534,22 @@ export default {
 
       nextTick(() => {
         const contentParts = document.querySelectorAll('.content-part');
-        contentParts.forEach(part => observer.observe(part));
+        if (window.innerWidth <= 768) {
+          contentParts.forEach(part => part.classList.add('visible'));
+        } else {
+          // 桌面端保留原有的 Intersection Observer 机制
+          observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+              }
+            });
+          }, {
+            threshold: 0.1
+          });
+
+          contentParts.forEach(part => observer.observe(part));
+        }
       });
     })
 
@@ -843,6 +867,20 @@ export default {
   font-style: italic;
 }
 
+.section .table-container {
+  margin: var(--spacing-base) 0;
+  border-radius: var(--border-radius-large);
+  overflow: hidden;
+  box-shadow: var(--shadow-base);
+}
+
+.section .table-container .table {
+  margin: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+
 .page-navigation {
   padding: 40px 0 20px;
   border-top: 1px solid var(--color-border);
@@ -1094,6 +1132,19 @@ export default {
     display: none;
   }
 
+  .content-main {
+    width: 100%;
+  }
+
+  .scroll-container {
+    padding: 20px 15px; /* 增加适当的内边距 */
+  }
+
+  .content-part {
+    padding: 0 0 40px;
+    margin-bottom: 40px;
+  }
+
   .mobile-buttons {
     padding: 10px 15px;
   }
@@ -1112,9 +1163,18 @@ export default {
     padding: 0 0 40px;
     margin-bottom: 40px;
     border-bottom: 1px solid var(--color-border);
+    transform: translateY(0);
+    transition: all 0.6s ease-out;
+  }
+
+  .content-part.animate-on-scroll {
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.6s ease-out;
+  }
+
+  .content-part.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .content-part.visible {
@@ -1163,6 +1223,44 @@ export default {
 
   .section li {
     margin-bottom: 6px;
+  }
+
+  .section .table-container {
+    overflow-x: hidden;
+  }
+
+  .section .table {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .section .table th,
+  .section .table td {
+    padding: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* 为表格列设置默认宽度 */
+  .section .table th:nth-child(1),
+  .section .table td:nth-child(1) {
+    width: 25%;
+  }
+
+  .section .table th:nth-child(2),
+  .section .table td:nth-child(2) {
+    width: 25%;
+  }
+
+  .section .table th:nth-child(3),
+  .section .table td:nth-child(3) {
+    width: 25%;
+  }
+
+  .section .table th:nth-child(4),
+  .section .table td:nth-child(4) {
+    width: 25%;
   }
 
   .page-navigation {
@@ -1235,6 +1333,33 @@ export default {
   .section li {
     margin-bottom: 5px;
     font-size: var(--font-size-sm);
+  }
+
+  .section .table th,
+  .section .table td {
+    padding: var(--spacing-xxs) var(--spacing-xs);
+    font-size: 11px;
+  }
+
+  /* 在超小屏幕上进一步优化 */
+  .section .table th:nth-child(1),
+  .section .table td:nth-child(1) {
+    width: 30%;
+  }
+
+  .section .table th:nth-child(2),
+  .section .table td:nth-child(2) {
+    width: 30%;
+  }
+
+  .section .table th:nth-child(3),
+  .section .table td:nth-child(3) {
+    width: 20%;
+  }
+
+  .section .table th:nth-child(4),
+  .section .table td:nth-child(4) {
+    width: 20%;
   }
 
   .mobile-buttons {

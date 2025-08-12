@@ -118,7 +118,7 @@
     color: var(--color-text-light);
 }
 
-/* 表格样式 - 增强版 */
+/* 表格样式 */
 .table {
     width: 100%;
     border-collapse: separate;
@@ -129,6 +129,7 @@
     overflow: hidden;
     box-shadow: var(--shadow-base);
     transition: box-shadow 0.3s ease;
+    table-layout: fixed;
 }
 
 .table:hover {
@@ -140,6 +141,9 @@
     padding: var(--spacing-base);
     text-align: left;
     border-bottom: 1px solid var(--color-border);
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .table th {
@@ -150,6 +154,9 @@
     font-size: var(--font-size-sm);
     letter-spacing: 0.5px;
     border-bottom: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .table tr:last-child td {
@@ -207,17 +214,27 @@
     }
 }
 
+.table-container {
+    width: 100%;
+    margin: var(--spacing-lg) 0;
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-base);
+    overflow: hidden;
+}
+
 /* 表格响应式优化 */
 @media (max-width: 768px) {
     .table {
         font-size: var(--font-size-sm);
-        display: block;
-        overflow-x: auto;
+        display: table;
+        table-layout: auto;
     }
 
     .table th,
     .table td {
         padding: var(--spacing-sm);
+        white-space: normal;
+        word-break: break-word;
     }
 
     .table td img {
@@ -248,13 +265,21 @@
     .table th,
     .table td {
         padding: var(--spacing-xs);
+        display: table-cell;
+        font-size: var(--font-size-xs);
     }
 
     .table td img {
         max-width: none;
         min-width: 50px;
     }
+
+    .table th {
+        font-size: var(--font-size-xs);
+        white-space: normal;
+    }
 }
+
 
 /* 表格头部特殊效果 */
 .table thead tr {
@@ -268,4 +293,83 @@
     left: 0;
     width: 100%;
     height: 2px;
+}
+
+/* 响应式表格辅助类 */
+.table-stacked {
+    display: block;
+}
+
+.table-stacked thead {
+    display: none;
+}
+
+.table-stacked tbody,
+.table-stacked tr,
+.table-stacked td {
+    display: block;
+    width: 100%;
+}
+
+.table-stacked tr {
+    margin-bottom: var(--spacing-base);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
+}
+
+.table-stacked td {
+    border: none;
+    position: relative;
+    padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-sm) 40% !important;
+    text-align: right;
+}
+
+.table-stacked td:before {
+    content: attr(data-label) ": ";
+    position: absolute;
+    left: var(--spacing-sm);
+    width: 35%;
+    text-align: left;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .table-stacked-mobile {
+        display: block;
+    }
+
+    .table-stacked-mobile thead {
+        display: none;
+    }
+
+    .table-stacked-mobile tbody,
+    .table-stacked-mobile tr,
+    .table-stacked-mobile td {
+        display: block;
+        width: 100%;
+    }
+
+    .table-stacked-mobile tr {
+        margin-bottom: var(--spacing-base);
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-sm);
+    }
+
+    .table-stacked-mobile td {
+        border: none;
+        position: relative;
+        padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-sm) 40% !important;
+        text-align: right;
+    }
+
+    .table-stacked-mobile td:before {
+        content: attr(data-label) ": ";
+        position: absolute;
+        left: var(--spacing-sm);
+        width: 35%;
+        text-align: left;
+        font-weight: bold;
+    }
 }
