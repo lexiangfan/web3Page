@@ -135,6 +135,7 @@ import pageService from '@/services/pageService.js'
 import searchService from "@/services/searchService.js";
 import contentLoader from "@/services/contentLoader.js";
 
+
 const props = defineProps({
   showToggleButton: {
     type: Boolean,
@@ -149,6 +150,23 @@ const pages = ref([])
 const currentContent = ref([])
 const isMobileView = ref(false)
 
+// 支持多层嵌套的树形结构
+const buildTreeData = (contents) => {
+  return contents.map(item => {
+    const treeNode = {
+      id: item.id,
+      label: item.title
+    };
+
+    // 如果有子节点，递归构建子树
+    if (item.children && Array.isArray(item.children) && item.children.length > 0) {
+      treeNode.children = buildTreeData(item.children);
+    }
+
+    return treeNode;
+  });
+};
+
 const treeProps = {
   label: 'label',
   children: 'children',
@@ -158,15 +176,9 @@ const {path: path1} = route;
 const activePage = computed(() => path1)
 
 const anchorTreeData = computed(() => {
-  return currentContent.value.map(chapter => ({
-    id: chapter.id,
-    label: chapter.title,
-    children: chapter.children ? chapter.children.map(section => ({
-      id: section.id,
-      label: section.title
-    })) : []
-  }))
+  return buildTreeData(currentContent.value);
 })
+
 
 // 检查是否为移动设备
 const checkIsMobile = () => {

@@ -19,9 +19,14 @@ export const about = [
         children: [
             {
                 id: 'imKey-1',
-                title: '产品概览',
-                content: `
-                    <p>imKey 硬件钱包及组合产品是持有、兑换数字资产最安全和最便捷的方式之一。</p>
+                title: '产品概览&推荐套餐',
+                content: ``,
+                children:[
+                    {
+                        id: 'imKey-1-1',
+                        title: '产品概览',
+                        content:`
+                        <p>imKey 硬件钱包及组合产品是持有、兑换数字资产最安全和最便捷的方式之一。</p>
                     <table class="table product-table">
                     <tbody>
                     <tr>
@@ -71,7 +76,65 @@ export const about = [
 </tr>
 </tbody>
 </table>
-                `,
+`
+                    },
+                    {
+                        id: 'imKey-1-2',
+                        title: '产品概览',
+                        content:`
+                        <p>imKey 硬件钱包及组合产品是持有、兑换数字资产最安全和最便捷的方式之一。</p>
+                    <table class="table product-table">
+                    <tbody>
+                    <tr>
+                    <td style="width: 33.3%"><img src="${imKey}" alt="imKey"></td>
+<td>
+<p><strong>imKey Pro 硬件钱包</strong></p>
+<p>选用 CC EAL6+ 安全芯片，最高等级的安全保障，囤币首选；使用 imKey，你可以随时随地购买、出售和转移您的加密货币。</p>
+<p><strong>售价：¥ 688</strong></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/2xj05mqphzjou2e?banner_id=f.107612083~goods.13~1~S3E60NgO&alg_id=common_by_external%2Cnot_need_rank%2C0.0.0.0.0.0.0.0.701_31a2bb913eda405c8e77028da74d246a&slg=0&components_style_layout=1&reft=1676614259726_1676614269708&spm=g.552622152_f.77421469_f.107612083">更多了解</a></p>
+</td>
+</tr>
+<tr>
+<td><img src="${S1}" alt="密盒S1"></td>
+<td>
+<p><strong>密盒 S1</strong></p>
+<p>性价比最高的助记词保管器，防水、防火、防腐蚀、防冲击且完全离线，隔离一切潜在风险；</p>
+<p><strong>售价：¥ 249</strong></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/2xj16xca3nkmm?dc_ps=3340495314934140935.200001">更多了解</a></p>
+</td>
+</tr>
+<tr>
+<td><img src="${P1}" alt="密盒P1"></td>
+<td>
+<p><strong>密盒 P1</strong></p>
+<p>多功能密钥管理器，可支持助记词、私钥及任一符合 ASCII 规范的密码存储，支持二次加密，具备密盒 S1 相同的物理性能，是高阶用户的优选方案。</p>
+<p><strong>售价：¥ 499</strong></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/36bm6keap5t1a33?dc_ps=3340498535169757189.200001">更多了解</a></p>
+</td>
+</tr>
+<tr>
+<td><img src="${L1}" alt="imKey 助记词冲压板 L1"></td>
+<td>
+<p><strong>imKey 助记词冲压板 L1 </strong></p>
+<p>imKey 助记词冲压板 L1，安全、易用、经济，小巧精致，防水、防火、防腐蚀，让您的数字资产安全有力保障。</p>
+<p><strong>售价：¥ 129</strong></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/2xmqkmgd983z2jn?banner_id=f.88725471~goods.11~1~yZX06Hzd&alg_id=common_by_external%2Cnot_need_rank%2C0.0.0.0.0.0.0.0.0.0_43ac614808944b64a9083c55e3be3612&slg=0&components_style_layout=2&reft=1715054944735_1715054960460&spm=fake.0_f.77421469_f.88725471&alias=2xmqkmgd983z2jn">更多了解</a></p>
+</td>
+</tr>
+<tr>
+<td><img src="${Card}" alt="专属卡包"></td>
+<td>
+<p><strong>专属卡包</strong></p>
+<p>保护钱包避免刮擦，方便保管和携带 imKey，让你随时随地使用。</p>
+<p><strong>售价：¥ 99</strong></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/270co679hqy2m?dc_ps=3340499791405779972.200001">更多了解</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+`
+                    }
+                ]
             },
             {
                 id: 'imKey-2',

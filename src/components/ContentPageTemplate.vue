@@ -62,7 +62,10 @@
                 class="content-part"
             >
               <h2>{{ chapter.title }}</h2>
+              <!-- 如果有直接内容则显示 -->
+              <div v-if="chapter.content" v-html="chapter.content"></div>
 
+              <!-- 渲染子章节 -->
               <div
                   v-for="section in chapter.children"
                   :key="section.id"
@@ -71,6 +74,26 @@
               >
                 <h3>{{ section.title }}</h3>
                 <div v-html="section.content"></div>
+                <!-- 如果子章节还有子章节，继续渲染 -->
+                <div
+                    v-for="subSection in section.children"
+                    :key="subSection.id"
+                    :id="subSection.id"
+                    class="subsection"
+                >
+                  <h4>{{ subSection.title }}</h4>
+                  <div v-if="subSection.content"></div>
+                  <!-- 支持更多层级 -->
+                  <div
+                      v-for="subSubSection in subSection.children"
+                      :key="subSubSection.id"
+                      :id="subSubSection.id"
+                      class="subsubsection"
+                  >
+                    <h5>{{ subSubSection.title }}</h5>
+                    <div v-if="subSubSection.content && subSubSection.content.trim()" v-html="subSubSection.content"></div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -269,14 +292,23 @@ export default {
     }
 
     // 构建树形数据结构
-    const treeData = ref(props.contentData.map(chapter => ({
-      id: chapter.id,
-      label: chapter.title,
-      children: chapter.children ? chapter.children.map(section => ({
-        id: section.id,
-        label: section.title
-      })) : []
-    })))
+    const buildTreeData = (contents) => {
+      return contents.map(item => {
+        const treeNode = {
+          id: item.id,
+          label: item.title
+        };
+
+        // 如果有子节点，递归构建子树
+        if (item.children && Array.isArray(item.children) && item.children.length > 0) {
+          treeNode.children = buildTreeData(item.children);
+        }
+
+        return treeNode;
+      });
+    };
+
+    const treeData = ref(buildTreeData(props.contentData));
 
     // 使用符合 Element Plus 类型要求的 props 定义
     const treeProps = {
@@ -430,15 +462,16 @@ export default {
 
       // 收集所有章节元素
       const sections = []
-      pageContent.value.forEach(chapter => {
-        const {children, id} = chapter;
-        sections.push(id)
-        if (children) {
-          children.forEach(section => {
-                sections.push(section.id)
-              }
-          )}
-      })
+      const collectSections = (items) => {
+        items.forEach(item => {
+          sections.push(item.id);
+          if (item.children && Array.isArray(item.children)) {
+            collectSections(item.children);
+          }
+        });
+      };
+
+      collectSections(props.contentData);
 
       // 查找当前可视区域的章节
       for (let i = sections.length - 1; i >= 0; i--) {
