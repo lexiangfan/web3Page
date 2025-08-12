@@ -163,9 +163,9 @@
 
 /* 表格图片通用样式 */
 .table td img {
-    max-width: 100px;
     width: 100%;
     height: auto;
+    max-width: none;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-base);
     transition: all 0.3s ease;
@@ -177,6 +177,7 @@
     border: 1px solid var(--color-border);
     margin: auto;
     display: block;
+    min-width: 60px;
 }
 
 .table td img:hover {
@@ -220,7 +221,19 @@
     }
 
     .table td img {
-        max-width: 80px;
+        min-width: 80px;
+    }
+}
+
+@media (min-width: 992px) {
+    .table td img {
+        min-width: 100px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .table td img {
+        min-width: 120px;
     }
 }
 
