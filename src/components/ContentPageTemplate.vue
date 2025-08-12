@@ -872,12 +872,15 @@ export default {
   border-radius: var(--border-radius-large);
   overflow: hidden;
   box-shadow: var(--shadow-base);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .section .table-container .table {
   margin: 0;
   box-shadow: none;
   border-radius: 0;
+  min-width: 100%;
 }
 
 
@@ -1226,7 +1229,7 @@ export default {
   }
 
   .section .table-container {
-    overflow-x: hidden;
+    overflow-x: auto;
   }
 
   .section .table {

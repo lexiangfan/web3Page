@@ -89,94 +89,107 @@ export const about = [
                     {
                         id: 'imKey-1-2',
                         title: '推荐套餐',
-                        content:`
-                       <div class="table-container">
-                        <table class="table product-table">
-                <thead>
+                        content: `
+    <div class="table-container">
+        <table class="table product-table">
+            <tr>
+                <th>套餐名称</th>
+                <th>套餐价格</th>
+                <th>产品名称</th>
+                <th>产品图片</th>            
+            </tr>
+            <tbody>
+                <!-- imKey 全家桶 -->
                 <tr>
-                <th>套餐名称</th><th>套餐价格</th><th>产品名称</th><th>产品图片</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td rowspan="3">官方推荐套餐：<a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/36cu0boa4jpem?dc_ps=3340491473866107907.200001">imKey 全家桶</a></td>
-<td rowspan="3"><strong>¥ 899</strong></td>
-<td>imKey Pro 硬件钱包</td>
-<td rowspan="3" style="width: 33.3%"><img src="${imKeyAll}" alt="imKey全家桶"></td>
-</tr>
-<tr>
-<td>密盒 S1</td>
-</tr>
-<tr>
-<td>专属卡包</td>
-</tr>
-<tr>
-<td rowspan="5"><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/3ez70wqcgbp3yju?alias=3ez70wqcgbp3yju">imKey 安全礼盒</a></td>
-<td rowspan="5"><strong>¥1288</strong></td>
-<td>imKey Pro 硬件钱包</td>
-<td rowspan="5"><img src="${imKeySafe}" alt="imKey全家桶"></td>
-</tr>
-<tr>
-<td>密盒 S1</td>
-</tr>
-<tr>
-<td>imKey 冲压板 L1</td>
-</tr>
-<tr>
-<td>专属卡包</td>
-</tr>
-<tr>
-<td>黑森林手册</td>
-</tr>
-<tr>
-<td rowspan="3"><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/2g40xl18bqan2vz?banner_id=f.107612083~goods.13~2~cMcAjd5z&alg_id=common_by_external%2Ccache_rank%2C0.0.0.0.0.0.0.0.701_e1be77ab49304bd4bccdfa58aa6c9b7f&slg=0&components_style_layout=1&reft=1676614297644_1676614304881&spm=g.552622152_f.77421469_f.107612083">imKey 高阶全家桶</a></td>
-<td rowspan="3"><strong>¥ 1079</strong></td>
-<td>imKey Pro 硬件钱包</td>
-<td rowspan="3"><img src="${imKeyHighAll}" alt="imKey全家桶"></td>
-</tr>
-<tr>
-<td>密盒 P1</td>
-</tr>
-<tr>
-<td>卡包</td>
-</tr>
-<tr>
-<td><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/2okab8bsm7g7y1f?banner_id=f.107612083~goods.13~7~2JppIrjY&alg_id=common_by_external%2Ccache_rank%2C0.0.0.0.0.0.0.0.701_e1be77ab49304bd4bccdfa58aa6c9b7f&slg=0&components_style_layout=1&reft=1676614297644_1676614438935&spm=g.552622152_f.77421469_f.107612083">imKey 备份包</a></td>
-<td><strong>¥ 1239</strong></td>
-<td>imKey Pro 硬件钱包 X 2</td>
-<td><img src="${imKeyTwo}" alt="imKey全家桶"></td>
-</tr>
-<tr>
-<td rowspan="2"><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/2ou69vm1lpipqnd?banner_id=f.107612083~goods.13~6~xCOWQMDl&alg_id=common_by_external%2Ccache_rank%2C0.0.0.0.0.0.0.0.701_e1be77ab49304bd4bccdfa58aa6c9b7f&slg=0&components_style_layout=1&reft=1676614297644_1676614412922&spm=g.552622152_f.77421469_f.107612083">imKey 钱包套件</a></td>
-<td rowspan="2"><strong>¥ 758</strong></td>
-<td>imKey Pro 硬件钱包</td>
-<td rowspan="2"><img src="${imKeyCard}" alt="imKey全家桶"></td>
-</tr>
-<tr>
-<td>专属卡包</td>
-</tr>
-<tr>
-<td rowspan="2"><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/3nu9qw9xf0vry?banner_id=f.107612083~goods.13~3~xvxJ28XG&alg_id=common_by_external%2Ccache_rank%2C0.0.0.0.0.0.0.0.701_e1be77ab49304bd4bccdfa58aa6c9b7f&slg=0&components_style_layout=1&reft=1676614297644_1676614334017&spm=g.552622152_f.77421469_f.107612083">imKey 安全套件</a></td>
-<td rowspan="2"><strong>¥ 818</strong></td>
-<td>imKey Pro 硬件钱包</td>
-<td rowspan="2"><img src="${imKeySafeCard}" alt="imKey全家桶"></td>
-</tr>
-<tr>
-<td>密盒 S1</td>
-</tr>
-<tr>
-<td rowspan="2"><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/26xxde7tp92vydo?banner_id=f.107612083~goods.13~4~HvPN82QW&alg_id=common_by_external%2Ccache_rank%2C0.0.0.0.0.0.0.0.701_e1be77ab49304bd4bccdfa58aa6c9b7f&slg=0&components_style_layout=1&reft=1676614297644_1676614353722&spm=g.552622152_f.77421469_f.107612083">imKey 高阶安全套件</a></td>
-<td rowspan="2"><strong>¥ 999</strong></td>
-<td>imKey Pro 硬件钱包</td>
-<td rowspan="2"><img src="${imKeyHighSafeCard}" alt="imKey全家桶"></td>
-</tr>
-<tr>
-<td>密盒 P1</td>
-</tr>
-</tbody>
-</table>
-                       </div>
-`
+                    <td rowspan="3">官方推荐套餐：<a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/36cu0boa4jpem?dc_ps=3340491473866107907.200001">imKey 全家桶</a></td>
+                    <td rowspan="3"><strong>¥ 899</strong></td>
+                    <td>imKey Pro 硬件钱包</td>
+                    <td rowspan="3" style="width: 33.3%"><img src="${imKeyAll}" alt="imKey全家桶"></td>
+                </tr>
+                <tr>
+                    <td>密盒 S1</td>
+                </tr>
+                <tr>
+                    <td>专属卡包</td>
+                </tr>
+
+                <!-- imKey 安全礼盒 -->
+                <tr>
+                    <td rowspan="5"><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/3ez70wqcgbp3yju?alias=3ez70wqcgbp3yju">imKey 安全礼盒</a></td>
+                    <td rowspan="5"><strong>¥1288</strong></td>
+                    <td>imKey Pro 硬件钱包</td>
+                    <td rowspan="5"><img src="${imKeySafe}" alt="imKey全家桶"></td>
+                </tr>
+                <tr>
+                    <td>密盒 S1</td>
+                </tr>
+                <tr>
+                    <td>imKey 冲压板 L1</td>
+                </tr>
+                <tr>
+                    <td>专属卡包</td>
+                </tr>
+                <tr>
+                    <td>黑森林手册</td>
+                </tr>
+
+                <!-- imKey 高阶全家桶 -->
+                <tr>
+                    <td rowspan="3"><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/2g40xl18bqan2vz?banner_id=f.107612083~goods.13~2~cMcAjd5z&alg_id=common_by_external%2Ccache_rank%2C0.0.0.0.0.0.0.0.701_e1be77ab49304bd4bccdfa58aa6c9b7f&slg=0&components_style_layout=1&reft=1676614297644_1676614304881&spm=g.552622152_f.77421469_f.107612083">imKey 高阶全家桶</a></td>
+                    <td rowspan="3"><strong>¥ 1079</strong></td>
+                    <td>imKey Pro 硬件钱包</td>
+                    <td rowspan="3"><img src="${imKeyHighAll}" alt="imKey全家桶"></td>
+                </tr>
+                <tr>
+                    <td>密盒 P1</td>
+                </tr>
+                <tr>
+                    <td>卡包</td>
+                </tr>
+
+                <!-- imKey 备份包 -->
+                <tr>
+                    <td><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/2okab8bsm7g7y1f?banner_id=f.107612083~goods.13~7~2JppIrjY&alg_id=common_by_external%2Ccache_rank%2C0.0.0.0.0.0.0.0.701_e1be77ab49304bd4bccdfa58aa6c9b7f&slg=0&components_style_layout=1&reft=1676614297644_1676614438935&spm=g.552622152_f.77421469_f.107612083">imKey 备份包</a></td>
+                    <td><strong>¥ 1239</strong></td>
+                    <td>imKey Pro 硬件钱包 X 2</td>
+                    <td><img src="${imKeyTwo}" alt="imKey Pro 硬件钱包 X 2"></td>
+                </tr>
+
+                <!-- imKey 钱包套件 -->
+                <tr>
+                    <td rowspan="2"><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/2ou69vm1lpipqnd?banner_id=f.107612083~goods.13~6~xCOWQMDl&alg_id=common_by_external%2Ccache_rank%2C0.0.0.0.0.0.0.0.701_e1be77ab49304bd4bccdfa58aa6c9b7f&slg=0&components_style_layout=1&reft=1676614297644_1676614412922&spm=g.552622152_f.77421469_f.107612083">imKey 钱包套件</a></td>
+                    <td rowspan="2"><strong>¥ 758</strong></td>
+                    <td>imKey Pro 硬件钱包</td>
+                    <td rowspan="2"><img src="${imKeyCard}" alt="imKey Pro 硬件钱包"></td>
+                </tr>
+                <tr>
+                    <td>专属卡包</td>
+                </tr>
+
+                <!-- imKey 安全套件 -->
+                <tr>
+                    <td rowspan="2"><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/3nu9qw9xf0vry?banner_id=f.107612083~goods.13~3~xvxJ28XG&alg_id=common_by_external%2Ccache_rank%2C0.0.0.0.0.0.0.0.701_e1be77ab49304bd4bccdfa58aa6c9b7f&slg=0&components_style_layout=1&reft=1676614297644_1676614334017&spm=g.552622152_f.77421469_f.107612083">imKey 安全套件</a></td>
+                    <td rowspan="2"><strong>¥ 818</strong></td>
+                    <td>imKey Pro 硬件钱包</td>
+                    <td rowspan="2"><img src="${imKeySafeCard}" alt="imKey Pro 硬件钱包"></td>
+                </tr>
+                <tr>
+                    <td>密盒 S1</td>
+                </tr>
+
+                <!-- imKey 高阶安全套件 -->
+                <tr>
+                    <td rowspan="2"><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/26xxde7tp92vydo?banner_id=f.107612083~goods.13~4~HvPN82QW&alg_id=common_by_external%2Ccache_rank%2C0.0.0.0.0.0.0.0.701_e1be77ab49304bd4bccdfa58aa6c9b7f&slg=0&components_style_layout=1&reft=1676614297644_1676614353722&spm=g.552622152_f.77421469_f.107612083">imKey 高阶安全套件</a></td>
+                    <td rowspan="2"><strong>¥ 999</strong></td>
+                    <td>imKey Pro 硬件钱包</td>
+                    <td rowspan="2"><img src="${imKeyHighSafeCard}" alt="imKey全家桶"></td>
+                </tr>
+                <tr>
+                    <td>密盒 P1</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>`
                     }
                 ]
             },
@@ -281,38 +294,42 @@ export const about = [
                         id:'imKey-2-2',
                         title:'探索 imKey 的加密服务',
                         content:`
+                        <div class="table-container">
                         <table class="table product-table">
                         <tr>
-                        <td>
-                        <p><strong>支持的加密资产</strong></p>
-                        <ul>
+                        <td><p><strong>支持的加密资产</strong></p></td>
+<td><p><strong>自定义节点，轻松切换 EVM 兼容链</strong></p></td>
+<td><p><strong>imKey 与 imToken 无缝结合</strong></p></td>
+<td><p><strong>支持与 Rabby Wallet 连接</strong></p></td>
+</tr>
+<tr>
+<td>
+<ul>
                         <li>ETH、BTC、ATOM、EOS、TRX、CKB、BCH、LTC、KSM、DOT、FIL</li>
                         <li>TRC20 USDT、ERC20 USDT</li>
                         <li>ERC20、TRC20 等代币</li>
 </ul>
 </td>
 <td>
-                        <p><strong>自定义节点，轻松切换 EVM 兼容链</strong></p>
-                        <ul>
+<ul>
                         <li>通过自定义节点设置，你可轻松切换至 BSC、HECO、Polygon 等 EVM 兼容链</li>
                         <li>已经支持 zkSync 和 Arbitrum 等 Layer2 方案，可便捷管理数字资产和使用 Layer2 生态 DApp</li>
 </ul>
 </td>
 <td>
-                        <p><strong>imKey 与 imToken 无缝结合</strong></p>
-                        <ul>
+<ul>
                         <li>用户可以访问 imToken 的所有服务：转账、交易你的数字资产，管理你的NFT，以及强大的 DApp 市场</li>
                         <li>支持 NFT 展示</li>
 </ul>
 </td>
 <td>
-                        <p><strong>支持与 Rabby Wallet 连接</strong></p>
-                        <ul>
+<ul>
                         <li>imKey 现已支持连接插件钱包，通过 USB 数据线将 Rabby 插件钱包与 imKey 硬件钱包连接，你可以在 PC 端使用 Rabby 轻松管理 imKey 硬件钱包。</li>
 </ul>
 </td>
 </tr>
                         </table>
+</div>
                         `
                     }
                 ]
