@@ -210,7 +210,7 @@ var hk=(e,t)=>()=>(t||e((t={exports:{}}).exports,t),t.exports);var YQ=hk((co,fo)
 <td>
 <p><strong>imKey Pro 硬件钱包</strong></p>
 <p>选用 CC EAL6+ 安全芯片，最高等级的安全保障，囤币首选；使用 imKey，你可以随时随地购买、出售和转移您的加密货币。</p>
-<p><strong>售价：¥ 688</strong></p>
+<p><strong>售价：¥ 738</strong></p>
 <p><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/2xj05mqphzjou2e?banner_id=f.107612083~goods.13~1~S3E60NgO&alg_id=common_by_external%2Cnot_need_rank%2C0.0.0.0.0.0.0.0.701_31a2bb913eda405c8e77028da74d246a&slg=0&components_style_layout=1&reft=1676614259726_1676614269708&spm=g.552622152_f.77421469_f.107612083">更多了解</a></p>
 </td>
 </tr>
@@ -219,7 +219,7 @@ var hk=(e,t)=>()=>(t||e((t={exports:{}}).exports,t),t.exports);var YQ=hk((co,fo)
 <td>
 <p><strong>密盒 S1</strong></p>
 <p>性价比最高的助记词保管器，防水、防火、防腐蚀、防冲击且完全离线，隔离一切潜在风险；</p>
-<p><strong>售价：¥ 249</strong></p>
+<p><strong>售价：¥ 279</strong></p>
 <p><a target="_blank" rel="noopener noreferrer" href="https://shop42404838.m.youzan.com/wscgoods/detail/2xj16xca3nkmm?dc_ps=3340495314934140935.200001">更多了解</a></p>
 </td>
 </tr>
