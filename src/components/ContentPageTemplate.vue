@@ -596,6 +596,33 @@ export default {
       showBackToTop,
       scrollToTop
     }
+  },
+  mounted() {
+    this.initImageHandling();
+  },
+  methods: {
+    initImageHandling() {
+      // 为所有图片添加加载事件监听
+      const images = document.querySelectorAll('.section img');
+      images.forEach(img => {
+        // 添加加载状态类
+        img.classList.add('loading');
+
+        // 添加加载完成事件
+        img.addEventListener('load', function() {
+          this.classList.remove('loading');
+          this.classList.add('loaded');
+        });
+
+        // 添加加载错误事件
+        img.addEventListener('error', function() {
+          this.classList.remove('loading');
+          this.classList.add('error');
+          // 可以设置默认图片
+          this.src = '/path/to/default-image.png';
+        });
+      });
+    }
   }
 }
 </script>
@@ -820,6 +847,22 @@ export default {
   border-radius: var(--border-radius);
   margin: 16px 0;
   box-shadow: var(--shadow-base);
+  transition: opacity 0.3s ease;
+}
+
+.section img.loading {
+  opacity: 0.5;
+  filter: blur(2px);
+}
+
+.section img.loaded {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.section img.error {
+  opacity: 0.7;
+  background-color: #f0f0f0;
 }
 
 .section code {
