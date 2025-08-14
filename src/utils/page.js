@@ -1,3 +1,5 @@
+import imKeyOpen from '@/public/videos/open_imKey.mp4'
+
 export const pageContents = [
     {
         id: 'chapter1',
@@ -185,7 +187,28 @@ export const pageContents = [
             <li><strong>元数据：</strong>存储 NFT 相关信息的 URI</li>
             <li><strong>市场集成：</strong>与 OpenSea 等平台的集成</li>
           </ul>
+          
         `
+            },
+            {
+                id: 'section-with-video',
+                title: 'imKeyPro开箱',
+                content: `      <h3>imKeyPro开箱视频</h3>
+      <p>通过以下视频观看imKeyPro开箱：</p>
+      
+      <!-- Element Plus 视频卡片 -->
+      <el-card class="video-card" shadow="hover">
+        <div class="video-container">
+          <video controls width="100%" style="border-radius: 8px;">
+            <source src="${imKeyOpen}" type="video/mp4">
+            您的浏览器不支持视频播放。
+          </video>
+        </div>
+      </el-card>
+      <div class="video-description-text">
+        imKey开箱视频
+      </div>
+    `
             }
         ]
     }

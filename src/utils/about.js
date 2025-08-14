@@ -36,7 +36,20 @@ import imKey_4_2_14 from '@/public/images/miheS1步骤6.png'
 import imKey_4_2_15 from '@/public/images/miheS1放入保险柜.png'
 import imKey_4_3_1 from '@/public/images/miheS1常见问题1.jpg'
 import imKey_4_3_2 from '@/public/images/miheS1常见问题2.jpg'
-import imKey_4_3_3 from '@/public/images/miheS1定制.png'
+import imKey_ding from '@/public/images/mihe定制.png'
+import imKey_4_5_1 from '@/public/images/miheP1.png'
+import imKey_4_5_2 from '@/public/images/miheP1产品亮点.png'
+import imKey_4_5_3 from '@/public/images/miheP1支持12-24位离线保管.png'
+import imKey_4_5_4 from '@/public/images/miheP1支持私钥和密码保管.png'
+import imKey_4_5_5 from '@/public/images/miheP1支持私钥和密码保管_1.png'
+import imKey_4_5_6 from '@/public/images/miheP1工艺中的细节.png'
+import imKey_4_5_7 from '@/public/images/miheP1操作.png'
+import imKey_4_5_8 from '@/public/images/miheP1保管实践.png'
+import imKey_4_5_9 from '@/public/images/miheP1密钥备份工具比较.png'
+import imKey_4_5_10 from '@/public/images/miheP1密钥备份工具比较_1.png'
+import imKey_4_5_11 from '@/public/images/miheP1展示图.png'
+import imKey_4_5_12 from '@/public/images/miheP1常见问题_1.png'
+import imKey_4_5_13 from '@/public/images/miheP1常见问题_2.png'
 // 页面内容模板
 export const about = [
     {
@@ -490,14 +503,9 @@ export const about = [
                 ]
             },
             {
-                id:'imKey-4',
-                title:'助记词密盒',
-                content:``,
-                children: [
-                    {
-                        id:'imKey-4-1',
-                        title:'密盒S1VS密盒P1',
-                        content:`
+                id:'imKey-4-1',
+                title:'密盒S1VS密盒P1',
+                content:`
                         <h4>密盒 S1：</h4>
                 <p>
                 高性价比的助记词保管工具，防水、防火、防腐蚀、防冲击且完全离线，隔离一切潜在风险；
@@ -510,16 +518,16 @@ export const about = [
 </p>
 <img src="${imKey_4}" alt="imKey_4">
 `
-                    },
+            },
+            {
+                id:'imKey-4-2',
+                title:'密盒 S1',
+                content:``,
+                children:[
                     {
-                        id:'imKey-4-2',
-                        title:'密盒 S1',
-                        content:``,
-                        children:[
-                                {
-                                    id:'imKey-4-2-1',
-                                    title:'产品概览',
-                                    content:`
+                        id:'imKey-4-2-1',
+                        title:'产品概览',
+                        content:`
                                     <div class="table-container">
                                      <table class="table product-table">
                         <tr>
@@ -548,11 +556,11 @@ export const about = [
                         </table>
                         </div>
                                     `
-                                },
-                                {
-                                    id:'imKey-4-2-2',
-                                    title:'基本参数',
-                                    content: `
+                    },
+                    {
+                        id:'imKey-4-2-2',
+                        title:'基本参数',
+                        content: `
                                     <div class="table-container">
                                     <table class="table product-table">
                         <tr>
@@ -577,11 +585,11 @@ export const about = [
                         </table>
                                     </div>
                                     `
-                                },
-                                {
-                                    id:'imKey-4-2-3',
-                                    title: '包装清单',
-                                    content: `
+                    },
+                    {
+                        id:'imKey-4-2-3',
+                        title: '包装清单',
+                        content: `
                                     <div class="table-container">
                                     <table class="table product-table">
                         <tr>
@@ -620,11 +628,11 @@ export const about = [
                         <h4>助记词尽在掌握，远离一切潜在风险</h4>
 </div>
                                     `
-                                },
-                                {
-                                    id:'imKey-4-2-4',
-                                    title:'密盒特点',
-                                    content:`
+                    },
+                    {
+                        id:'imKey-4-2-4',
+                        title:'密盒特点',
+                        content:`
                                     <div class="table-container">
                                     <table class="table product-table">
                         <tr>
@@ -675,11 +683,11 @@ export const about = [
 </div>
                                     `
 
-                                },
-                                {
-                                    id:'imKey-4-2-5',
-                                    title: '全面升级，安心之选',
-                                    content: `
+                    },
+                    {
+                        id:'imKey-4-2-5',
+                        title: '全面升级，安心之选',
+                        content: `
                                     <div class="table-container">
                                     <table class="table product-table">
                         <tr>
@@ -724,11 +732,11 @@ export const about = [
 </table>
 </div>
                                     `
-                                },
-                                {
-                                    id:'imKey-4-2-6',
-                                    title: '如何 使用/保管 密盒 ？',
-                                    content: `
+                    },
+                    {
+                        id:'imKey-4-2-6',
+                        title: '如何 使用/保管 密盒 ？',
+                        content: `
                                     <div class="table-container">
                                     <h2>如何使用密盒 ？</h2>
 <table class="table product-table">
@@ -756,11 +764,9 @@ export const about = [
 </table>
 </div>
                                     `
-                                }
-
-                            ],
                     }
-                ]
+
+                ],
             },
             {
                 id:'imKey-4-3',
@@ -769,11 +775,48 @@ export const about = [
                <div style="text-align: center">
                 <img src="${imKey_4_3_1}" alt="miheS1常见问题1">
                 <img src="${imKey_4_3_2}" alt="miheS1常见问题2">
-                <img src="${imKey_4_3_3}" alt="miheS1定制">
-</div>
+                <img src="${imKey_ding}" alt="mihe定制">
+                <div>
                 <a href="https://shop42404838.m.youzan.com/wscgoods/detail/36e1hk8dzxijyq3?alias=36e1hk8dzxijyq3&banner_id=f.88725471~image_ad.8~0~omYZCja0&reft=1668583250609&spm=f.88725471">定制链接</a>
+</div>
+</div>
+               
+                        `
+            },
+            {
+                id:'imKey-5-1',
+                title: '密盒P1',
+                content:`
+<div style="text-align: center">
+<img src="${imKey_4_5_1}" alt="miheP1">
+                        <img src="${imKey_4_5_2}" alt="miheP1产品亮点">
+                        <img src="${imKey_4_5_3}" alt="miheP1支持12-24位离线保管">
+                        <img src="${imKey_4_5_4}" alt="miheP1支持私钥和密码保管">
+                        <img src="${imKey_4_5_5}" alt="miheP1支持私钥和密码保管_1">
+                        <img src="${imKey_4_5_6}" alt="miheP1工艺中的细节">
+                        <img src="${imKey_4_5_7}" alt="miheP1操作">
+                        <img src="${imKey_4_5_8}" alt="miheP1保管实践">
+                        <img src="${imKey_4_5_9}" alt="miheP1密钥备份工具比较">
+                        <img src="${imKey_4_5_10}" alt="miheP1密钥备份工具比较_1">
+                        <img src="${imKey_4_5_11}" alt="miheP1展示图">
+</div>
+                        `
+            },
+            {
+                id:'imKey-5-2',
+                title: '密盒P1常见问题',
+                content: `
+<div style="text-align: center">
+<img src="${imKey_4_5_12}" alt="miheP1常见问题_1">
+                        <img src="${imKey_4_5_13}" alt="miheP1常见问题_2">
+                        <img src="${imKey_ding}" alt="mihe定制">
+                        <div>
+                         <a href="https://shop42404838.m.youzan.com/wscgoods/detail/36e1hk8dzxijyq3?alias=36e1hk8dzxijyq3&banner_id=f.88725471~image_ad.8~0~omYZCja0&reft=1668583250609&spm=f.88725471">定制链接</a>
+</div>
+</div>
                         `
             }
+
         ]
     },
 ];

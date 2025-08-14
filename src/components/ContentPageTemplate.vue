@@ -599,6 +599,24 @@ export default {
   },
   mounted() {
     this.initImageHandling();
+
+    // 视频加载状态处理
+    const videos = document.querySelectorAll('video');
+    videos.forEach(video => {
+      // 添加加载状态
+      video.addEventListener('loadstart', function() {
+        this.classList.add('loading');
+      });
+
+      video.addEventListener('canplay', function() {
+        this.classList.remove('loading');
+      });
+
+      video.addEventListener('error', function() {
+        this.classList.remove('loading');
+        this.classList.add('error');
+      });
+    });
   },
   methods: {
     initImageHandling() {
@@ -622,7 +640,7 @@ export default {
           this.src = '/path/to/default-image.png';
         });
       });
-    }
+    },
   }
 }
 </script>
@@ -1216,16 +1234,6 @@ export default {
   .content-part.animate-on-scroll {
     opacity: 0;
     transform: translateY(20px);
-  }
-
-  .content-part.animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .content-part.visible {
-    opacity: 1;
-    transform: translateY(0);
   }
 
   .content-part h2 {

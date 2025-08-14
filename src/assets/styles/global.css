@@ -66,3 +66,45 @@ html, body {
 .shadow-large {
     box-shadow: var(--shadow-large);
 }
+
+/* 视频容器样式 */
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 宽高比 */
+    overflow: hidden;
+    border-radius: 8px;
+    margin: 16px 0;
+}
+
+.video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-description-text {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    margin-top: 8px;
+    padding: 8px 16px;
+    background-color: var(--color-background-mute);
+    border-radius: 4px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .video-container {
+        padding-bottom: 56.25%; /* 保持16:9比例 */
+        margin: 0;
+    }
+
+    .video-description-text {
+        font-size: var(--font-size-xs);
+        margin-top: 8px;
+        padding: 6px 12px;
+    }
+}

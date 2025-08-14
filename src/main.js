@@ -21,6 +21,32 @@ function setMobileHeight() {
     document.documentElement.style.setProperty('--vh', `${vh}px`)
 }
 
+// 视频预加载工具函数
+function preloadVideos(videoUrls) {
+    const promises = videoUrls.map((url) => {
+        return new Promise((resolve, reject) => {
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.onloadeddata = () => resolve(url);
+            video.onerror = () => reject(url);
+            video.src = url;
+        });
+    });
+
+    return Promise.allSettled(promises);
+}
+
+// 在应用初始化时预加载关键视频
+window.addEventListener('load', () => {
+    const importantVideos = [
+        // 添加关键视频URL
+    ];
+
+    preloadVideos(importantVideos).then(results => {
+        console.log('视频预加载完成:', results);
+    });
+});
+
 window.addEventListener('resize', setMobileHeight)
 window.addEventListener('load', setMobileHeight)
 setMobileHeight()
