@@ -264,5 +264,32 @@
     }
 }
 
+/* 响应式图片 */
+img {
+    max-width: 100%;
+    height: auto;
+}
 
+/* 超小屏幕 (手机) */
+@media (max-width: 575.98px) {
+    .section img {
+        max-width: 100%;
+        margin: 8px auto;
+        border-radius: 4px;
+    }
+}
+
+/* 小屏幕 (平板) */
+@media (min-width: 576px) {
+    .section img {
+        max-width: 95%;
+    }
+}
+
+/* 中等屏幕及以上 */
+@media (min-width: 768px) {
+    .section img {
+        max-width: 90%;
+    }
+}
 

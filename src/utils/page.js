@@ -190,10 +190,13 @@ export const pageContents = [
           
         `
             },
-            {
-                id: 'section-with-video',
-                title: 'imKeyPro开箱',
-                content: `      <h3>imKeyPro开箱视频</h3>
+
+        ]
+    },
+    {
+        id: 'section-with-video',
+        title: 'imKeyPro开箱',
+        content: `      <h3>imKeyPro开箱视频</h3>
       <p>通过以下视频观看imKeyPro开箱：</p>
       
       <!-- Element Plus 视频卡片 -->
@@ -209,8 +212,6 @@ export const pageContents = [
         imKey开箱视频
       </div>
     `
-            }
-        ]
     }
 ];
 
